@@ -5,7 +5,7 @@ import Home from './Home.js'
 import ShowUsers from './ShowAllUserDetails.js';
 
 import Login from './Login.js';
-
+import UserProfile from './UserProfile.js';
 //Create a Main Component
 class Main extends Component {
     render(){
@@ -17,6 +17,7 @@ class Main extends Component {
                     <Route path="/addEditMovie" component={AddEditMovie}/>
                     <Route path="/showusers" component={ShowUsers}/>
                     <Route path="/showusers/{userid}" component={ShowUsers}/>
+                    <Route path="/profile" component={UserProfile}/>
                 </div>
         )
     }
