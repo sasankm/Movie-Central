@@ -58,7 +58,7 @@ class NetNavbar extends Component {
             <Navbar inverse collapseOnSelect style={{backgroundColor: "black"}}>
                 <Navbar.Header>
                 <Navbar.Brand>
-                    <a href="#" style={{color : "white", paddingBottom : "50%"}}><h3><strong>NETFLIX</strong></h3></a>
+                    <a href="/" style={{color : "white", paddingBottom : "50%"}}><h3><strong>NETFLIX</strong></h3></a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 </Navbar.Header>
