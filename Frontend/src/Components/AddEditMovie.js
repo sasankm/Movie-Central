@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import '../App.css';
+import '../css/App.css';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import {DropdownButton,ButtonToolbar,MenuItem} from 'react-bootstrap/lib'
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 import Select from 'react-select';
 import 'react-dropdown/style.css'
-import Navbar from './AdminNavbar'
+import Navbar from './Navbar'
 
 const options = [
     { value: 'PG', label: 'PG' },
