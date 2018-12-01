@@ -3,7 +3,7 @@ import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import AddEditMovie from './AddEditMovie.js'
 import Home from './Home.js'
 import ShowUsers from './ShowAllUserDetails.js';
-import Home from './Home.js';
+
 import Login from './Login.js';
 
 //Create a Main Component
