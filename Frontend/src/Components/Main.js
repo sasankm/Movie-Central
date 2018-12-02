@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import AddEditMovie from './AddEditMovie.js'
-<<<<<<< HEAD
 import Home from './Home.js';
 import Login from './Login.js';
 import Signup from './Signup.js';
