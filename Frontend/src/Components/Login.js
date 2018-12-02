@@ -40,12 +40,13 @@ class Login extends Component{
         axios.post(url + "/login", user)
         .then((response) =>{
             console.log("In handle login after response on login page...", response.data);
-            if(response.data.message == "success"){
+            
+            if(response.data.status == "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 this.setState({
                     isLoggedIn: true
-                },  () =>{
-                    this.props.history.push('/userhome');
+                }, () =>{
+                    this.props.history.push('/home');
             })
         } else {
             swal(response.data.message, "", "warning");
@@ -65,11 +66,11 @@ class Login extends Component{
                         &nbsp;
                             <form class="form" onSubmit={this.handleLogin}>
                                 <div class="form-group">
-                                    <input onChange = {this.handleChange} type="text" class="form-control" name="title" placeholder="Username" required autoFocus/>
+                                    <input onChange = {this.handleChange} type="text" class="form-control" name="username" placeholder="Username" required autoFocus/>
                                 </div>
                                 &nbsp;&nbsp;
                                 <div class="form-group ">
-                                    <input onChange = {this.handleChange} type="password" class="form-control"  name="genre" placeholder="Password" required/>
+                                    <input onChange = {this.handleChange} type="password" class="form-control"  name="password" placeholder="Password" required/>
                                 </div>
                                 &nbsp;&nbsp;&nbsp;
                                 &nbsp;
