@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Main from './Components/Main';
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 import {Router} from 'react-router-dom';
 import history from './Components/history'
 
