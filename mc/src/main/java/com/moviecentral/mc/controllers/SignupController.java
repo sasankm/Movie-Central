@@ -3,19 +3,24 @@ package com.moviecentral.mc.controllers;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.moviecentral.mc.entity.User;
 import com.moviecentral.mc.models.LoginResponse;
 import com.moviecentral.mc.models.SignupRequest;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.EmailService;
+import com.moviecentral.mc.utils.Session;
 
 @RestController
 public class SignupController {
