@@ -2,6 +2,7 @@ package com.moviecentral.mc.repository;
 
 import java.util.List;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.moviecentral.mc.entity.User;
