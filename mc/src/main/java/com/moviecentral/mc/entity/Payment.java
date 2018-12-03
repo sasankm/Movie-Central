@@ -1,5 +1,7 @@
 package com.moviecentral.mc.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,7 @@ public class Payment {
 	private Integer userid;
 	private Integer movieid;
 	String type;
-	java.sql.Date date;
+	java.sql.Timestamp date;
 	Integer amount;
 	public Integer getPaymentid() {
 		return paymentid;
@@ -41,10 +43,11 @@ public class Payment {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public java.sql.Date getDate() {
+	
+	public java.sql.Timestamp getDate() {
 		return date;
 	}
-	public void setDate(java.sql.Date date) {
+	public void setDate(java.sql.Timestamp date) {
 		this.date = date;
 	}
 	public Integer getAmount() {

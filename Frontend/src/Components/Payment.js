@@ -62,6 +62,7 @@ class Payment extends Component{
         // some action...
         // then redirect
        // this.setState({redirect: true});
+        /*
         var expdate;
         var date;
         var today = new Date();
@@ -72,10 +73,11 @@ class Payment extends Component{
         }
         else{
             d='0'+today.getDate();
-        }
-        var sdate="";
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + d;
+        }*/
+        //var sdate="";
         //var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + d;
+        //var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + d;
+        /*
         if (this.state.datafromUserProfile.subscription==0){
 
          sdate=date;
@@ -174,22 +176,22 @@ class Payment extends Component{
             console.log("expiry date if subcription =1  is  ",expdate)
 
         }
-
+*/
         var payment = {
             userid: this.state.datafromUserProfile.userid,
             movieid: this.state.datafromUserProfile.movieid,
-            type: this.state.datafromUserProfile.type,
-            date:date,
+            //type: this.state.datafromUserProfile.type,
+            //date:date,
             amount:this.state.datafromUserProfile.amount,
             username:this.state.datafromUserProfile.username,
             selectedMonth:this.state.datafromUserProfile.selectedMonth,
-            expirydate:expdate,
-            startdate:sdate
+            //expirydate:expdate,
+           // startdate:sdate
 
 
         }
        console.log("payment in from end is",payment);
-        axios.post("http://localhost:8080" + '/payment', payment)
+        axios.post("http://localhost:8080" + '/payment/?type=subscription', payment)
             .then((response) => {
                 console.log("response from payment",response.data);
                 if(response.data.status == "SUCCESS"){

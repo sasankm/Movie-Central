@@ -12,7 +12,14 @@ public class PaymentRequest {
 	Integer amount;
 	String username;
 	java.sql.Date expirydate;
+	Integer selectedMonth;
 	
+	public Integer getSelectedMonth() {
+		return selectedMonth;
+	}
+	public void setSelectedMonth(Integer selectedMonth) {
+		this.selectedMonth = selectedMonth;
+	}
 	java.sql.Date startdate;
 	public java.sql.Date getStartdate() {
 		return startdate;

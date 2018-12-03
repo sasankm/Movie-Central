@@ -67,8 +67,8 @@ public class AdminUserController {
 				inner.put("type",String.valueOf(user.getType()));
 				inner.put("subscription",String.valueOf(user.getSubscription()));
 				inner.put("activated",String.valueOf(user.getActivated()));
-				inner.put("startdate",String.valueOf(user.getStartDate()));
-			    inner.put("enddate",String.valueOf(user.getEndDate()));
+				inner.put("startdate",String.valueOf(user.getStartdate()));
+			    inner.put("enddate",String.valueOf(user.getEnddate()));
 				ar.add(inner);
 			}
 			
@@ -96,8 +96,8 @@ public class AdminUserController {
 			inner.put("email",String.valueOf(user.getEmail()));
 			inner.put("subscription",String.valueOf(user.getSubscription()));
 			inner.put("activated",String.valueOf(user.getActivated()));
-			inner.put("startdate",String.valueOf(user.getStartDate()));
-			inner.put("enddate",String.valueOf(user.getEndDate()));
+			inner.put("startdate",String.valueOf(user.getStartdate()));
+			inner.put("enddate",String.valueOf(user.getEnddate()));
 		
 		ar.add(inner);
 		return ar;
