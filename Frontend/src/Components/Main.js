@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import AddEditMovie from './AddEditMovie.js'
-import Home from './Home.js';
-import Login from './Login.js';
+//import Home from './Home.js';
+//import Login from './Login.js';
 import Signup from './Signup.js';
 import MainHome from './MainHome.js';
 import Home from './Home.js'
