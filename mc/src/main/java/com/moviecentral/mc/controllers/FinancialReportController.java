@@ -17,10 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecentral.mc.entity.Payment;
 import com.moviecentral.mc.entity.User;
+import com.moviecentral.mc.models.FinancialRequest;
+import com.moviecentral.mc.models.PaymentRequest;
 import com.moviecentral.mc.entity.PlayHistory;
 import com.moviecentral.mc.repository.PaymentRepository;
 import com.moviecentral.mc.repository.PlayHistoryRepository;
@@ -36,22 +40,25 @@ public class FinancialReportController {
 	public PaymentRepository paymentRepository;
 	@Autowired
 	public PlayHistoryRepository playhistoryRepository;
+	
+	//public FinancialRequest financialRequest;
 	//to fetch all the user details
 	//System.out.println(crossOriginPath);
 	
 	
 	
-	@GetMapping(value="/financial")
+	@PostMapping(value="/financial")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public ArrayList getFinancialMetrics(){
-		ArrayList<HashMap<String,String>> ar=new ArrayList<HashMap<String,String>>();
+	public ArrayList getFinancialMetrics(@RequestBody FinancialRequest req){
+		ArrayList<HashMap> ar=new ArrayList<HashMap>();
 		HashMap<String,Integer> hm = new HashMap<String,Integer>();
 		System.out.println("in financial");
-		
+		int year=req.getYear();
+		int month=req.getMonth();
 		Date newdate=new Date();
 	    java.sql.Timestamp presentdate = new Timestamp(newdate.getTime());
 		
-	    Calendar mycal = new GregorianCalendar(2018,11, 1);
+	    Calendar mycal = new GregorianCalendar(year,month, 1);
 	    long startDate = mycal.getTimeInMillis();
 	    java.sql.Timestamp s=new Timestamp(startDate);
 
@@ -140,7 +147,7 @@ public class FinancialReportController {
 	 hm.put("uniqueActiveUsers",uniqueActiveUsers);
 	 hm.put("uniquePayPerViewUsers",uniquePayPerViewUsers);
 	       
-		
+	ar.add(hm);	
 		
 		
 		

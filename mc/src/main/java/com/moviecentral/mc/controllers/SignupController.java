@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class SignupController {
 	private UserRepository userRepository;
 	
 	@PostMapping(value="/signup")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse signup(@RequestBody SignupRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
@@ -81,6 +83,7 @@ public class SignupController {
 	}
 	
 	@GetMapping(value="/verify")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse verify(@RequestParam("email") String email, @RequestParam("code") String code){
 		User user = userRepository.findByEmail(email);
 		if(user == null){

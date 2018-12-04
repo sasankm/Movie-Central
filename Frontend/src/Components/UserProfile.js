@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router';
 import Navbar from './Navbar'
+import '../css/profile.css';
 import '../css/login.css';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
@@ -16,6 +17,7 @@ class UserProfile extends Component{
             userid:"",
             email:"",
             enddate:"",
+            suscription:"",
             suscription:"",
             redirect:"",
             amount:10,
@@ -35,16 +37,12 @@ class UserProfile extends Component{
                 { value: '12', label: '12 months' }
 
             ],
-
             selectedMonth:"1 month",
             movieid:"",
             type:"subscription"
-
-
         }
         this.changeMonth=this.changeMonth.bind(this);
         this.handleOnClick=this.handleOnClick.bind(this);
-
     }
 
     componentWillMount(){
@@ -65,8 +63,8 @@ class UserProfile extends Component{
                         userid:result[0].userid,
                         email:result[0].email,
                         subscription:result[0].subscription,
+                        enddate:result[0].username.enddate,
                         enddate:result[0].enddate
-
                     });
 
                 },
@@ -80,9 +78,6 @@ class UserProfile extends Component{
                     });
                 }
             )
-
-
-
     }
     changeMonth=(e)=>{
         console.log("event is",e);
@@ -91,6 +86,7 @@ class UserProfile extends Component{
             amount:10*parseInt(e.value)
         })
     }
+
 
     handleOnClick = () => {
         // some action...
@@ -105,22 +101,20 @@ class UserProfile extends Component{
         console.log(" selected month is",this.state.selectedMonth);
         return(
 
-            <div style={{backgroundColor: "black"}} >
-
-                <div id="img" class="container">
-                    <div >
-                        <div class="login-form">
-                            <div id="login">
-                                <h1>Profile</h1>
+            <div style={{backgroundColor: "black"}}>
+            <Navbar />
+                <div id="img1">
+                    <div class="container">
+                        <div class="profile-form">
+                            <div id="profile">
+                                <h1 id="h1">{this.state.username}'s Profile</h1>
                                 &nbsp;
-
-
                                 <form class="form" onSubmit={this.handleOnClick}>
                                     <div class="form-group">
-
                                         <label>User ID</label> <input  value={this.state.userid} type="text" class="form-control" name="title"  autoFocus/>
                                     </div>
-                                    &nbsp;&nbsp;
+                                    &nbsp;
+                                    &nbsp;
                                     <div class="form-group">
                                         <label>User Name</label>
 
@@ -151,12 +145,10 @@ class UserProfile extends Component{
                                         <input value={this.state.amount} type="text" className="form-control"
                                                name="title" required autoFocus/>
                                     </div>
-
                                     &nbsp;&nbsp;&nbsp;
                                     &nbsp;
                                     <button style={{backgroundColor : "red"}} onClick = {this.handleOnClick}  class="btn btn-primary"><b>Make Payment</b></button>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -165,5 +157,4 @@ class UserProfile extends Component{
         );
     }
 }
-
 export default UserProfile;
