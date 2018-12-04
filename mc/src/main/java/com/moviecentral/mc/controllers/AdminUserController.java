@@ -1,6 +1,7 @@
 package com.moviecentral.mc.controllers;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +51,29 @@ public class AdminUserController {
 		//HashMap<String,String> inner = new HashMap<String,String>();
 		for (User user : userRepository.findAll()) {
 			//log.info(customer.toString());
-			HashMap<String,String> inner = new HashMap<String,String>();
-			System.out.println("user id is "+String.valueOf(user.getUserid()));
-			inner.put("userid",String.valueOf(user.getUserid()));
-			inner.put("username",String.valueOf(user.getUsername()));
-			inner.put("email",String.valueOf(user.getEmail()));
-			inner.put("type",String.valueOf(user.getType()));
-			inner.put("subscription",String.valueOf(user.getSubscription()));
-			inner.put("activated",String.valueOf(user.getActivated()));
-			inner.put("startdate",String.valueOf(user.getStartDate()));
-		    inner.put("enddate",String.valueOf(user.getEndDate()));
-			ar.add(inner);
+			String email=user.getEmail();
+			String[] end = email.split("@");
+			if (end[1].equals("sjsu.edu")) {
+				
+				
+			}
+			else {
+				
+				HashMap<String,String> inner = new HashMap<String,String>();
+				System.out.println("user id is "+String.valueOf(user.getUserid()));
+				inner.put("userid",String.valueOf(user.getUserid()));
+				inner.put("username",String.valueOf(user.getUsername()));
+				inner.put("email",String.valueOf(user.getEmail()));
+				inner.put("type",String.valueOf(user.getType()));
+				inner.put("subscription",String.valueOf(user.getSubscription()));
+				inner.put("activated",String.valueOf(user.getActivated()));
+				inner.put("startdate",String.valueOf(user.getStartdate()));
+			    inner.put("enddate",String.valueOf(user.getEnddate()));
+				ar.add(inner);
+			}
+			
+					
+			
 			
 			
 		}
@@ -68,13 +81,14 @@ public class AdminUserController {
 		return ar;
 	}
 	//to fetch individual user details
-	@GetMapping(value="/user/{userId}")
+	@GetMapping(value="/user/{username}")
 	@CrossOrigin(origins = "http://localhost:3000")
-	public ArrayList getOneUserDetails(@PathVariable String userId){
+	public ArrayList getOneUserDetails(@PathVariable String username){
 		ArrayList<HashMap<String,String>> ar=new ArrayList<HashMap<String,String>>();
 		HashMap<String,String> inner = new HashMap<String,String>();
-		userRepository.findById(Integer.parseInt(userId))
-		.ifPresent(user -> {
+		User user=userRepository.findByUsername(username);
+		//System.out.println("details based on username "+list1.getEmail());		
+			
 			System.out.println("user id is of one user "+String.valueOf(user.getUserid()));
 			inner.put("userid",String.valueOf(user.getUserid()));
 			inner.put("username",String.valueOf(user.getUsername()));
@@ -82,9 +96,9 @@ public class AdminUserController {
 			inner.put("email",String.valueOf(user.getEmail()));
 			inner.put("subscription",String.valueOf(user.getSubscription()));
 			inner.put("activated",String.valueOf(user.getActivated()));
-			inner.put("startdate",String.valueOf(user.getStartDate()));
-			inner.put("enddate",String.valueOf(user.getEndDate()));
-		});
+			inner.put("startdate",String.valueOf(user.getStartdate()));
+			inner.put("enddate",String.valueOf(user.getEnddate()));
+		
 		ar.add(inner);
 		return ar;
 	}
