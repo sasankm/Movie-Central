@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	User findByUsername(String username);
 	User findByEmail(String email);
 	ArrayList<User> findByStartdateBetween(Timestamp startdate,Timestamp enddate);
+	List<User> findByUseridIn(List<Integer> userids);
 }

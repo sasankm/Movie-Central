@@ -10,7 +10,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -147,6 +146,7 @@ public class MovieController {
 		for(Movie m : movies){
 			System.out.println(m.getTitle());
 			SearchMovie s = new SearchMovie();
+			s.setMovieid(m.getMovieid());
 			s.setMovie(m.getMovie());
 			s.setTitle(m.getTitle());
 			s.setYear(m.getYear());

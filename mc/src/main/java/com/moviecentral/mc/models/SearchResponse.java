@@ -7,19 +7,30 @@ import java.util.List;
 public class SearchResponse {
 
 	private String status;
+	private String message;
 	private List<SearchMovie> movies;
 	
 	public SearchResponse(String status, List<SearchMovie> movies) {
 		super();
 		this.status = status;
 		this.movies = movies;
+		this.message = null;
 	}
 	
 	public SearchResponse(){
 		this.status = null;
 		this.movies = null;
+		this.message = null;
 	}
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public String getStatus() {
 		return status;
 	}
