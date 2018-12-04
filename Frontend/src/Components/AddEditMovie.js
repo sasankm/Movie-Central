@@ -2,15 +2,21 @@ import React, {Component} from 'react';
 import '../css/App.css';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
-import {DropdownButton,ButtonToolbar,MenuItem} from 'react-bootstrap/lib'
+import {DropdownButton,ButtonToolbar,MenuItem} from 'react-bootstrap/lib';
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 import Select from 'react-select';
-import 'react-dropdown/style.css'
-import Navbar from './Navbar'
+import 'react-dropdown/style.css';
+import Navbar from './Navbar.js';
+import axios from 'axios'
+
+
 
 const options = [
     { value: 'PG', label: 'PG' },
-    { value: 'R', label: 'R' }
+    { value: 'PG-13', label: 'PG-13' },
+    { value: 'R', label: 'R' },
+    { value: 'G', label: 'G' },
+    { value: 'NC-17', label: 'NC-17' }
 ];
 
 const options1 = [
@@ -19,6 +25,24 @@ const options1 = [
     { value: 'PayPerViewOnly', label: 'PayPerViewOnly' },
     { value: 'Paid', label: 'Paid' }
 ];
+
+const options2 = [
+    { value: 'Comedy', label: 'Comedy' },
+    { value: 'Sci-fi', label: 'Sci-fi' },
+    { value: 'Horror', label: 'Drama' },
+    { value: 'Action and Adventure', label: 'Action and Adventure' },
+    { value: 'Romance', label: 'Romance' },
+    { value: 'Thriller', label: 'Thriller' },
+    { value: 'Drama', label: 'Drama' },
+    { value: 'Mystery', label: 'Mystery' },
+    { value: 'Crime', label: 'Crime' },
+    { value: 'Animation', label: 'Animation' },
+    { value: 'Adventure', label: 'Adventure' },
+    { value: 'Fantasy', label: 'Fantasy' },
+    { value: 'Comedy-Romance', label: 'Comedy-Romance' },
+    { value: 'Action-Comedy', label: 'Action-Comedy' },
+    { value: 'Superhero', label: 'Superhero' }
+]
 
 //Define a AddMovie Component
 class AddMovie extends Component{
@@ -41,6 +65,7 @@ class AddMovie extends Component{
             availability: '',
             price       : ''
         };
+
     }
 
     componentDidMount=()=>{
@@ -53,10 +78,14 @@ class AddMovie extends Component{
         })
       }
 
-    genreChangeHandler=(e)=>{
-        this.setState({
-            genre : e.target.value
-        })
+    // genreChangeHandler=(e)=>{
+    //     this.setState({
+    //         genre : e.target.value
+    //     })
+    // }
+
+    genreChangeHandler=(selectedOption)=>{
+        this.setState({ genre : selectedOption});
     }
 
     studioNameChangeHandler=(e)=>{
@@ -126,7 +155,22 @@ class AddMovie extends Component{
             availability: this.state.rating.availability,
             price       : this.state.price
         }
-        console.log("Displaying State",this.state.rating.value);
+        console.log("Displaying State",movieDetails);
+
+        axios.post("http://localhost:8080/movie/add",movieDetails)
+            .then(response => {
+                if(response.data.status === 200){
+                    console.log("Received success from the backend after successfully inserting the booking record")
+                    this.setState({
+                        success : "You have successfully made the booking!!!!",
+                        count   : 1
+                    })
+                }else{
+                    console.log("entered into failure")
+                }
+            }).catch(res=>{
+                console.log("Inside catch block of bookingEventHandler",res);
+            })
     }
 
 
@@ -145,8 +189,14 @@ class AddMovie extends Component{
                                     <input onChange = {this.titleChangeHandler} type="text" class="form-control" name="title" placeholder="Title" required/>
                                 </div>
 
+                                {/*
                                 <div class="form-group ">
                                     <input onChange = {this.genreChangeHandler} type="text" class="form-control"  name="genre" placeholder="Genre" required/>
+                                </div>
+                                */}
+
+                                <div class="form-group" style={{color : "black"}}>
+                                     <Select class="form-control"  value={this.state.genre} onChange={this.genreChangeHandler} options={options2} placeholder="Genre"/>
                                 </div>
 
                                 <div class="form-group ">
@@ -178,11 +228,11 @@ class AddMovie extends Component{
                                 </div>
 
                                 <div class="form-group" style={{color : "black"}}>
-                                    <Select class="form-control"  value={this.state.rating} onChange={this.ratingChangeHandler} options={options}/>
+                                    <Select class="form-control"  value={this.state.rating} onChange={this.ratingChangeHandler} options={options} placeholder="Rating"/>
                                 </div>
 
                                 <div class="form-group" style={{color : "black"}}>
-                                    <Select class="form-control"  value={this.state.availability} onChange={this.availabilityChangeHandler} options={options1}/>
+                                    <Select class="form-control"  value={this.state.availability} onChange={this.availabilityChangeHandler} options={options1} placeholder="Availability"/>
                                 </div>
 
                                 <div class="form-group ">
