@@ -264,6 +264,19 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 	 
 	
 	
+	}else {
+		Date newdate=new Date();
+	    java.sql.Timestamp presentdate = new Timestamp(newdate.getTime());
+	    System.out.println("presentdate "+presentdate);
+	    
+	    payment.setAmount(req.getAmount());
+	    payment.setDate(presentdate);
+	    payment.setMovieid(req.getMovieid());
+	    payment.setUserid(req.getUserid());
+	    payment.setType(type);
+	    
+	    paymentRepository.save(payment);
+		
 	}
 	return new PaymentResponse("SUCCESS", "payment done");
 	
