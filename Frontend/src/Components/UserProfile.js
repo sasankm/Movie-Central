@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Navbar from './Navbar'
-import '../css/login.css';
+import '../css/profile.css';
 
 
 class UserProfile extends Component{
@@ -15,10 +15,7 @@ class UserProfile extends Component{
             email:"",
             enddate:"",
             suscription:""
-
-
         }
-
     }
 
     componentWillMount(){
@@ -40,7 +37,6 @@ class UserProfile extends Component{
                         email:result[0].email,
                         subscription:result[0].subscription,
                         enddate:result[0].username.enddate
-
                     });
 
                 },
@@ -54,31 +50,25 @@ class UserProfile extends Component{
                     });
                 }
             )
-
-
-
     }
-
 
 
     render(){
         return(
-            <div style={{backgroundColor: "black"}} >
-
-                <div id="img" class="container">
-                    <div >
-                        <div class="login-form">
-                            <div id="login">
-                                <h1>Profile</h1>
+            <div style={{backgroundColor: "black"}}>
+            <Navbar />
+                <div id="img1">
+                    <div class="container">
+                        <div class="profile-form">
+                            <div id="profile">
+                                <h1 id="h1">{this.state.username}'s Profile</h1>
                                 &nbsp;
-
-
                                 <form class="form" onSubmit={this.handleLogin}>
                                     <div class="form-group">
-
                                         <label>User ID</label> <input  value={this.state.userid} type="text" class="form-control" name="title"  autoFocus/>
                                     </div>
-                                    &nbsp;&nbsp;
+                                    &nbsp;
+                                    &nbsp;
                                     <div class="form-group">
                                         <label>User Name</label>
 
@@ -99,13 +89,10 @@ class UserProfile extends Component{
                                         <label>End Date</label>
                                         <input value={this.state.enddate} type="text" class="form-control" name="title"  required autoFocus/>
                                     </div>
-
-
                                     &nbsp;&nbsp;&nbsp;
                                     &nbsp;
                                     <button style={{backgroundColor : "red"}} onClick = {this.handleLogin}  class="btn btn-primary"><b>Make Payment</b></button>
                                 </form>
-
                             </div>
                         </div>
                     </div>

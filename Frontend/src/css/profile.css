@@ -1,4 +1,4 @@
-.signup-form .form-control {
+.profile-form .form-control {
   background: #f7f7f7 none repeat scroll 0 0;
   border: 1px solid white;
   border-radius: 6px;
@@ -8,14 +8,18 @@
   background-color: transparent;
   color: white
 }
+
 #h3 {
     color:white
 }
-#signup{
+#h1 {
+  color:white
+}
+#profile{
   background: #ffffff none repeat scroll 0 0;
-  margin: 200px auto 100px;
+  margin: 150px auto 0px;
   position: absolute;
-  max-width: 50%;
+  max-width: 60%;
   padding: 50px 70px 70px 71px;
   background: rgb(0, 0, 0, 0); /* Fallback color */
   background: rgba(0, 0, 0, 0.8); /* Black background with 0.5 opacity */
@@ -24,16 +28,16 @@
   top:0; bottom:0;
 }
 
-.signup-form  {
+.profile-form  {
   margin-bottom:100%;
   text-align:center;
 }
- .signup-form  .btn.btn-primary {
+ .profile-form  .btn.btn-primary {
   background: #f0ad4e none repeat scroll 0 0;
   border-color: #0c0c0b;
   color: #ffffff;
   font-size: 20px;
-  width: 100%;
+  width: 75%;
   height: 50px;
   line-height: 50px;
   padding: 0;

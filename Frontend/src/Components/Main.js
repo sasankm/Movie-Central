@@ -5,18 +5,18 @@ import Home from './Home.js';
 import Login from './Login.js';
 import Signup from './Signup.js';
 import MainHome from './MainHome.js';
-import Home from './Home.js'
 import ShowUsers from './ShowAllUserDetails.js';
-
-import Login from './Login.js';
 import UserProfile from './UserProfile.js';
+import Stats from './Stats.js';
+import Scoreboard from './Scoreboard.js';
+
 //Create a Main Component
 class Main extends Component {
     render(){
         return(
                 <div>
                     {/*Render Different Component based on Route*/}
-                    <Route path = "/" component={MainHome} />
+                    <Route exact path = "/" component={MainHome} />
                     <Route path="/login" component={Login}/>
                     <Route path="/signup" component={Signup} />
                     <Route path="/home" component={Home}/>
@@ -24,6 +24,8 @@ class Main extends Component {
                     <Route path="/showusers" component={ShowUsers}/>
                     <Route path="/showusers/{userid}" component={ShowUsers}/>
                     <Route path="/profile" component={UserProfile}/>
+                    <Route path="/stats" component={Stats} />
+                    <Route path="/scoreboard" component={Scoreboard}/>
                 </div>
         )
     }

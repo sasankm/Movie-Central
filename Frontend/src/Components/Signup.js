@@ -55,8 +55,9 @@ class Signup extends Component{
 
     render(){
         return(
-            <div style={{backgroundColor: "white"}}>
+            <div style={{backgroundColor: "black"}}>
             <Navbar/>
+                <div id="img1">
                 <div class="container">
                     <div class="signup-form">
                        <div id="signup"> 
@@ -80,6 +81,7 @@ class Signup extends Component{
                             </form> 
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         );

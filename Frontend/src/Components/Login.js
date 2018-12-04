@@ -20,13 +20,26 @@ class Login extends Component{
         this.handleLogin = this.handleLogin.bind(this);
     }
 
-    componentWillMount(){
-        //check session
-    }
-
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value
+        })
+    }
+
+    componentWillMount(){
+        //check session
+        axios.get(url + "/checksession")
+        .then((response) => {
+            console.log("In check session of login page: ", response.data);
+            if(response.data.message !== "invalid session"){
+                this.setState({
+                    isLoggedIn: true
+                }, () => {
+                    if(this.state.isLoggedIn == true){
+                        this.props.history.push('/home');
+                    }
+                })
+            }
         })
     }
 
@@ -41,7 +54,7 @@ class Login extends Component{
         .then((response) =>{
             console.log("In handle login after response on login page...", response.data);
             
-            if(response.data.status == "SUCCESS"){
+            if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 this.setState({
                     isLoggedIn: true
@@ -58,7 +71,7 @@ class Login extends Component{
         return(
         <div style={{backgroundColor: "black"}}>
             <Navbar/>
-            <div id="img">
+            <div id="img1">
                 <div class="container">
                     <div class="login-form">
                         <div id="login">
