@@ -70,6 +70,7 @@ public class SignupController {
 		user.setEmail(email);
 		user.setType(type);
 		user.setActivated(0);
+		user.setSubscription(0);
 		String code = String.valueOf(new Random(System.nanoTime()).nextInt(100000));
 		user.setCode(code);
 		user = userRepository.save(user);

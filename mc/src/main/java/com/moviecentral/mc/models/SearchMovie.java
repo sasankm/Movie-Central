@@ -1,24 +1,40 @@
-package com.moviecentral.mc.entity;
+package com.moviecentral.mc.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-
-@Entity
-@Table(name = "movie")
-public class Movie {
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SearchMovie {
+	public SearchMovie(Integer movieid, String title, Integer year, String studio, String synopsis, String image,
+			String movie, String actors, String director, String country, String rating, String availability,
+			Integer price) {
+		super();
+		this.movieid = movieid;
+		this.title = title;
+		this.year = year;
+		this.studio = studio;
+		this.synopsis = synopsis;
+		this.image = image;
+		this.movie = movie;
+		this.actors = actors;
+		this.director = director;
+		this.country = country;
+		this.rating = rating;
+		this.availability = availability;
+		this.price = price;
+	}
+	public SearchMovie(){
+		super();
+		this.movieid = null;
+		this.title = null;
+		this.year = null;
+		this.studio = null;
+		this.synopsis = null;
+		this.image = null;
+		this.movie = null;
+		this.actors = null;
+		this.director = null;
+		this.country = null;
+		this.rating = null;
+		this.availability = null;
+		this.price = null;
+	}
 	private Integer movieid;
 	private String title;
 	private Integer year;
@@ -32,17 +48,6 @@ public class Movie {
 	private String rating;
 	private String availability;
 	private Integer price;
-	
-	@ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-            })
-    @JoinTable(name = "movie_attributes",
-            joinColumns = { @JoinColumn(name = "movieid") },
-            inverseJoinColumns = { @JoinColumn(name = "attributesid") })
-	private Set<Attributes> attributes = new HashSet<>();
-	
 	public Integer getMovieid() {
 		return movieid;
 	}
@@ -120,12 +125,6 @@ public class Movie {
 	}
 	public void setPrice(Integer price) {
 		this.price = price;
-	}
-	public Set<Attributes> getAttributes() {
-		return attributes;
-	}
-	public void setAttributes(Set<Attributes> attributes) {
-		this.attributes = attributes;
 	}
 	
 	

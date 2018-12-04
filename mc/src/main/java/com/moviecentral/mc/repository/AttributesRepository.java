@@ -6,4 +6,6 @@ import com.moviecentral.mc.entity.Attributes;
 
 public interface AttributesRepository extends JpaRepository<Attributes, Integer> {
 
+	Attributes findByValue(String value);
+
 }
