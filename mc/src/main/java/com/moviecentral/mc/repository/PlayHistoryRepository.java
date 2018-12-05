@@ -30,4 +30,7 @@ public interface PlayHistoryRepository extends JpaRepository<PlayHistory, Intege
 	
 	@Query( "select new com.moviecentral.mc.models.StatsUsers(p, count(p.movieid)) from PlayHistory p where p.date >= :date group by p.movieid order by 2 desc")
 	List<StatsUsers> findStatsMovies(@Param("date")Timestamp date, @Param("pageable")Pageable pageable);
+	
+	@Query("select p from PlayHistory p where p.date >= :date and p.userid = :userid and p.movieid = :movieid")
+	List<PlayHistory> findIfPaid(@Param("date")Timestamp date, @Param("userid")Integer userid, @Param("movieid")Integer movieid);
 }

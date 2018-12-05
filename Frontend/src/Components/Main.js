@@ -33,6 +33,8 @@ class Main extends Component {
                     <Route path="/showusers/{userid}" exact component={ShowUsers}/>
                     <Route path="/profile" exact component={UserProfile}/>
                     <Route path="/rating" exact component={Rating}/>
+
+
                     <Route path="/stats" component={Stats} />
                     <Route path="/scoreboard" component={Scoreboard}/>
                     <Route path="/payment" component={Payment}/>

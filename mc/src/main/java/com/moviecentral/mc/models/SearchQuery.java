@@ -9,7 +9,16 @@ public class SearchQuery {
 	String directors;
 	String rating;
 	Integer stars;
+	Integer page;
 	
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
 	public SearchQuery() {
 		super();
 		this.keys = null;
@@ -19,6 +28,7 @@ public class SearchQuery {
 		this.directors = null;
 		this.rating = null;
 		this.stars = null;
+		this.page = null;
 	}
 	
 	public SearchQuery(String[] keys) {
