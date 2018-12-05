@@ -13,4 +13,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer>,JpaSpecif
 
 	List<Movie> findByMovieidIn(List<Integer> movieids);
 
+	Movie findByMovieid(Integer movieid);
+
 }
