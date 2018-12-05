@@ -36,14 +36,7 @@ class Main extends Component {
                     <Route path="/profile" exact component={UserProfile}/>
                     <Route path="/rating" exact component={Rating}/>
 
-                    <Route exact path = "/" component={MainHome} />
-                    <Route path="/login" component={Login}/>
-                    <Route path="/signup" component={Signup} />
-                    <Route path="/home" component={Home}/>
-                    <Route path="/addEditMovie" component={AddEditMovie}/>
-                    <Route path="/showusers" component={ShowUsers}/>
-                    <Route path="/showusers/{userid}" component={ShowUsers}/>
-                    <Route path="/profile" component={UserProfile}/>
+
                     <Route path="/stats" component={Stats} />
                     <Route path="/scoreboard" component={Scoreboard}/>
                     <Route path="/payment" component={Payment}/>
