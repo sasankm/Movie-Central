@@ -146,6 +146,10 @@ public class MovieController {
 	@GetMapping("/search")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public SearchResponse search(HttpSession session, SearchQuery query){
+		Integer page = query.getPage();
+		if(page == null){
+			page = 0;
+		}
 		
 		List<Movie> movies = movieRepository.findAll(Specification.where(MovieSpecifications.withKeys(query.getKeys()))
 				.and(MovieSpecifications.withGenre(query.getGenre()))
@@ -153,7 +157,8 @@ public class MovieController {
 				.and(MovieSpecifications.withActors(query.getActors()))
 				.and(MovieSpecifications.withDirectors(query.getDirectors()))
 				.and(MovieSpecifications.withRating(query.getRating()))
-				.and(MovieSpecifications.withStars(query.getStars())));
+				.and(MovieSpecifications.withStars(query.getStars())), PageRequest.of(page, 10)).getContent();
+		
 		
 		
 		SearchResponse searchResponse = new SearchResponse();
