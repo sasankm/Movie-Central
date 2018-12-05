@@ -48,6 +48,48 @@ public class SearchMovie {
 	private String rating;
 	private String availability;
 	private Integer price;
+	private Long count;
+	private Long plays;
+	private Double avg;
+	public SearchMovie(Integer movieid, String title, Integer year, String studio, String synopsis, String image,
+			String movie, String actors, String director, String country, String rating, String availability,
+			Integer price, Long count, Long plays, Double avg) {
+		super();
+		this.movieid = movieid;
+		this.title = title;
+		this.year = year;
+		this.studio = studio;
+		this.synopsis = synopsis;
+		this.image = image;
+		this.movie = movie;
+		this.actors = actors;
+		this.director = director;
+		this.country = country;
+		this.rating = rating;
+		this.availability = availability;
+		this.price = price;
+		this.count = count;
+		this.plays = plays;
+		this.avg = avg;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getPlays() {
+		return plays;
+	}
+	public void setPlays(Long plays) {
+		this.plays = plays;
+	}
+	public Double getAvg() {
+		return avg;
+	}
+	public void setAvg(Double avg) {
+		this.avg = avg;
+	}
 	public Integer getMovieid() {
 		return movieid;
 	}
