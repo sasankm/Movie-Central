@@ -64,6 +64,30 @@ class MovieProfile extends React.Component {
 
     handleClick=(event)=>{
 
+        fetch(url+"/play?movieid=1")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log("play from db",result);
+
+
+
+
+
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    console.log("error from play",error);
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+
+
         console.log("clicked the video")
         if(this.state.name=="thissssss"){
              event.target.pauseVideo();
