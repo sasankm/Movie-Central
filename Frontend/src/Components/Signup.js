@@ -57,8 +57,12 @@ class Signup extends Component{
         return(
             <div style={{backgroundColor: "black"}}>
             <Navbar/>
+<<<<<<< HEAD
+                <div class="container" style={{backgroundColor: "white"}}>
+=======
                 <div id="img1">
                 <div class="container">
+>>>>>>> ba8e423d678bc8b064de5d2c99d4f17e7ac8edad
                     <div class="signup-form">
                        <div id="signup"> 
                             <h3 id="h3">Signup to stream movies of your choice.</h3>

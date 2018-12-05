@@ -21,4 +21,5 @@ public interface PaymentRepository extends  JpaRepository<Payment, Integer>{
 	
 	@Query("select p from Payment p where p.date >= :date and p.userid = :userid and p.movieid = :movieid")
 	Payment findIfPaid(@Param("date")Timestamp date, @Param("userid")Integer userid, @Param("movieid")Integer movieid);
+
 }

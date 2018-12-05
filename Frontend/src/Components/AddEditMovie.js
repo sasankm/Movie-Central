@@ -183,8 +183,8 @@ class AddMovie extends Component{
                 <div id="img">
                 <div class="container">
                     <h1 style={{color : "red"}}>{addEdit} Movie</h1>
-                    <div class="add-form">
-                        <div id="add" class="col-lg-4 col-lg-offset-3"> 
+                    <div class="login-form">
+                        <div id="signupAdd">
                                 <div class="form-group">
                                     <input onChange = {this.titleChangeHandler} type="text" class="form-control" name="title" placeholder="Title" required/>
                                 </div>
