@@ -184,7 +184,7 @@ class AddMovie extends Component{
                 <div class="container">
                     <h1 style={{color : "red"}}>{addEdit} Movie</h1>
                     <div class="login-form">
-                        <div id="signup">
+                        <div id="signupAdd">
                                 <div class="form-group">
                                     <input onChange = {this.titleChangeHandler} type="text" class="form-control" name="title" placeholder="Title" required/>
                                 </div>

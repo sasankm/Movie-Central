@@ -1,33 +1,33 @@
 .signup-form .form-control {
-    background: #f7f7f7 none repeat scroll 0 0;
-    border: 1px solid black;
-    border-radius: 6px;
-    font-size: 19px;
-    height: 50px;
-    line-height: 50px;
-    background-color: transparent;
-    color: black
-  }
-  #h3 {
-      color:black
-  }
-  #signup{
-    background: white; 
-    background: white; 
-   
-  }
+  background: #f7f7f7 none repeat scroll 0 0;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 19px;
+  height: 50px;
+  line-height: 50px;
+  background-color: transparent;
+  color: black
+}
+#h3 {
+    color:black
+}
+#signup{
+  background: white; 
+  background-color: white; 
+  background: rgba(0, 0, 0, );
+}
 
-  .signup-form  .btn.btn-primary {
-    background: #f0ad4e none repeat scroll 0 0;
-    border-color: #0c0c0b;
-    color: #ffffff;
-    font-size: 20px;
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    padding: 0;
-  }
+.signup-form  .btn.btn-primary {
+  background: #f0ad4e none repeat scroll 0 0;
+  border-color: #0c0c0b;
+  color: #ffffff;
+  font-size: 20px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
 
-  .container{
-    text-align:center; 
-  }
+.container{
+  text-align:center; 
+}
