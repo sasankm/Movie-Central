@@ -24,7 +24,7 @@ class Main extends Component {
                 <div>
                     {/*Render Different Component based on Route*/}
 
-                    <Route path = "/" exact component={MainHome} />
+                    <Route exact path = "/" exact component={MainHome} />
                     <Route path="/login" exact component={Login}/>
                     <Route path="/signup" exact component={Signup} />
                     <Route path="/home" exact component={Home}/>
@@ -33,8 +33,6 @@ class Main extends Component {
                     <Route path="/showusers/{userid}" exact component={ShowUsers}/>
                     <Route path="/profile" exact component={UserProfile}/>
                     <Route path="/rating" exact component={Rating}/>
-
-
                     <Route path="/stats" component={Stats} />
                     <Route path="/scoreboard" component={Scoreboard}/>
                     <Route path="/payment" component={Payment}/>

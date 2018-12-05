@@ -235,9 +235,6 @@ class Payment extends Component{
                                 <div class="form-group ">
                                     <input onChange = {this.cvvChangeHandler} type="text" class="form-control"  name="studioName" placeholder="CVV" required/>
                                 </div>
-
-
-
                                 <button style={{backgroundColor : "red"}} onClick = {this.submitPayment}  class="btn btn-primary"><b>Pay</b></button>
                             </div>
                         </div>

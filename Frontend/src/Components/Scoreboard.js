@@ -60,7 +60,7 @@ class Scoreboard extends Component{
         let size = Object.keys(this.state.movies).length;
         let size1 = Object.keys(this.state.movies1).length;
         //console.log(size);
-        if(this.state.activeTab === "plays" && size<=10){
+        if(this.state.activeTab === "plays" && size<=10){ // display only top 10???
             let dataSource = {
                 chart: {
                     caption: "Top 10 movies by number of plays",
@@ -97,7 +97,7 @@ class Scoreboard extends Component{
                 }))
             };
             let chartConfigs = {
-                id: "movies-by-plays",
+                id: "movies-by-rating",
                 type: 'column2d',// The chart type
                 width: '700', // Width of the chart
                 height: '400', // Height of the chart

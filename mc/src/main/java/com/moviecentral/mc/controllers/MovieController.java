@@ -220,9 +220,10 @@ public class MovieController {
 	}
 	
 	@GetMapping("/play")
+	@CrossOrigin(origins ="http://localhost:3000")
 	public LoginResponse playMovie(HttpSession session, @RequestParam("movieid")Integer movieid){
 		Session s = (Session) session.getAttribute("session");
-		
+		System.out.println("movieid inside play is "+movieid);
 		if(s == null || s.getUserid() == -1){
 			return new LoginResponse("FAILURE", "", "invalid session");
 		} else {

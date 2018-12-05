@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "fusioncharts": "^3.13.2-sr.1",
+    "iframe": "^1.0.0",
     "install": "^0.12.2",
     "moment": "^2.22.2",
     "muicss": "^0.9.41",
