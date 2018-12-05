@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +84,7 @@ public class MovieController {
 	}
 
 	@PostMapping("/add-movie")
+	@CrossOrigin(origins ="http://localhost:3000")
 	public LoginResponse addMovie(HttpSession session, @RequestBody Movie movie){
 		Session s = (Session) session.getAttribute("session");
 		
@@ -130,6 +132,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/search")
+	@CrossOrigin(origins ="http://localhost:3000")
 	public SearchResponse search(HttpSession session, SearchQuery query){
 		
 		List<Movie> movies = movieRepository.findAll(Specification.where(MovieSpecifications.withKeys(query.getKeys()))
@@ -170,8 +173,10 @@ public class MovieController {
 	}
 
 	@GetMapping("/movie")
+	@CrossOrigin(origins ="http://localhost:3000")
 	public SearchMovie movie(HttpSession session, @RequestParam("movieid")Integer movieid){
 		SearchMovie s = new SearchMovie();
+		System.out.println("movieid "+movieid);
 		if(movieid != null){
 			Optional<Movie> mm = movieRepository.findById(movieid);
 			if(mm.isPresent()){

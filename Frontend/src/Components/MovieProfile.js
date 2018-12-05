@@ -1,7 +1,8 @@
 import React from 'react';
 import YouTube from 'react-youtube';
 import swal from 'sweetalert';
-import Navbar from './Navbar'
+import Navbar from './Navbar';
+import url from '../serverurl';
 class MovieProfile extends React.Component {
 
     constructor(){
@@ -10,7 +11,10 @@ class MovieProfile extends React.Component {
         super();
         this.state={
             name:"thissssss",
-            id:"0KGP9f3duEg"
+            id:"0KGP9f3duEg",
+            youtubeId:"",
+            result:"",
+            data:""
 
         };
 
@@ -24,14 +28,19 @@ class MovieProfile extends React.Component {
 
     componentDidMount() {
         console.log("url parameter",this.props);
-        fetch("http://localhost:8080/search?Game Of Thrones")
+        fetch(url+"/movie?movieid=1")
             .then(res => res.json())
             .then(
                 (result) => {
                     console.log("users from db",result);
+
+                    var n=result.movie.split("=");
+                    var Id=n[1];
+
                     this.setState({
                         isLoaded: true,
-                        data: result
+                        data: result,
+                        youtubeId:Id
                     });
 
                 },
@@ -53,9 +62,12 @@ class MovieProfile extends React.Component {
 
     handleClick=(event)=>{
 
+
+
+
         console.log("clicked the video")
         if(this.state.name=="thissssss"){
-            event.target.pauseVideo();
+             event.target.pauseVideo();
             swal("Cant play video", "please pay and play", "warning");
 
         }
@@ -65,7 +77,7 @@ class MovieProfile extends React.Component {
         // access to player in all event handlers via event.target
 
 
-            event.target.pauseVideo();
+             event.target.pauseVideo();
     }
 
 
@@ -78,18 +90,40 @@ class MovieProfile extends React.Component {
                 autoplay: 1
             }
         };
-
-        return (
+        console.log("result ")
+if (this.state.data==""){
+    return null
+}
+else{
+    return (
+        <div>
             <div>
-            <Navbar/>
+            <h1>Movie ID:</h1> {this.state.data.movieid}
+            <h1>Movie Name:</h1> {this.state.data.title}
+            <h1>Movie Actors:</h1> {this.state.data.actors}
+            <h1>Movie Director:</h1> {this.state.data.director}
+            <h1>Movie Availability:</h1> {this.state.data.availability}
+            <h1>Movie Year:</h1> {this.state.data.year}
+            <h1>Movie rating:</h1> {this.state.data.rating}
+            <h1>Movie Studio:</h1> {this.state.data.studio}
+
+            <h1>Movie Synopsis:</h1> {this.state.data.synopsis}
+
+            <h1>Movie Country:</h1> {this.state.data.country}
+            <h1>Movie Price:</h1> {this.state.data.price}
+            </div>
+
             <YouTube
-                videoId={this.state.id}
+                videoId={this.state.youtubeId}
                 opts={opts}
                 onReady={this._onReady}
                 onPlay={this.handleClick}
             />
-            </div>
-        );
+        </div>
+    );
+
+}
+
     }
 
 
