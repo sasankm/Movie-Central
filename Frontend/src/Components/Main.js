@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import AddEditMovie from './AddEditMovie.js'
-//import Home from './Home.js';
-//import Login from './Login.js';
+import Home from './Home.js';
+import Login from './Login.js';
 import Signup from './Signup.js';
 import MainHome from './MainHome.js';
 import ShowUsers from './ShowAllUserDetails.js';
 import UserProfile from './UserProfile.js';
 import Stats from './Stats.js';
 import Scoreboard from './Scoreboard.js';
-
+import Verify from './Verify.js';
 import Payment from './Payment.js';
+import Video from './MovieProfile.js';
 //Create a Main Component
 class Main extends Component {
     render(){
@@ -28,6 +29,8 @@ class Main extends Component {
                     <Route path="/stats" component={Stats} />
                     <Route path="/scoreboard" component={Scoreboard}/>
                     <Route path="/payment" component={Payment}/>
+                    <Route path="/verify" component={Verify}/>
+                    <Route path="/video" component={Video}/>
                 </div>
         )
     }

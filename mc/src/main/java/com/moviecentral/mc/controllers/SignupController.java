@@ -85,16 +85,22 @@ public class SignupController {
 	@GetMapping(value="/verify")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse verify(@RequestParam("email") String email, @RequestParam("code") String code){
+		System.out.println("code "+code);
+		System.out.println("email "+email);
 		User user = userRepository.findByEmail(email);
+		
 		if(user == null){
+			System.out.println("inside verify failure 1");
 			return new LoginResponse("FAILURE", "", "invalid email");
 		}
 		
 		if(user.getCode().equals(code)){
 			user.setActivated(1);
 			userRepository.save(user);
+			System.out.println("inside verify success");
 			return new LoginResponse("SUCCESS", user.getType(), "code successful");
 		} else {
+			System.out.println("inside verify failure");
 			return new LoginResponse("FAILURE", user.getType(), "code invalid");
 		}
 	}
