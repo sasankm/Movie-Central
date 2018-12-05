@@ -39,7 +39,8 @@ class MovieProfile extends React.Component {
                     this.setState({
                         isLoaded: true,
                         data: result,
-                        youtubeId:Id
+                        youtubeId:Id,
+                        flag: false
                     });
 
                 },
@@ -83,15 +84,22 @@ class MovieProfile extends React.Component {
 
     handleClick=(event)=>{
         console.log("clicked the video")
-         fetch(url+"/play?movieid=1")
+         fetch(url+"/play?movieid=3") //change after search
+         .then(response=>response.json())
             .then(
                 (result) => {
-                    console.log("play from db",result.body);
-                   // if(result.status==200)
+                    console.log("play from db",result);
+                   if(result.status=="SUCCESS"){
+                       this.setState({
+                           flag: true
+                       })
+                   } else if(result.message === "invalid session"){
+                       swal("You did not logged in! Please login", "", "warning")
+                       this.props.history.push('/login');
+                   }else {
+                       swal(result.message, "", "warning")
+                   }
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     console.log("error from play",error);
                     this.setState({
@@ -129,6 +137,19 @@ class MovieProfile extends React.Component {
 
 
     render() {
+
+        let changes =null;
+        if(this.state.flag === true){
+            changes = (
+                <div className="embed-responsive embed-responsive-16by9">
+                <iframe className="embed-responsive-item"  src={url}></iframe>
+            </div>
+            );
+        } else {
+            changes = (
+                <button style={{backgroundColor : "red"}} onClick = {this.handleClick}  class="btn btn-primary"><b>Watch</b></button> 
+            );
+        }
         const url='https://youtube.com/embed/'+this.state.youtubeId;
         const opts = {
             height: '390',
@@ -201,10 +222,7 @@ class MovieProfile extends React.Component {
                     </table>
                     </div>
                     <div class="col-lg-6">
-                    <button style={{backgroundColor : "red"}} onClick = {this.handleClick}  class="btn btn-primary"><b>Pay</b></button> 
-                    <div className="embed-responsive embed-responsive-16by9">
-                    <iframe className="embed-responsive-item"  src={url}></iframe>
-                    </div>
+                    {changes}
                     </div>
                 </div>
                 <div class="row">

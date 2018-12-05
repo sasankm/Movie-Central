@@ -1,5 +1,6 @@
 package com.moviecentral.mc.controllers;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import java.util.Collection;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecentral.mc.entity.Movie;
 import com.moviecentral.mc.entity.MovieAttributes;
+import com.moviecentral.mc.entity.Payment;
+import com.moviecentral.mc.entity.PlayHistory;
+import com.moviecentral.mc.entity.User;
 import com.moviecentral.mc.entity.Attributes;
 import com.moviecentral.mc.models.SearchQuery;
 import com.moviecentral.mc.models.SearchResponse;
@@ -37,6 +41,8 @@ import com.moviecentral.mc.models.SearchMovie;
 import com.moviecentral.mc.repository.AttributesRepository;
 import com.moviecentral.mc.repository.MovieAttributesRepository;
 import com.moviecentral.mc.repository.MovieRepository;
+import com.moviecentral.mc.repository.PaymentRepository;
+import com.moviecentral.mc.repository.PlayHistoryRepository;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.MovieSpecifications;
 import com.moviecentral.mc.utils.Session;
@@ -52,7 +58,13 @@ public class MovieController {
 	private AttributesRepository attributesRepository;
 
 	@Autowired
+	private PaymentRepository paymentRepository;
+	
+	@Autowired
 	private MovieAttributesRepository movieAttributesRepository;
+	
+	@Autowired
+	private PlayHistoryRepository playHistoryRepository;
 
 	@Autowired
 	private MovieRepository movieRepository;
@@ -134,6 +146,10 @@ public class MovieController {
 	@GetMapping("/search")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public SearchResponse search(HttpSession session, SearchQuery query){
+		Integer page = query.getPage();
+		if(page == null){
+			page = 0;
+		}
 		
 		List<Movie> movies = movieRepository.findAll(Specification.where(MovieSpecifications.withKeys(query.getKeys()))
 				.and(MovieSpecifications.withGenre(query.getGenre()))
@@ -141,7 +157,8 @@ public class MovieController {
 				.and(MovieSpecifications.withActors(query.getActors()))
 				.and(MovieSpecifications.withDirectors(query.getDirectors()))
 				.and(MovieSpecifications.withRating(query.getRating()))
-				.and(MovieSpecifications.withStars(query.getStars())));
+				.and(MovieSpecifications.withStars(query.getStars())), PageRequest.of(page, 10)).getContent();
+		
 		
 		
 		SearchResponse searchResponse = new SearchResponse();
@@ -201,4 +218,116 @@ public class MovieController {
 		
 		return s;
 	}
+	
+	@GetMapping("/play")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse playMovie(HttpSession session, @RequestParam("movieid")Integer movieid){
+		Session s = (Session) session.getAttribute("session");
+		System.out.println("movieid inside play is "+movieid);
+		if(s == null || s.getUserid() == -1){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Movie m = movieRepository.findByMovieid(movieid);
+			User u = userRepository.findByEmail(s.getEmail());
+			Timestamp ts = new Timestamp(System.currentTimeMillis() - (long)24*60*60*1000);
+			List<PlayHistory> p = playHistoryRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
+			
+			if(s.getType().equals("ADMIN")){
+				if(p.size() == 0){
+					PlayHistory pp = new PlayHistory();
+					pp.setDate(new Timestamp(System.currentTimeMillis()));
+					pp.setMovieid(m.getMovieid());
+					pp.setUserid(u.getUserid());
+					pp.setType(m.getAvailability());
+					playHistoryRepository.save(pp);
+				}
+				return new LoginResponse("SUCCESS", s.getType(), "");
+			} else {
+				
+				String avail = m.getAvailability();
+				if(avail.equals("Free")){
+					
+					if(u.getActivated() == 1){
+						if(p.size() == 0){
+							PlayHistory pp = new PlayHistory();
+							pp.setDate(new Timestamp(System.currentTimeMillis()));
+							pp.setMovieid(m.getMovieid());
+							pp.setUserid(u.getUserid());
+							pp.setType(m.getAvailability());
+							playHistoryRepository.save(pp);
+						}
+						return new LoginResponse("SUCCESS", u.getType(), "");
+					}
+					return new LoginResponse("FAILURE", u.getType(), "Activate your account to watch this movie");
+					
+				} else if(avail.equals("SubscriptionOnly")){
+					
+					if(u.getSubscription() == 1){
+						if(p.size() == 0){
+							PlayHistory pp = new PlayHistory();
+							pp.setDate(new Timestamp(System.currentTimeMillis()));
+							pp.setMovieid(m.getMovieid());
+							pp.setUserid(u.getUserid());
+							pp.setType(m.getAvailability());
+							playHistoryRepository.save(pp);
+						}
+						return new LoginResponse("SUCCESS", u.getType(), "");
+					}
+					return new LoginResponse("FAILURE", u.getType(), "Please subscribe to watch");
+					
+				} else if(avail.equals("PayPerViewOnly")){
+					
+					if(u.getActivated() == 0){
+						return new LoginResponse("FAILURE", u.getType(), "Activate your account to watch this movie");
+					}
+					Payment payment = paymentRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
+					
+					if(payment != null){
+						if(p.size() == 0){
+							PlayHistory pp = new PlayHistory();
+							pp.setDate(new Timestamp(System.currentTimeMillis()));
+							pp.setMovieid(m.getMovieid());
+							pp.setUserid(u.getUserid());
+							pp.setType(m.getAvailability());
+							playHistoryRepository.save(pp);
+						}
+						return new LoginResponse("SUCCESS", u.getType(), "");
+					}
+					
+					return new LoginResponse("FAILURE", u.getType(), "You need to pay to watch this movie");
+					
+				} else {
+					
+					if(u.getSubscription() == 1){
+						if(p.size() == 0){
+							PlayHistory pp = new PlayHistory();
+							pp.setDate(new Timestamp(System.currentTimeMillis()));
+							pp.setMovieid(m.getMovieid());
+							pp.setUserid(u.getUserid());
+							pp.setType(m.getAvailability());
+							playHistoryRepository.save(pp);
+						}
+						return new LoginResponse("SUCCESS", u.getType(), "");
+					}
+					if(u.getActivated() == 1){
+						Payment payment = paymentRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
+						if(payment != null){
+							if(p.size() == 0){
+								PlayHistory pp = new PlayHistory();
+								pp.setDate(new Timestamp(System.currentTimeMillis()));
+								pp.setMovieid(m.getMovieid());
+								pp.setUserid(u.getUserid());
+								pp.setType(m.getAvailability());
+								playHistoryRepository.save(pp);
+							}
+							return new LoginResponse("SUCCESS", u.getType(), "");
+						}
+						return new LoginResponse("FAILURE", u.getType(), "You need to pay to watch this movie");
+					}
+					return new LoginResponse("FAILURE", u.getType(), "Activate your account to watch this movie");
+				}
+			}
+		}
+	}
+	
 }

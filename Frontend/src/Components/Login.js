@@ -53,7 +53,7 @@ class Login extends Component{
         axios.post(url + "/login", user)
         .then((response) =>{
             console.log("In handle login after response on login page...", response.data);
-            
+    
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 this.setState({
@@ -65,6 +65,26 @@ class Login extends Component{
             swal(response.data.message, "", "warning");
         }
     })
+
+
+
+        // fetch(url + "/login", {
+        //     method: "GET",
+        //     credentials:'include'
+        // }).then((response) =>{
+        //             console.log("In handle login after response on login page...", response.data);
+
+        //             if(response.data.status === "SUCCESS"){
+        //                 swal("Login Successfull", "", "success");
+        //                 this.setState({
+        //                     isLoggedIn: true
+        //                 }, () =>{
+        //                     this.props.history.push('/home');
+        //             })
+        //         } else {
+        //             swal(response.data.message, "", "warning");
+        //         }
+        //     })
     }
 
     render(){

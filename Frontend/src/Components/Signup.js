@@ -58,6 +58,7 @@ class Signup extends Component{
             <div style={{backgroundColor: "black"}}>
             <Navbar/>
                 <div class="container" style={{backgroundColor: "white"}}>
+
                 <div id="img1">
                 <div class="container">
                     <div class="signup-form">
