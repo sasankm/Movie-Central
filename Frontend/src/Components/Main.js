@@ -12,7 +12,6 @@ import Scoreboard from './Scoreboard.js';
 import Payment from './Payment.js';
 import FinancialReport from './FinancialReport.js';
 import Verify from './Verify.js';
-import Payment from './Payment.js';
 import Video from './MovieProfile.js';
 
 
@@ -37,6 +36,7 @@ class Main extends Component {
                     <Route path="/verify" component={Verify}/>
                     <Route path="/video" component={Video}/>
                 </div>
+
         );
     }
 }

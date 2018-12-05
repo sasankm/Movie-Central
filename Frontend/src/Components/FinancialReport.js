@@ -6,7 +6,6 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import {Label} from 'reactstrap';
 
 
 class FinancialReport extends Component{
@@ -76,7 +75,7 @@ class FinancialReport extends Component{
         })
     }
 
-    
+
     componentDidMount(){
         console.log("in did mount");
         console.log("state is" , this.state.month2,this.state.year2)

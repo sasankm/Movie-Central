@@ -2,11 +2,10 @@ import React from 'react';
 import YouTube from 'react-youtube';
 import swal from 'sweetalert';
 import Navbar from './Navbar'
+
 class MovieProfile extends React.Component {
 
     constructor(){
-
-
         super();
         this.state={
             name:"thissssss",
@@ -17,9 +16,6 @@ class MovieProfile extends React.Component {
         this.handleClick=this.handleClick.bind(this);
 
     }
-
-
-
 
 
     componentDidMount() {
@@ -48,9 +44,6 @@ class MovieProfile extends React.Component {
     }
 
 
-
-
-
     handleClick=(event)=>{
 
         console.log("clicked the video")
@@ -64,10 +57,8 @@ class MovieProfile extends React.Component {
     _onReady(event) {
         // access to player in all event handlers via event.target
 
-
             event.target.pauseVideo();
     }
-
 
 
     render() {
