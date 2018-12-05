@@ -126,8 +126,9 @@ public class FinancialReportController {
 	   
 	   //Unique active users
 	   
-	   ArrayList<PlayHistory> active=playhistoryRepository.findUseridDateBetween(s, s1);
+	   ArrayList<PlayHistory> active=(ArrayList<PlayHistory>) playhistoryRepository.findUseridDateBetween(s, s1);
 	   //System.out.println("active "+active.get(0).getType());
+
 	   
 	   
 	   int uniqueActiveUsers=0;

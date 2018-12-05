@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	@Query( "SELECT DISTINCT e.userid FROM User e WHERE e.signupdate >=?1 AND e.signupdate <=?2") 
 	ArrayList<User> findDistinctByUseridSignupdateBetween(Timestamp s,Timestamp s1);
+
+	List<User> findByUseridIn(List<Integer> userids);
 }

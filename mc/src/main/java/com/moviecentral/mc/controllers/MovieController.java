@@ -23,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecentral.mc.entity.Movie;
@@ -147,6 +148,7 @@ public class MovieController {
 		for(Movie m : movies){
 			System.out.println(m.getTitle());
 			SearchMovie s = new SearchMovie();
+			s.setMovieid(m.getMovieid());
 			s.setMovie(m.getMovie());
 			s.setTitle(m.getTitle());
 			s.setYear(m.getYear());
@@ -167,5 +169,31 @@ public class MovieController {
 		return searchResponse;
 	}
 
-	
+	@GetMapping("/movie")
+	public SearchMovie movie(HttpSession session, @RequestParam("movieid")Integer movieid){
+		SearchMovie s = new SearchMovie();
+		if(movieid != null){
+			Optional<Movie> mm = movieRepository.findById(movieid);
+			if(mm.isPresent()){
+				Movie m = mm.get();
+				
+				s.setMovieid(m.getMovieid());
+				s.setMovie(m.getMovie());
+				s.setTitle(m.getTitle());
+				s.setYear(m.getYear());
+				s.setStudio(m.getStudio());
+				s.setSynopsis(m.getSynopsis());
+				s.setImage(m.getImage());
+				s.setMovie(m.getMovie());
+				s.setActors(m.getActors());
+				s.setDirector(m.getDirector());
+				s.setCountry(m.getCountry());
+				s.setRating(m.getRating());
+				s.setAvailability(m.getAvailability());
+				s.setPrice(m.getPrice());
+			}
+		}
+		
+		return s;
+	}
 }

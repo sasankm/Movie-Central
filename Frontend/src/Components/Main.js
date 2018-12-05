@@ -11,6 +11,10 @@ import Stats from './Stats.js';
 import Scoreboard from './Scoreboard.js';
 import Payment from './Payment.js';
 import FinancialReport from './FinancialReport.js';
+import Verify from './Verify.js';
+import Payment from './Payment.js';
+import Video from './MovieProfile.js';
+
 
 //Create a Main Component
 class Main extends Component {
@@ -30,6 +34,8 @@ class Main extends Component {
                     <Route path="/scoreboard" component={Scoreboard}/>
                     <Route path="/payment" component={Payment}/>
                     <Route path="/financial" component={FinancialReport} />
+                    <Route path="/verify" component={Verify}/>
+                    <Route path="/video" component={Video}/>
                 </div>
         );
     }
