@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import '../css/showAllUserDetails.css';
 import Navbar from './Navbar.js';
+import axios from 'axios';
+import url from '../serverurl';
 
 
 class ShowAllUserDetails extends React.Component {
@@ -9,7 +11,6 @@ class ShowAllUserDetails extends React.Component {
         this.state = {
             data: [],
             user:""
-
         };
         this.handleChange=this.handleChange.bind(this);
         this.SearchUserClick=this.SearchUserClick.bind(this);
@@ -57,16 +58,27 @@ class ShowAllUserDetails extends React.Component {
                 // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
-                        isLoaded: true,
+                        isLoaded: false,
                         error
                     });
                 }
             )
     }
+
+    showUserProfile(data){
+        console.log("in user profile click", data);
+        axios.get(url+ "/user/"+ data.username)
+        .then((response) => {
+            console.log(response.data);
+            this.props.history.push('/profile?username=' + data.username);
+        }, (error)=>{
+            alert("baahhhhh");
+        })
+    }
+
     handleChange=(e)=>{
         console.log("event",e.target.value);
         this.setState({user: e.target.value});
-
     }
 
 
@@ -100,7 +112,7 @@ class ShowAllUserDetails extends React.Component {
         </thead>
             <tbody>{this.state.data.map(function(item, key) {
                 return (
-                    <tr key = {key}>
+                    <tr key = {key} onClick={() => {this.showUserProfile(item)}}>
                         <td>{item.userid}</td>
                         <td>{item.username}</td>
                         <td>{item.email}</td>
@@ -108,7 +120,7 @@ class ShowAllUserDetails extends React.Component {
                         <td>{item.activated}</td>
                     </tr>
                 )
-            })
+            }.bind(this))
             }
             </tbody>
         </table>

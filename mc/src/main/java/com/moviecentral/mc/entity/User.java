@@ -24,6 +24,13 @@ public class User {
 	String code;
 	java.sql.Timestamp startdate;
 	java.sql.Timestamp enddate;
+	java.sql.Timestamp signupdate;
+	public java.sql.Timestamp getSignupdate() {
+		return signupdate;
+	}
+	public void setSignupdate(java.sql.Timestamp signupdate) {
+		this.signupdate = signupdate;
+	}
 	public Integer getUserid() {
 		return userid;
 	}

@@ -46,7 +46,6 @@ public class FinancialReportController {
 	//System.out.println(crossOriginPath);
 	
 	
-	
 	@PostMapping(value="/financial")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public ArrayList getFinancialMetrics(@RequestBody FinancialRequest req){
@@ -64,7 +63,7 @@ public class FinancialReportController {
 
 	    // Get the number of days in that month which actually gives the last date.
 	    int lastDate = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
-	    mycal = new GregorianCalendar(2018, 11, lastDate);
+	    mycal = new GregorianCalendar(year, month, lastDate);
 	    long endDate = mycal.getTimeInMillis();
 	    java.sql.Timestamp s1=new Timestamp(endDate);
 	    
@@ -72,10 +71,12 @@ public class FinancialReportController {
 	    
 	    int uniqueSubscriptionUsers=0;
 	   ArrayList ans=userRepository.findByStartdateBetween(s, s1);
-	  int totalNumberOfUsers= (int) paymentRepository.count();
-	  hm.put("totalNumberOfUsers", totalNumberOfUsers);
-	    System.out.println("val  "+ totalNumberOfUsers);
-	    System.out.println("ans is " +((User) ans.get(0)).getUsername());
+	  ArrayList<User> t= userRepository.findDistinctByUseridSignupdateBetween(s, s1);
+	  
+	  //System.out.println("t "+t.size());
+	  hm.put("totalNumberOfUsers", t.size());
+//	    System.out.println("val  "+ totalNumberOfUsers);
+//	    System.out.println("ans is " +((User) ans.get(0)).getUsername());
 	    for (int i=0;i<ans.size();i++) {
 	    	
 	    	if(((User) ans.get(i)).getSubscription()==1) {
@@ -90,8 +91,8 @@ public class FinancialReportController {
 	    
 	    
 	    //find distinct payperview users per month
-	    
-	    ArrayList distPayPerViewUsers=paymentRepository.findDistinctByUseridDateBetween(s, s1);
+	    ArrayList<Payment> distPayPerViewUsers = new ArrayList<Payment>();
+	   distPayPerViewUsers=paymentRepository.findDistinctByUseridDateBetween(s, s1);
 	    
 	    System.out.println("distPayPerView " +distPayPerViewUsers);
 	    hm.put("distPayPerViewUsers",distPayPerViewUsers.size());
@@ -125,8 +126,9 @@ public class FinancialReportController {
 	   
 	   //Unique active users
 	   
-	   ArrayList<PlayHistory> active=playhistoryRepository.findUseridDateBetween(s, s1);
-	   System.out.println("active "+active.get(0).getType());
+	   ArrayList<PlayHistory> active=(ArrayList<PlayHistory>) playhistoryRepository.findUseridDateBetween(s, s1);
+	   //System.out.println("active "+active.get(0).getType());
+
 	   
 	   
 	   int uniqueActiveUsers=0;
@@ -136,24 +138,29 @@ public class FinancialReportController {
 		   if(( active.get(i).getType() != null &&  active.get(i).getType().equals("PayPerView"))) {
 			   uniquePayPerViewUsers++;
 		   }
-		   System.out.println("userid "+ ((PlayHistory) active.get(i)).getUserid());
+		   //System.out.println("userid "+ ((PlayHistory) active.get(i)).getUserid());
 	   }
 	   
-	   System.out.println("uniqueActiveUsers "+uniqueActiveUsers);
-	    
-	   System.out.println("uniquePayPerViewUsers "+uniquePayPerViewUsers); 
-	    
-	      
+	   //System.out.println("uniqueActiveUsers "+uniqueActiveUsers); 
+	   //System.out.println("uniquePayPerViewUsers "+uniquePayPerViewUsers); 
+	       
 	 hm.put("uniqueActiveUsers",uniqueActiveUsers);
 	 hm.put("uniquePayPerViewUsers",uniquePayPerViewUsers);
 	       
-	ar.add(hm);	
+	ar.add(hm);		
 		
-		
-		
-		
-		
+	if(hm.size()==0) {
+		 hm.put("uniqueActiveUsers",0);
+		 hm.put("uniquePayPerViewUsers",0);
+		 hm.put("revenue",0);
+	     hm.put("subscriptionRevenue",0);
+		 hm.put("payperviewRevenue",0);
+		 hm.put("distPayPerViewUsers",0);
+		 hm.put("uniqueSubscriptionUsers", 0);
+		 return ar;
+	} else {
 		return ar;
+	}
 	}
 	
 }

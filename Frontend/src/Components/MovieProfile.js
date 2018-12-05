@@ -3,6 +3,8 @@ import YouTube from 'react-youtube';
 import swal from 'sweetalert';
 import Navbar from './Navbar';
 import url from '../serverurl';
+
+
 class MovieProfile extends React.Component {
 
     constructor(){
@@ -62,9 +64,6 @@ class MovieProfile extends React.Component {
 
     handleClick=(event)=>{
 
-
-
-
         console.log("clicked the video")
         if(this.state.name=="thissssss"){
              event.target.pauseVideo();
@@ -78,6 +77,7 @@ class MovieProfile extends React.Component {
 
 
              event.target.pauseVideo();
+
     }
 
 

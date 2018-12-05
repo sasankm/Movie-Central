@@ -17,4 +17,6 @@ public interface PaymentRepository extends  JpaRepository<Payment, Integer>{
 	@Query( "SELECT DISTINCT e.userid FROM Payment e WHERE e.date >=?1 AND e.date <=?2") 
 	ArrayList<Payment> findDistinctByUseridDateBetween(Timestamp s,Timestamp s1);
 	ArrayList<Payment> findAmountByDateBetween(Timestamp s,Timestamp s1);
+	
+	
 }

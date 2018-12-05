@@ -14,6 +14,7 @@ public class UserInfo {
 		this.activated = activated;
 		this.startdate = startdate;
 		this.enddate = enddate;
+		
 	}
 	public UserInfo() {
 		super();
@@ -34,6 +35,26 @@ public class UserInfo {
 	private Integer activated;
 	private java.sql.Timestamp startdate;
 	private java.sql.Timestamp enddate;
+	private Long count;
+	public UserInfo(Integer userid, String username, String email, String type, Integer subscription, Integer activated,
+			Timestamp startdate, Timestamp enddate, Long count) {
+		super();
+		this.userid = userid;
+		this.username = username;
+		this.email = email;
+		this.type = type;
+		this.subscription = subscription;
+		this.activated = activated;
+		this.startdate = startdate;
+		this.enddate = enddate;
+		this.count = count;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public Integer getUserid() {
 		return userid;
 	}

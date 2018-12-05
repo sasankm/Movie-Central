@@ -58,11 +58,11 @@ class NetNavbar extends Component {
                     <NavItem eventKey={2} href="/signup"><h3>Signup</h3></NavItem>
                 </Nav>
             );
-        } else if(this.state.isLoggedIn === true && this.state.type === 'ADMIN'){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
+        } else if(this.state.isLoggedIn === true){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
             changes = (
                 <Nav pullRight>
                     <NavItem eventKey={1} href="/stats"><h4><strong>Stats</strong></h4></NavItem>
-                    <NavItem eventKey={2} href="/financial-report"><h4><strong>Report</strong></h4></NavItem>
+                    <NavItem eventKey={2} href="/financial"><h4><strong>Report</strong></h4></NavItem>
                     <NavItem eventKey={3} href="/addEditmovie"><h4><strong>Add/Edit movie</strong></h4></NavItem>
                     <NavItem eventKey={4} href="/showusers"><h4><strong>Show Users</strong></h4></NavItem>
                     <NavItem eventKey={5}  onClick={this.handleLogout}><h4><strong>Logout</strong></h4></NavItem>
