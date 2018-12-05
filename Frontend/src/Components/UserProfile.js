@@ -4,7 +4,8 @@ import Navbar from './Navbar'
 import '../css/profile.css';
 import '../css/login.css';
 import Dropdown from 'react-dropdown'
-import 'react-dropdown/style.css'
+import 'react-dropdown/style.css';
+import queryString from 'query-string';
 
 class UserProfile extends Component{
 
@@ -51,8 +52,10 @@ class UserProfile extends Component{
 
     componentDidMount() {
         console.log("url parameter",this.props);
+        var params=queryString.parse(this.props.location.search);
+        var username=params.username;
 
-        fetch("http://localhost:8080/user/venkat")
+        fetch("http://localhost:8080/user/" + username)
             .then(res => res.json())
             .then(
                 (result) => {

@@ -44,17 +44,8 @@ Payment payment=new Payment();
 @CrossOrigin(origins ="http://localhost:3000")
 @ResponseBody
 public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam("type") String type) throws ParseException{
-	/*
-	System.out.println("req at backend type "+req.getType());
-	System.out.println("req at backend date "+req.getDate());
-	System.out.println("req at backend movieid "+req.getMovieid());
-	System.out.println("req at backend username "+req.getUsername());
-	System.out.println("req at backend amount "+req.getAmount());
-	System.out.println("req at backend expdate "+req.getExpirydate());*/
 	
-	if(type.equals("subscription")) {
-		
-		
+	if(type.equals("subscription")) {	
 	
 	 String username=req.getUsername();
 	 Integer userid=req.getUserid();
@@ -258,10 +249,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 		user.setStartdate(presentdate);
 	}
 	
-	
 	userRepository.save(user);
-	
-	 
 	
 	
 	}else {

@@ -1,5 +1,7 @@
 package com.moviecentral.mc.controllers;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
@@ -66,6 +68,8 @@ public class SignupController {
 			return new LoginResponse("FAILURE", type, "username or email already exists");
 		}
 		
+		Date newdate=new Date();
+	    java.sql.Timestamp presentdate = new Timestamp(newdate.getTime());
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(passwordEncoder.encode(password));
@@ -73,6 +77,7 @@ public class SignupController {
 		user.setType(type);
 		user.setActivated(0);
 		user.setSubscription(0);
+		user.setSignupdate(presentdate);
 		String code = String.valueOf(new Random(System.nanoTime()).nextInt(100000));
 		user.setCode(code);
 		user = userRepository.save(user);
