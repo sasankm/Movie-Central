@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,9 @@ public class LoginController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	
 	@PostMapping("/login")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse login(HttpSession session, @RequestBody LoginRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
@@ -44,13 +47,14 @@ public class LoginController {
 		if(passwordEncoder.matches(password, user.getPassword())){
 			//set session
 			session.setAttribute("session", new Session(user.getUserid(), user.getType(), user.getUsername(), user.getEmail()));
-			return new LoginResponse("SUCCESS", user.getType(), "");
+			return new LoginResponse("SUCCESS", user.getType(), "valid credentials");
 		} else {
 			return new LoginResponse("FAILURE", user.getType(), "invalid password");
 		}
 	}
 	
 	@GetMapping(value = "/userlogout")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse logout(HttpSession session){
 		Session s = (Session) session.getAttribute("session");
 		if(s == null || s.getUserid() == -1){
@@ -61,15 +65,18 @@ public class LoginController {
 		}
 	}
 	
-	@GetMapping("/checksession")
+	@GetMapping(value = "/checksession")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse checksession(HttpSession session){
 		Session s = (Session) session.getAttribute("session");
-		String res = "";
+		System.out.println("This is session :" + s);
+		String res = "", type="";
 		if(s == null || s.getUserid() == -1){
 			res = "invalid session";
 		} else {
+			type = s.getType();
 			res = "valid session";
 		}
-		return new LoginResponse("SUCCESS", "", res);
+		return new LoginResponse("SUCCESS", type, res);
 	}
 }

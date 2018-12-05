@@ -1,5 +1,8 @@
 package com.moviecentral.mc.entity;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,9 +22,15 @@ public class User {
 	Integer subscription;
 	Integer activated;
 	String code;
-	java.sql.Date startdate;
-	java.sql.Date enddate;
-	
+	java.sql.Timestamp startdate;
+	java.sql.Timestamp enddate;
+	java.sql.Timestamp signupdate;
+	public java.sql.Timestamp getSignupdate() {
+		return signupdate;
+	}
+	public void setSignupdate(java.sql.Timestamp signupdate) {
+		this.signupdate = signupdate;
+	}
 	public Integer getUserid() {
 		return userid;
 	}
@@ -61,8 +70,8 @@ public class User {
 	public Integer getActivated() {
 		return activated;
 	}
-	public void setActivated(Integer activation) {
-		this.activated = activation;
+	public void setActivated(Integer activated) {
+		this.activated = activated;
 	}
 	public String getCode() {
 		return code;
@@ -70,18 +79,25 @@ public class User {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public java.sql.Date getStartDate() {
+	
+	public java.sql.Timestamp getStartdate() {
 		return startdate;
 	}
-	public void setStartDate(java.sql.Date startDate) {
-		this.startdate = startDate;
+	public void setStartdate(java.sql.Timestamp startdate) {
+		this.startdate = startdate;
 	}
-	public java.sql.Date getEndDate() {
+	public void setEnddate(java.sql.Timestamp enddate) {
+		this.enddate = enddate;
+	}
+	public java.sql.Timestamp getEnddate() {
 		return enddate;
 	}
-	public void setEndDate(java.sql.Date endDate) {
-		this.enddate = endDate;
+	public void setEnddate(Date date) {
+		this.enddate = (Timestamp) date;
 	}
+	
+	
+	
 	
 	
 }

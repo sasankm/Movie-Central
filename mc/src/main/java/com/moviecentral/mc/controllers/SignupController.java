@@ -1,5 +1,7 @@
 package com.moviecentral.mc.controllers;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +38,7 @@ public class SignupController {
 	private UserRepository userRepository;
 	
 	@PostMapping(value="/signup")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse signup(@RequestBody SignupRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
@@ -64,12 +68,16 @@ public class SignupController {
 			return new LoginResponse("FAILURE", type, "username or email already exists");
 		}
 		
+		Date newdate=new Date();
+	    java.sql.Timestamp presentdate = new Timestamp(newdate.getTime());
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(passwordEncoder.encode(password));
 		user.setEmail(email);
 		user.setType(type);
 		user.setActivated(0);
+		user.setSubscription(0);
+		user.setSignupdate(presentdate);
 		String code = String.valueOf(new Random(System.nanoTime()).nextInt(100000));
 		user.setCode(code);
 		user = userRepository.save(user);
@@ -80,17 +88,24 @@ public class SignupController {
 	}
 	
 	@GetMapping(value="/verify")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse verify(@RequestParam("email") String email, @RequestParam("code") String code){
+		System.out.println("code "+code);
+		System.out.println("email "+email);
 		User user = userRepository.findByEmail(email);
+		
 		if(user == null){
+			System.out.println("inside verify failure 1");
 			return new LoginResponse("FAILURE", "", "invalid email");
 		}
 		
 		if(user.getCode().equals(code)){
 			user.setActivated(1);
 			userRepository.save(user);
+			System.out.println("inside verify success");
 			return new LoginResponse("SUCCESS", user.getType(), "code successful");
 		} else {
+			System.out.println("inside verify failure");
 			return new LoginResponse("FAILURE", user.getType(), "code invalid");
 		}
 	}

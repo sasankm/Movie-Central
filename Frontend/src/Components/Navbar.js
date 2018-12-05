@@ -3,13 +3,17 @@ import {Navbar, Nav, NavItem, NavDropdown, MenuItem,ButtonToolbar,Button} from '
 import axios from 'axios';
 import url from '../serverurl';
 
+const dropDown = {
+    fontSize: '20px',
+    fontWeight: 'bold'
+}
+
 //create the Navbar_Home Component
 class NetNavbar extends Component {
     constructor(props){
         super(props);
         this.state = {
             isLoggedIn: false,
-            username: '',
             type: ''
         }
         this.handleLogout = this.handleLogout.bind(this);
@@ -17,18 +21,29 @@ class NetNavbar extends Component {
 
     componentWillMount(){
         //check session and type of user and display navbar accordingly
+        axios.get(url + "/checksession")
+        .then((response) => {
+            console.log("in check session of navbar", response.data);
+            if(response.data.message === "invalid session"){ //change to !== after session is done
+                this.setState({
+                    isLoggedIn: true,
+                    type: response.data.type
+                }, () => {
+                    console.log(this.state.type);
+                })
+            }
+        })
     }
 
     handleLogout(){  //handle logout
-        axios.post(url + "/logout" ,null)
+        axios.get(url + "/userlogout" )
         .then((response) => {
-            console.log("response after logging out...");
-            if(response.data.status == "SUCCESS"){ //if session has been destroyed successfully
+            console.log("response after logging out...", response.data);
+            if(response.data.status === "SUCCESS"){ //if session has been destroyed successfully
                 this.props.history.push("/");
             }
             this.setState({
                 isLoggedIn: false,
-                username: '',
                 type: ''
             })
         })
@@ -36,32 +51,29 @@ class NetNavbar extends Component {
 
     render(){
         let changes = null;
-        if(this.state.isLoggedIn == false){
+        if(this.state.isLoggedIn === false){
             changes = (
                 <Nav pullRight>
                     <NavItem eventKey={1} href="/login"><h3>SignIn</h3></NavItem>
                     <NavItem eventKey={2} href="/signup"><h3>Signup</h3></NavItem>
                 </Nav>
             );
-        } else if(this.state.isLoggedIn == true && this.state.type == 'admin'){  //admin navbar
+        } else if(this.state.isLoggedIn === true){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
             changes = (
                 <Nav pullRight>
-                    <NavItem eventKey={1} href="/financial-report"><h4>Report</h4></NavItem>
-                    <NavItem eventKey={2} href="/stats"><h4>Stats</h4></NavItem>
-                    <NavItem eventKey={3} href="/addEditmovie"><h4>Add/Edit Movie</h4></NavItem>
-                    <NavItem eventKey={4} href="/showusers"><h4>Show Users</h4></NavItem>
-                    <NavItem eventKey={5} href="/logout" onClick={this.handleLogout}><h4>Logout</h4></NavItem>
+                    <NavItem eventKey={1} href="/stats"><h4><strong>Stats</strong></h4></NavItem>
+                    <NavItem eventKey={2} href="/financial"><h4><strong>Report</strong></h4></NavItem>
+                    <NavItem eventKey={3} href="/addEditmovie"><h4><strong>Add/Edit movie</strong></h4></NavItem>
+                    <NavItem eventKey={4} href="/showusers"><h4><strong>Show Users</strong></h4></NavItem>
+                    <NavItem eventKey={5}  onClick={this.handleLogout}><h4><strong>Logout</strong></h4></NavItem>
                 </Nav>
             );
         } else { //user navbar
             changes = (
                 <Nav pullRight>
-                <NavItem eventKey={1} href="/profile"><h3>My Profile</h3></NavItem>
-                <NavDropdown eventKey={2} title="Scoreboard" id="basic-nav-dropdown">
-                    <MenuItem eventKey={2.1} href="/movie-rating">Top movies by rating</MenuItem>
-                    <MenuItem eventKey={2.2} href="/movie-play">Top movies by plays</MenuItem>
-                </NavDropdown>
-                <NavItem eventKey={3} href="/logout" onClick={this.handleLogout}><h4>Logout</h4></NavItem>
+                <NavItem eventKey={1} href="/scoreboard"><h4><strong>Scoreboard</strong></h4></NavItem>
+                <NavItem eventKey={2} href="/profile"><h4><strong>My Profile</strong></h4></NavItem>
+                <NavItem eventKey={3}  onClick={this.handleLogout}><h4><strong>Logout</strong></h4></NavItem>
             </Nav>
             );
         }
@@ -69,9 +81,7 @@ class NetNavbar extends Component {
             <div >
             <Navbar inverse collapseOnSelect style={{backgroundColor: "black"}}>
                 <Navbar.Header>
-                <Navbar.Brand>
-                    <a href="/" style={{color : "white", paddingBottom : "50%"}}><h3><strong>NETFLIX</strong></h3></a>
-                </Navbar.Brand>
+                    <a href="/" style={{color : "white", paddingBottom : "50%"}}><h3><strong>Movie-Central</strong></h3></a>
                 <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
