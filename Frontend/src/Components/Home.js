@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import axios from 'axios';
 import url from '../serverurl';
 import Select from 'react-select';
+import { Card, CardTitle, CardText, CardImg, CardImgOverlay } from 'reactstrap';
 
 const options = [
     { value: 'PG', label: 'PG' },
@@ -50,7 +51,7 @@ class Home extends Component {
             availability: '',
             actors      : '',
             director    : '',
-            movieResult : null
+            movies      : null
         };
     }
 
@@ -60,30 +61,31 @@ class Home extends Component {
 
         var params = new URLSearchParams();
 
-        if(this.state.movieName!=null || this.state.movieName!=undefined){
-            let splitArr=this.state.movieName.split("");
+        if(this.state.movieName!=null && this.state.movieName!=undefined){
+            let splitArr=this.state.movieName.split(" ");
             splitArr.forEach((ele)=>{
+                console.log(ele);
                 params.append("key", ele);
             })
         }
 
-        if(this.state.genre!=null || this.state.genre!=undefined){
+        if(this.state.genre!=null && this.state.genre!=undefined){
             params.append("genre",this.state.genre.value)
         }
 
-        if(this.state.rating!=null || this.state.rating!=undefined){
+        if(this.state.rating!=null && this.state.rating!=undefined){
             params.append("rating",this.state.genre.value)
         }
 
-        if(this.state.availability!=null || this.state.availability!=undefined){
+        if(this.state.availability!=null && this.state.availability!=undefined){
             params.append("availability",this.state.genre.value)
         }
 
-        if(this.state.actors!=null || this.state.actors!=undefined){
+        if(this.state.actors!=null && this.state.actors!=undefined){
             params.append("actors",this.state.genre.value)
         }
 
-        if(this.state.director!=null || this.state.director!=undefined){
+        if(this.state.director!=null && this.state.director!=undefined){
             params.append("director",this.state.genre.value)
         }
         
@@ -97,11 +99,10 @@ class Home extends Component {
 
         axios.get("http://localhost:8080/search",request)
             .then(response => {
-                if(response.data.status === 200){
-                    console.log("Received success from the backend after successfully inserting the booking record")
+                if(response.data.status === "SUCCESS"){
+                    console.log("Successfully received movies from backend", response.data.movies)
                     this.setState({
-                        success : "You have successfully made the booking!!!!",
-                        count   : 1
+                        movies : response.data.movies
                     })
                 }else{
                     console.log("entered into failure")
@@ -144,6 +145,7 @@ class Home extends Component {
 
 
     render(){
+        let movies=[...this.state.movies]
         return(
             <div id="img1">
                 <Navbar />
@@ -193,6 +195,31 @@ class Home extends Component {
                         className="btn btn-primary" onClick={this.searchMovie} type="button"><h3>Search</h3></button>
                     </form>
                 </div>
+
+                <div>
+                    <br/>
+                    {movies.map(mov=>(
+                        <div style={{width : "10%",paddingLeft : "15%", color : "black"}}>
+                            <Card inverse>
+                                <CardImg width="100%" src={require('./AddMovieBackground.jpg')} alt="Card image cap" />
+                                <CardImgOverlay>
+                                <CardTitle style={{color : "black"}}>{mov.title}</CardTitle>
+                                <CardText style={{color : "black"}}>{mov.description}</CardText>
+                                <CardText style={{color : "black"}}>{mov.year},Actor:{mov.actors}</CardText>
+                                <CardText style={{color : "black"}}>Director:{mov.director}</CardText>
+                                <CardText style={{color : "black"}}>
+                                    <small className="text-muted">Availability: {mov.availability}
+                                    <br/>
+                                    Price: {mov.price}</small>
+                                </CardText>
+                                </CardImgOverlay>
+                            </Card>
+                            <hr></hr>
+                        </div>
+                    ))}
+                </div>
+
+
             </div>
         );
     }
