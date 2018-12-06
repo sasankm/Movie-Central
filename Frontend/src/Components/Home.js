@@ -51,7 +51,7 @@ class Home extends Component {
             availability: '',
             actors      : '',
             director    : '',
-            movies      : null
+            movies      : []
         };
     }
 
@@ -69,24 +69,29 @@ class Home extends Component {
             })
         }
 
-        if(this.state.genre!=null && this.state.genre!=undefined){
+        if(this.state.genre!=null && this.state.genre.value!=undefined){
+            console.log(this.state.genre.value)
             params.append("genre",this.state.genre.value)
         }
 
-        if(this.state.rating!=null && this.state.rating!=undefined){
-            params.append("rating",this.state.genre.value)
+        if(this.state.rating!=null && this.state.rating.value!=undefined){
+            console.log(this.state.genre.value)
+            params.append("rating",this.state.rating.value)
         }
 
-        if(this.state.availability!=null && this.state.availability!=undefined){
-            params.append("availability",this.state.genre.value)
+        if(this.state.availability!=null && this.state.availability.value!=undefined){
+            console.log(this.state.availability.value)
+            params.append("availability",this.state.availability.value)
         }
 
         if(this.state.actors!=null && this.state.actors!=undefined){
-            params.append("actors",this.state.genre.value)
+            console.log(this.state.actots)
+            params.append("actors",this.state.actors)
         }
 
         if(this.state.director!=null && this.state.director!=undefined){
-            params.append("director",this.state.genre.value)
+            console.log(this.state.director)
+            params.append("director",this.state.director)
         }
         
         var request = {
@@ -100,7 +105,7 @@ class Home extends Component {
         axios.get("http://localhost:8080/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){
-                    console.log("Successfully received movies from backend", response.data.movies)
+                    console.log("Successfully received movies from backend", response.data)
                     this.setState({
                         movies : response.data.movies
                     })
@@ -114,6 +119,7 @@ class Home extends Component {
     }
 
     genreChangeHandler=(selectedOption)=>{
+       console.log("Selected Option",selectedOption)
         this.setState({ genre : selectedOption});
     }
 
@@ -147,54 +153,57 @@ class Home extends Component {
     render(){
         let movies=[...this.state.movies]
         return(
-            <div id="img1">
-                <Navbar />
-                <div class="container" id="home1" style={{paddingTop : "0%"}}>
-                    <h1 style={{color : "red"}}>Search Movie</h1>
-                    <form className="form-inline my-2 my-lg-0">
-                        <div>
-                            <input style={{width : "80%", paddingTop : "4%", paddingBottom : "4%"}} className="form-control mr-sm-2  
-                            iconColour" type="search" onChange={this.movieChangeHandler} name="searchString" placeholder="Find Movie......" aria-label="Search" />
-                        </div>
+            <div>
+                <div id="img1">
+                    <Navbar />
+                    <div class="container" id="home1" style={{paddingTop : "0%"}}>
+                        <h1 style={{color : "red"}}>Search Movie</h1>
+                        <form className="form-inline my-2 my-lg-0">
+                            <div>
+                                <input style={{width : "80%", paddingTop : "4%", paddingBottom : "4%"}} className="form-control mr-sm-2
+                                iconColour" type="search" onChange={this.movieChangeHandler} name="searchString" placeholder="Find Movie......" aria-label="Search" />
+                            </div>
 
-                        <br></br><br></br>
+                            <br></br><br></br>
 
-                        <div>
-                            <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.actors} onChange = {this.actorsChangeHandler} type="text" class="form-control"  name="actors" placeholder="Actors" required/>
-                        </div>
+                            <div>
+                                <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.actors} onChange = {this.actorsChangeHandler} type="text" class="form-control"  name="actors" placeholder="Actors" required/>
+                            </div>
 
-                        <br></br><br></br>
+                            <br></br><br></br>
 
-                        <div>
-                            <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.director}  onChange = {this.directorChangeHandler} type="text" class="form-control"  name="director" placeholder="Director" required/>
-                        </div>
+                            <div>
+                                <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.director}  onChange = {this.directorChangeHandler} type="text" class="form-control"  name="director" placeholder="Director" required/>
+                            </div>
 
-                        <br></br><br></br>
+                            <br></br><br></br>
 
-                        <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
-                            <Select class="form-control"  value={this.state.genre} onChange={this.genreChangeHandler} options={options2} placeholder="Genre"/>
-                        </div>
+                            <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
+                                <Select class="form-control"  value={this.state.genre} onChange={this.genreChangeHandler} options={options2} placeholder="Genre"/>
+                            </div>
 
-                        <br></br><br></br>
+                            <br></br><br></br>
 
-                        <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
-                            <Select class="form-control"  value={this.state.rating} onChange={this.ratingChangeHandler} options={options} placeholder="Rating"/>
-                        </div>
+                            <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
+                                <Select class="form-control"  value={this.state.rating} onChange={this.ratingChangeHandler} options={options} placeholder="Rating"/>
+                            </div>
 
-                        <br></br> <br></br>
+                            <br></br> <br></br>
 
-                        <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
-                            <Select class="form-control"  value={this.state.availability} onChange={this.availabilityChangeHandler} options={options1} placeholder="Availability"/>
-                        </div>
+                            <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
+                                <Select class="form-control"  value={this.state.availability} onChange={this.availabilityChangeHandler} options={options1} placeholder="Availability"/>
+                            </div>
 
-                        <br></br> <br></br>
-                        <hr></hr>
-                        <br></br> <br></br>
+                            <br></br> <br></br>
+                            <hr></hr>
+                            <br></br> <br></br>
 
-                        <button style={{width : "60%", paddingTop : "1%", paddingBottom : "1%", backgroundColor : "red"}} 
-                        className="btn btn-primary" onClick={this.searchMovie} type="button"><h3>Search</h3></button>
-                    </form>
+                            <button style={{width : "60%", paddingTop : "1%", paddingBottom : "1%", backgroundColor : "red"}}
+                            className="btn btn-primary" onClick={this.searchMovie} type="button"><h3>Search</h3></button>
+                        </form>
+                    </div>
                 </div>
+
 
                 <div>
                     <br/>
@@ -203,24 +212,23 @@ class Home extends Component {
                             <Card inverse>
                                 <CardImg width="100%" src={require('./AddMovieBackground.jpg')} alt="Card image cap" />
                                 <CardImgOverlay>
-                                <CardTitle style={{color : "black"}}>{mov.title}</CardTitle>
-                                <CardText style={{color : "black"}}>{mov.description}</CardText>
-                                <CardText style={{color : "black"}}>{mov.year},Actor:{mov.actors}</CardText>
-                                <CardText style={{color : "black"}}>Director:{mov.director}</CardText>
-                                <CardText style={{color : "black"}}>
-                                    <small className="text-muted">Availability: {mov.availability}
-                                    <br/>
-                                    Price: {mov.price}</small>
-                                </CardText>
+                                    <CardTitle style={{color : "black"}}>{mov.title}</CardTitle>
+                                    <CardText style={{color : "black"}}>{mov.description}</CardText>
+                                    <CardText style={{color : "black"}}>{mov.year},Actor:{mov.actors}</CardText>
+                                    <CardText style={{color : "black"}}>Director:{mov.director}</CardText>
+                                    <CardText style={{color : "black"}}>
+                                        <small className="text-muted">Availability: {mov.availability}
+                                            <br/>
+                                            Price: {mov.price}</small>
+                                    </CardText>
                                 </CardImgOverlay>
                             </Card>
                             <hr></hr>
                         </div>
                     ))}
                 </div>
-
-
             </div>
+
         );
     }
 }

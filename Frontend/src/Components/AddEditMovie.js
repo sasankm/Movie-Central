@@ -52,18 +52,20 @@ class AddMovie extends Component{
         super(props);
         //maintain the state required for this component
         this.state = { 
-            tilte       : '', 
+            title       : null,
             genre       : '',
-            studioName  : '',
-            synopsis    : '',
-            imageURL    : '',
-            movieURL    : '',
-            actors      : '',
-            director    : '',
-            country     : '',
+            studioName  : null,
+            synopsis    : null,
+            imageURL    : null,
+            movieURL    : null,
+            actors      : null,
+            director    : null,
+            country     : null,
             rating      : '',
             availability: '',
-            price       : ''
+            price       : null,
+            year        : null
+
         };
 
     }
@@ -82,7 +84,7 @@ class AddMovie extends Component{
                 if(response.data.status === 200){
                     console.log("Successfully fetched movie details",response.data)
                     this.setState({
-                        tilte       : response.data.title, 
+                        title       : response.data.title,
                         genre       : response.data.genre,
                         studioName  : response.data.studioName,
                         synopsis    : response.data.synopsis,
@@ -93,7 +95,8 @@ class AddMovie extends Component{
                         country     : response.data.country,
                         rating      : response.data.rating,
                         availability: response.data.availability,
-                        price       : response.data.price
+                        price       : response.data.price,
+                        year        : response.data.year
                     })
                 }else{
                     console.log("Something went wrong while fetching movie details")
@@ -163,33 +166,101 @@ class AddMovie extends Component{
     }
 
     availabilityChangeHandler= (selectedOption) => {
+        console.log("selected option",selectedOption)
         this.setState({ availability : selectedOption});
     }
 
+    yearChangeHandler= (e) => {
+        //console.log("selected option",selectedOption)
+        this.setState({ year : e.target.value});
+    }
+
     submitMovie=()=>{
-        const movieDetails={
-            tilte       : this.state.title, 
-            genre       : this.state.genre,
-            studioName  : this.state.studioName,
-            synopsis    : this.state.synopsis,
-            imageURL    : this.state.imageURL,
-            movieURL    : this.state.movieURL,
-            actors      : this.state.actors,
-            director    : this.state.director,
-            country     : this.state.country,
-            rating      : this.state.rating.value,
-            availability: this.state.rating.availability,
-            price       : this.state.price
+        let movieDetails={
+            // title       : this.state.title,
+            // genre       : this.state.genre,
+            // studioName  : this.state.studioName,
+            // synopsis    : this.state.synopsis,
+            // imageURL    : this.state.imageURL,
+            // movieURL    : this.state.movieURL,
+            // actors      : this.state.actors,
+            // director    : this.state.director,
+            // country     : this.state.country,
+            // rating      : this.state.rating.value,
+            // availability: this.state.rating.availability,
+            // price       : this.state.price
         }
+
+        console.log("...........",this.state.country,this.state.director)
+
+        if(this.state.title!=null && this.state.title!=undefined){
+            movieDetails.title=this.state.title;
+        }
+
+        if(this.state.genre.value!=null && this.state.genre.value!=undefined){
+            movieDetails.genre=this.state.genre.value;
+        }
+
+        if(this.state.synopsis!=null && this.state.synopsis!=undefined){
+            movieDetails.synopsis=this.state.synopsis;
+        }
+
+        if(this.state.studioName!=null && this.state.studioName!=undefined){
+            movieDetails.studio=this.state.studioName;
+        }
+
+        if(this.state.imageURL!=null && this.state.imageURL!=undefined){
+            movieDetails.image=this.state.imageURL;
+        }
+
+        if(this.state.movieURL!=null && this.state.movieURL!=undefined){
+            movieDetails.movie=this.state.movieURL;
+        }
+
+        if(this.state.actors!=null && this.state.actors!=undefined){
+            movieDetails.actors=this.state.actors;
+        }
+
+        if(this.state.director!=null && this.state.director!=undefined){
+            movieDetails.director=this.state.director;
+        }
+
+        if(this.state.country!=null && this.state.country!=undefined){
+            movieDetails.country=this.state.country;
+        }
+
+        if(this.state.rating.value!=null && this.state.rating.value!=undefined){
+            movieDetails.rating=this.state.rating.value;
+        }
+
+        if(this.state.availability.value!=null && this.state.availability.value!=undefined){
+            console.log(this.state.availability,this.state.availability.value)
+            movieDetails.availability=this.state.availability.value;
+        }
+
+        if(this.state.price!=null && this.state.price!=undefined){
+            movieDetails.price=this.state.price;
+        }
+
+        if(this.state.year!=null && this.state.year!=undefined){
+            movieDetails.year=this.state.year;
+        }
+
+
+
         console.log("Displaying State",movieDetails);
 
-        axios.post("http://localhost:8080/movie/add",movieDetails)
+        axios.post("http://localhost:8080/add-movie",movieDetails)
             .then(response => {
-                if(response.data.status === 200){
-                    console.log("Received success from the backend after successfully inserting the booking record")
+                if(response.data.status === "SUCCESS"){
+                    console.log("Received success from the backend after successfully inserting the booking record",response.data)
                     this.setState({
                         success : "You have successfully made the booking!!!!",
                         count   : 1
+                    })
+
+                    this.props.history.push("/video",{
+                        movieID : response.data.type
                     })
                 }else{
                     console.log("entered into failure")
@@ -257,6 +328,11 @@ class AddMovie extends Component{
 
                                 <div class="form-group ">
                                     <input value={this.state.price} onChange = {this.priceChangeHandler} type="text" class="form-control"  name="price" placeholder="Price" required/>
+                                </div>
+
+                                <div className="form-group ">
+                                    <input value={this.state.year} onChange={this.yearChangeHandler} type="text"
+                                           className="form-control" name="price" placeholder="Year" required/>
                                 </div>
 
                                 <button style={{backgroundColor : "red"}} onClick = {this.submitMovie}  class="btn btn-primary"><b>Add</b></button>                 
