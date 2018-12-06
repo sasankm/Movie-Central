@@ -98,6 +98,7 @@ public class MovieController {
 	@PostMapping("/add-movie")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public LoginResponse addMovie(HttpSession session, @RequestBody Movie movie){
+		System.out.println("this is movie" +movie.getTitle());
 		Session s = (Session) session.getAttribute("session");
 		
 		if(!movie.getYear().getClass().getSimpleName().equals("Integer")){
@@ -140,7 +141,7 @@ public class MovieController {
 		}
 		movieAttributesRepository.saveAll(movieAttributes);
 		
-		return new LoginResponse("SUCCESS", s.getType(), "movie created");
+		return new LoginResponse("SUCCESS", String.valueOf(movie.getMovieid()), "movie created");
 	}
 	
 	@GetMapping("/search")
