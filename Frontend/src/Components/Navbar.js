@@ -36,11 +36,13 @@ class NetNavbar extends Component {
     }
 
     handleLogout(){  //handle logout
+        localStorage.clear();
+        //this.props.history.push("/login");
         axios.get(url + "/userlogout" )
         .then((response) => {
             console.log("response after logging out...", response.data);
             if(response.data.status === "SUCCESS"){ //if session has been destroyed successfully
-                this.props.history.push("/");
+                this.props.history.push("/login");
             }
             this.setState({
                 isLoggedIn: false,
@@ -51,14 +53,14 @@ class NetNavbar extends Component {
 
     render(){
         let changes = null;
-        if(this.state.isLoggedIn === false){
+        if(this.state.isLoggedIn === false ){
             changes = (
                 <Nav pullRight>
                     <NavItem eventKey={1} href="/login"><h3>SignIn</h3></NavItem>
                     <NavItem eventKey={2} href="/signup"><h3>Signup</h3></NavItem>
                 </Nav>
             );
-        } else if(this.state.isLoggedIn === true){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
+        } else if(this.state.isLoggedIn === true && localStorage.type=="ADMIN"){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
             changes = (
                 <Nav pullRight>
                     <NavItem eventKey={1} href="/stats"><h4><strong>Stats</strong></h4></NavItem>

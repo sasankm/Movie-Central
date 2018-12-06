@@ -38,7 +38,7 @@ public class LoginController {
 	public LoginResponse login(HttpSession session, @RequestBody LoginRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
-		
+		String st="";
 		User user = userRepository.findByUsername(username);
 		if(user == null){
 			return new LoginResponse("FAILURE", "", "invalid username");
@@ -47,7 +47,8 @@ public class LoginController {
 		if(passwordEncoder.matches(password, user.getPassword())){
 			//set session
 			session.setAttribute("session", new Session(user.getUserid(), user.getType(), user.getUsername(), user.getEmail()));
-			return new LoginResponse("SUCCESS", user.getType(), "valid credentials");
+		 st=user.getUserid() +" " +user.getType();
+			return new LoginResponse("SUCCESS", st, "valid credentials");
 		} else {
 			return new LoginResponse("FAILURE", user.getType(), "invalid password");
 		}

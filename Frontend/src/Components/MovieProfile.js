@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import url from '../serverurl';
 import '../css/movieprofile.css';
 import axios from 'axios';
+import queryString from 'query-string'
 
 
 class MovieProfile extends React.Component {
@@ -17,7 +18,8 @@ class MovieProfile extends React.Component {
             youtubeId:"",
             result:"",
             data:"",
-            type:""
+            type:"",
+            flag: false
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -40,7 +42,8 @@ class MovieProfile extends React.Component {
                         isLoaded: true,
                         data: result,
                         youtubeId:Id,
-                        flag: false
+                        flag: false,
+
                     });
 
                 },
@@ -84,7 +87,10 @@ class MovieProfile extends React.Component {
 
     handleClick=(event)=>{
         console.log("clicked the video")
-         fetch(url+"/play?movieid=3") //change after search
+        var params=queryString.parse(this.props.location.search);
+        localStorage.setItem("movieid",queryString.parse(this.props.location.search).movieid);
+
+         fetch(url+"/play?movieid=" + params.movieid +"&userid="+localStorage.userid) //change after search
          .then(response=>response.json())
             .then(
                 (result) => {
@@ -121,10 +127,11 @@ class MovieProfile extends React.Component {
 
     handlePay(e){
         console.log("inside handle pay");
-        this.props.history.push('/payment', {
+        
+        this.props.history.push('/payment?movieid=' +  queryString.parse(this.props.location.search).movieid, {
             params : {
                 payType: 'PayPerViewOnly',
-                movieID: this.state.data.movieid,
+                movieID: queryString.parse(this.props.location.search).movieid,
             }
         })
     }
@@ -139,7 +146,10 @@ class MovieProfile extends React.Component {
     render() {
 
         let changes =null;
-        if(this.state.flag === true){
+        const url='https://youtube.com/embed/'+this.state.youtubeId;
+        console.log("flag is ",this.state.flag)
+        if(this.state.flag){
+            console.log("hehre", url)
             changes = (
                 <div className="embed-responsive embed-responsive-16by9">
                 <iframe className="embed-responsive-item"  src={url}></iframe>
@@ -150,7 +160,6 @@ class MovieProfile extends React.Component {
                 <button style={{backgroundColor : "red"}} onClick = {this.handleClick}  class="btn btn-primary"><b>Watch</b></button> 
             );
         }
-        const url='https://youtube.com/embed/'+this.state.youtubeId;
         const opts = {
             height: '390',
             width: '640',

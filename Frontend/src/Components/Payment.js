@@ -177,6 +177,7 @@ class Payment extends Component{
 
         }
 */
+
         var payment = {
             userid: this.state.datafromUserProfile.userid,
             movieid: this.state.datafromUserProfile.movieid,

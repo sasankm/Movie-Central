@@ -4,6 +4,7 @@ import '../css/login.css';
 import axios from 'axios';
 import url from '../serverurl';
 import swal from 'sweetalert';
+//import localstorage from 'local-storage';
 
 class Login extends Component{
 
@@ -28,19 +29,19 @@ class Login extends Component{
 
     componentWillMount(){
         //check session
-        axios.get(url + "/checksession")
-        .then((response) => {
-            console.log("In check session of login page: ", response.data);
-            if(response.data.message !== "invalid session"){
-                this.setState({
-                    isLoggedIn: true
-                }, () => {
-                    if(this.state.isLoggedIn == true){
-                        this.props.history.push('/home');
-                    }
-                })
-            }
-        })
+        // axios.get(url + "/checksession")
+        // .then((response) => {
+        //     console.log("In check session of login page: ", response.data);
+        //     if(response.data.message !== "invalid session"){
+        //         this.setState({
+        //             isLoggedIn: true
+        //         }, () => {
+        //             if(this.state.isLoggedIn == true){
+        //                 this.props.history.push('/home');
+        //             }
+        //         })
+        //     }
+        // })
     }
 
     handleLogin(e){
@@ -50,10 +51,18 @@ class Login extends Component{
             username: this.state.username,
             password:this.state.password
         }
+        localStorage.setItem("username",this.state.username);
+
         axios.post(url + "/login", user)
         .then((response) =>{
             console.log("In handle login after response on login page...", response.data);
-    
+            localStorage.setItem("status",response.data.status);
+
+            var ret=response.data.type.split(" ");
+
+            console.log("ret is  ",ret);
+            localStorage.setItem("userid",parseInt(ret[0]));
+            localStorage.setItem("type",ret[1]);
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 this.setState({
@@ -66,24 +75,32 @@ class Login extends Component{
         }
     })
 
-
+console.log("localstorage ",localStorage);
 
         // fetch(url + "/login", {
-        //     method: "GET",
-        //     credentials:'include'
-        // }).then((response) =>{
-        //             console.log("In handle login after response on login page...", response.data);
+        //     method:'POST',
+        //     credentials:'include',
+        //     headers: new Headers({
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json',
+        //       }),
+        //     body: user,
+        //     mode:'no-cors'
+        // })
+        
+        // .then((result) =>{
+        //             console.log("In handle login after response on login page...", result);
 
-        //             if(response.data.status === "SUCCESS"){
-        //                 swal("Login Successfull", "", "success");
-        //                 this.setState({
-        //                     isLoggedIn: true
-        //                 }, () =>{
-        //                     this.props.history.push('/home');
-        //             })
-        //         } else {
-        //             swal(response.data.message, "", "warning");
-        //         }
+        //         //     if(response.data.status === "SUCCESS"){
+        //         //         swal("Login Successfull", "", "success");
+        //         //         this.setState({
+        //         //             isLoggedIn: true
+        //         //         }, () =>{
+        //         //             this.props.history.push('/home');
+        //         //     })
+        //         // } else {
+        //         //     swal(response.data.message, "", "warning");
+        //         // }
         //     })
     }
 

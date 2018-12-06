@@ -221,18 +221,19 @@ public class MovieController {
 	
 	@GetMapping("/play")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public LoginResponse playMovie(HttpSession session, @RequestParam("movieid")Integer movieid){
+	public LoginResponse playMovie(HttpSession session, @RequestParam("movieid")Integer movieid,  @RequestParam("userid")Integer userid){
 		Session s = (Session) session.getAttribute("session");
 		System.out.println("movieid inside play is "+movieid);
-		if(s == null || s.getUserid() == -1){
-			return new LoginResponse("FAILURE", "", "invalid session");
-		} else {
+//		if(s == null || s.getUserid() == -1){
+//			return new LoginResponse("FAILURE", "", "invalid session");
+//		} else {
 			Movie m = movieRepository.findByMovieid(movieid);
-			User u = userRepository.findByEmail(s.getEmail());
+//			User u = userRepository.findByEmail(s.getEmail());
+			User u = userRepository.findById(userid).get();
 			Timestamp ts = new Timestamp(System.currentTimeMillis() - (long)24*60*60*1000);
 			List<PlayHistory> p = playHistoryRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
 			
-			if(s.getType().equals("ADMIN")){
+			if(u.getType().equals("ADMIN")){
 				if(p.size() == 0){
 					PlayHistory pp = new PlayHistory();
 					pp.setDate(new Timestamp(System.currentTimeMillis()));
@@ -241,7 +242,7 @@ public class MovieController {
 					pp.setType(m.getAvailability());
 					playHistoryRepository.save(pp);
 				}
-				return new LoginResponse("SUCCESS", s.getType(), "");
+				return new LoginResponse("SUCCESS", u.getType(), "");
 			} else {
 				
 				String avail = m.getAvailability();
@@ -327,7 +328,7 @@ public class MovieController {
 					return new LoginResponse("FAILURE", u.getType(), "Activate your account to watch this movie");
 				}
 			}
-		}
+//		}
 	}
 	
 }

@@ -55,7 +55,7 @@ class UserProfile extends Component{
         var params=queryString.parse(this.props.location.search);
         var username=params.username;
 
-        fetch("http://localhost:8080/user/" + username)
+        fetch("http://localhost:8080/user/" + localStorage.username)
             .then(res => res.json())
             .then(
                 (result) => {
