@@ -1,15 +1,22 @@
 package com.moviecentral.mc.controllers;
 
+import java.util.Optional;
+import java.util.Random;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +29,7 @@ import com.moviecentral.mc.models.LoginRequest;
 import com.moviecentral.mc.models.LoginResponse;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.Session;
+import com.moviecentral.mc.utils.SessionMap;
 
 @RestController
 public class LoginController {
@@ -32,10 +40,13 @@ public class LoginController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private SessionMap sessionMap;
+	
 	
 	@PostMapping("/login")
 	@CrossOrigin(origins = "http://localhost:3000")
-	public LoginResponse login(HttpSession session, @RequestBody LoginRequest req){
+	public LoginResponse login(@RequestBody LoginRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
 		
@@ -45,9 +56,10 @@ public class LoginController {
 		}
 		
 		if(passwordEncoder.matches(password, user.getPassword())){
-			//set session
-			session.setAttribute("session", new Session(user.getUserid(), user.getType(), user.getUsername(), user.getEmail()));
-			return new LoginResponse("SUCCESS", user.getType(), "valid credentials");
+			String sessionID = String.valueOf(new Random(System.nanoTime()).nextInt(100000000));
+			sessionMap.getSessionMap().put(sessionID, new Session(user.getUserid(), user.getType(), 
+									user.getUsername(), user.getEmail()));
+			return new LoginResponse("SUCCESS", user.getType(), sessionID);
 		} else {
 			return new LoginResponse("FAILURE", user.getType(), "invalid password");
 		}
@@ -55,25 +67,26 @@ public class LoginController {
 	
 	@GetMapping(value = "/userlogout")
 	@CrossOrigin(origins = "http://localhost:3000")
-	public LoginResponse logout(HttpSession session){
-		Session s = (Session) session.getAttribute("session");
-		if(s == null || s.getUserid() == -1){
+	public LoginResponse logout(@RequestHeader("Authorization") Optional<String> sessionID){
+		
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
 			return new LoginResponse("FAILURE", "", "invalid session");
 		} else {
-			session.setAttribute("session", new Session(-1, "", "", ""));
+			sessionMap.getSessionMap().remove(sessionID.get());
 			return new LoginResponse("SUCCESS", "", "logout successful");
 		}
 	}
 	
 	@GetMapping(value = "/checksession")
 	@CrossOrigin(origins = "http://localhost:3000")
-	public LoginResponse checksession(HttpSession session){
-		Session s = (Session) session.getAttribute("session");
-		System.out.println("This is session :" + s);
+	public LoginResponse checksession(@RequestHeader("Authorization") Optional<String> sessionID){
+
 		String res = "", type="";
-		if(s == null || s.getUserid() == -1){
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
 			res = "invalid session";
 		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			System.out.println("This is session :" + s.getEmail());
 			type = s.getType();
 			res = "valid session";
 		}
