@@ -236,7 +236,7 @@ class Home extends Component {
                             <CardTitle style={{color: "black"}}><h3>{mov.title}</h3></CardTitle>
                             <CardSubtitle>{mov.description}</CardSubtitle>
                             </CardBody>
-                            <img width="18%" height="25%" src={require('./SearchBackground.jpg')} alt="Card image cap" />
+                            <img width="20%" height="25%" src={require('./SearchBackground.jpg')} alt="Card image cap" />
                             <CardBody>
                                 <CardText style={{color : "black"}}><b>Year&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.year}</CardText>
                                 <CardText style={{color : "black"}}><b>Actor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.actors}</CardText>
