@@ -17,6 +17,8 @@ class ShowAllUserDetails extends React.Component {
     }
     componentDidMount() {
         console.log("url parameter",this.props);
+
+        console.log("localstorage in showusers ",localStorage);
         fetch("http://localhost:8080/user")
             .then(res => res.json())
             .then(
