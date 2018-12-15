@@ -301,7 +301,7 @@ class Stats extends Component{
 
         return(
             <div>
-                <Navbar/>
+                <Navbar history={this.props.history}/>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4">

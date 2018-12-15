@@ -105,7 +105,7 @@ class UserProfile extends Component{
         return(
 
             <div style={{backgroundColor: "black"}}>
-            <Navbar />
+            <Navbar history={this.props.history}/>
                 <div id="img1">
                     <div class="container">
                         <div class="profile-form">

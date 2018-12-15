@@ -98,7 +98,7 @@ class ShowAllUserDetails extends React.Component {
         else{
             return (
             <div>
-            <Navbar />
+            <Navbar history={this.props.history}/>
             <div class="user-form" >
                 <div id="user-details">
                 <h3 id="search">Search for User.</h3>

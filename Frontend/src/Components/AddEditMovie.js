@@ -276,7 +276,7 @@ class AddMovie extends Component{
         const addEdit= (this.state.title==undefined || this.state.title==null) ? "Add a" : "Edit the"
         return(
             <div style={{backgroundColor: "black"}}>
-                <Navbar/>
+                <Navbar history={this.props.history}/>
                 <div id="img">
                 <div class="container">
                     <h1 style={{color : "red"}}>{addEdit} Movie</h1>
