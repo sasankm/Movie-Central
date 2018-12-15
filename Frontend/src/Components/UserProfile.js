@@ -88,42 +88,39 @@ class UserProfile extends Component{
             .then(
                 (result) => {
                     console.log("/getuser method result",result.message)
-                    this.setState({
 
-                        username:result.message,
+                    fetch(url+"/user/" + result.message,request)
+                        .then(res => res.json())
+                        .then(
+                            (result) => {
+                                console.log("data for user profile",result)
+                                this.setState({
+                                    isLoaded: true,
+                                    username:result[0].username,
+                                    userid:result[0].userid,
+                                    email:result[0].email,
+                                    subscription:result[0].subscription,
+                                    // typeOfuser:result[0].type,
+                                    enddate:result[0].enddate
+                                });
 
-                    });
-
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
+                            },
+                            // Note: it's important to handle errors here
+                            // instead of a catch() block so that we don't swallow
+                            // exceptions from actual bugs in components.
+                            (error) => {
+                                this.setState({
+                                    isLoaded: true,
+                                    error
+                                });
+                            }
+                        )
 
 
 
 
 
-        fetch(url+"/user/" + this.state.username,request)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    console.log("data for user profile",result)
-                    this.setState({
-                        isLoaded: true,
-                        username:result[0].username,
-                        userid:result[0].userid,
-                        email:result[0].email,
-                        subscription:result[0].subscription,
-                       // typeOfuser:result[0].type,
-                        enddate:result[0].enddate
-                    });
+
 
                 },
                 // Note: it's important to handle errors here
@@ -136,6 +133,12 @@ class UserProfile extends Component{
                     });
                 }
             )
+
+
+
+
+
+
     }
     changeMonth=(e)=>{
         console.log("event is",e);

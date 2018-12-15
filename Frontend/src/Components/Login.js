@@ -50,7 +50,7 @@ class Login extends Component{
         axios.post(url + "/login", user)
         .then((response) =>{
             console.log("In handle login after response on login page...", <response className="data"></response>);
-
+console.log("session id in login ",response.data.message)
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 localStorage.setItem("sessionID", response.data.message);
