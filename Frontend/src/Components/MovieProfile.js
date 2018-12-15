@@ -81,13 +81,9 @@ class MovieProfile extends React.Component {
 
 
     handleAdd(e){
-        console.log("in handle Add");
+        console.log("in handle Add", this.state.data.movieid);
         if(this.state.type === "ADMIN"){
-            this.props.history.push('/addEditmovie?movieid',{
-                params :{
-                 movieID : this.state.data.movieid
-                }
-             })
+            this.props.history.push('/addEditmovie/'+this.state.data.movieid)
         } else {
             swal("You are not allowed to edit the movie", "", "warning")
         }
@@ -182,9 +178,6 @@ class MovieProfile extends React.Component {
                </div>
            )
         }
-
-
-
 
         const url='https://youtube.com/embed/'+this.state.youtubeId;
         console.log("flag is ",this.state.flag)

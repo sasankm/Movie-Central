@@ -71,12 +71,13 @@ class AddMovie extends Component{
 
     componentDidMount=()=>{
 
-        console.log(this.props);
-        const parsed = qs.parse(this.props.location.search);
-        if(parsed.movieid != undefined){
+        console.log(this.props.match.params.id);
+       // const parsed = qs.parse(this.props.match.params.id);
+        //console.log("Parsed",parsed)
+        if(this.props.match.params.id>0){
             axios.get("http://localhost:8080/movie",{
                 params: {
-                    movieid : parsed.movieid
+                    movieid : this.props.match.params.id
                 }
             }).then(response => {
                 console.log(response)
@@ -249,9 +250,9 @@ class AddMovie extends Component{
 
         console.log("Displaying State",movieDetails);
 
-        const parsed = qs.parse(this.props.location.search);
-        if(parsed.movieid != undefined){
-            axios.post("http://localhost:8080/update-movie?movieid="+parsed.movieid,movieDetails)
+        //const parsed = qs.parse(this.props.location.search);
+        if(this.props.match.params.id>0){
+            axios.post("http://localhost:8080/update-movie?movieid="+this.props.match.params.id,movieDetails)
                 .then(response => {
                     if(response.data.status === "SUCCESS"){
                         console.log("Received success from the backend after successfully inserting the booking record",response.data)
@@ -259,10 +260,8 @@ class AddMovie extends Component{
                             success : "You have successfully made the booking!!!!",
                             count   : 1
                         })
-
-                        this.props.history.push("/video",{
-                            movieID : response.data.type
-                        })
+                        console.log("Edited movie",this.props.match.params.id)
+                        this.props.history.push("/video/"+this.props.match.params.id)
                     }else{
                         console.log("entered into failure")
                     }
@@ -278,10 +277,8 @@ class AddMovie extends Component{
                             success : "You have successfully made the booking!!!!",
                             count   : 1
                         })
-
-                        this.props.history.push("/video",{
-                            movieID : response.data.type
-                        })
+                        console.log("Added movie",response.data.type)
+                        this.props.history.push("/video/"+response.data.type)
                     }else{
                         console.log("entered into failure")
                     }
@@ -294,8 +291,8 @@ class AddMovie extends Component{
 
     render(){
         const { country, region } = this.state;
-        const addEdit= (this.state.title==undefined || this.state.title==null) ? "Add a" : "Edit the"
-        const add = (this.state.title==undefined || this.state.title==null) ? "Add" : "Update"
+        const addEdit= (this.props.match.params.id>0) ? "Edit the" : "Add the"
+        const add = (this.props.match.params.id>0) ? "Update" : "Add"
         return(
             <div style={{backgroundColor: "black"}}>
                 <Navbar history = {this.props.history}/>

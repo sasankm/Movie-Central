@@ -306,7 +306,7 @@ class Stats extends Component{
                     <div class="row">
                         <div class="col-lg-4">
                             <h2>Top 10 Movies </h2> 
-                             <DropdownButton  bsStyle="primary" bsSize="large" title="Select" id="dropdown-size-large" onSelect={this.handleSelect}>
+                             <DropdownButton  bsSize="large" title="Select" id="dropdown-size-large" onSelect={this.handleSelect}>
                                 <MenuItem eventKey="0" >24 hours</MenuItem>
                                 <MenuItem eventKey="1" >week</MenuItem>
                                 <MenuItem eventKey="2" >month</MenuItem>
@@ -319,7 +319,7 @@ class Stats extends Component{
                     <div>
                         <div class="col-lg-4">
                             <h2>Top 10 Users </h2>
-                            <DropdownButton  bsStyle="primary" bsSize="large" title="Select" id="dropdown-size-large" onSelect={this.handleSelect1}>
+                            <DropdownButton   bsSize="large" title="Select" id="dropdown-size-large" onSelect={this.handleSelect1}>
                                 <MenuItem eventKey="0">24 hours</MenuItem>
                                 <MenuItem eventKey="1">week</MenuItem>
                                 <MenuItem eventKey="2">month</MenuItem>

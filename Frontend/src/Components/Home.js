@@ -103,7 +103,7 @@ class Home extends Component {
         }
 
         if(this.state.actors!=null && this.state.actors!=undefined){
-            console.log(this.state.actots)
+            console.log(this.state.actors)
             params.append("actors",this.state.actors)
         }
 
@@ -115,12 +115,11 @@ class Home extends Component {
         var request = {
              params: params,
              headers : { 
-                Authorization : "40410102" 
+                Authorization : localStorage.getItem("sessionID")
              }
         };
 
         console.log("Data to be sent to backend",request);
-
         axios.get("http://localhost:8080/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){

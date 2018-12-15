@@ -28,7 +28,7 @@ class Main extends Component {
                     <Route path="/login" exact component={Login}/>
                     <Route path="/signup" exact component={Signup} />
                     <Route path="/home" exact component={Home}/>
-                    <Route path="/addEditMovie" exact component={AddEditMovie}/>
+                    <Route path="/addEditMovie/:id" exact component={AddEditMovie}/>
                     <Route path="/showusers" exact component={ShowUsers}/>
                     <Route path="/showusers/{userid}" exact component={ShowUsers}/>
                     <Route path="/profile" exact component={UserProfile}/>
