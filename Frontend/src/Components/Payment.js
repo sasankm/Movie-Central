@@ -88,10 +88,6 @@ class Payment extends Component{
 this.setState({payType:value.payType,movieid:value.movieid,price:value.price,availability:value.availability})
         console.log(" state from previous= ",this.state.datafromUserProfile)
 
-
-
-
-
         var payment;
         if(value.payType==="subscription")
         {
@@ -109,6 +105,8 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
 
 
             }
+            this.setState({paymentData:payment})
+
 
         }else{
 
