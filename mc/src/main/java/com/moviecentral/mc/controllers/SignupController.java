@@ -88,7 +88,7 @@ public class SignupController {
 	}
 	
 	@GetMapping(value="/verify")
-	@CrossOrigin(origins = "http://localhost:3000/")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse verify(@RequestParam("email") String email, @RequestParam("code") String code){
 		System.out.println("code "+code);
 		System.out.println("email "+email);

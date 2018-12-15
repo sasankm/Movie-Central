@@ -68,11 +68,6 @@ class UserProfile extends Component{
 
             })
 
-
-
-
-
-
         console.log("url parameter",this.props);
         var params=queryString.parse(this.props.location.search);
         var username=params.username;
