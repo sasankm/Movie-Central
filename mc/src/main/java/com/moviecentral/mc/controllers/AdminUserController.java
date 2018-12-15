@@ -99,7 +99,10 @@ public class AdminUserController {
 		}else {
 			User user=userRepository.findByUsername(username);
 			//System.out.println("details based on username "+list1.getEmail());		
-				
+			System.out.println("user in admin user controller"+user);
+			if (user==null) {
+				return null;
+			}
 				System.out.println("user id is of one user "+String.valueOf(user.getUserid()));
 				inner.put("userid",String.valueOf(user.getUserid()));
 				inner.put("username",String.valueOf(user.getUsername()));

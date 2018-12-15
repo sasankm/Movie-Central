@@ -106,7 +106,7 @@ class FinancialReport extends Component{
         console.log("state1 is" , this.state.month2,this.state.year2)
         return(
             <div>
-                <Navbar />
+                <Navbar history={this.props.history}/>
                 <div class="container">
                 <h2 id = "financial">Financial Report</h2>
                 <div class="row">

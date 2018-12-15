@@ -71,35 +71,46 @@ class ShowAllUserDetails extends React.Component {
         };
         fetch(url+"/user/"+this.state.user,request)
             .then(res => res.json())
-            .then(
-                (result) => {
-                    console.log("show all user from db",result[0]["status"]);
-                   if(result[0]["status"]==="success"){
-                       this.setState({
-                           isLoaded: true,
-                           data: result
-                       });
-                   }
-                   else{
-                       swal(result[0]["status"], "", "warning");
-                       this.props.history.push('/login');
-                   }
+                .then(
+                    (result) => {
+                        console.log("result in show all users",result);
+                        if ((result==null) || (result==undefined)){
+
+                            swal("User doesn't exist", "", "warning");
+                        }
+                        else{
+
+
+                            console.log("show all user from db",result);
+                            if(result[0]["status"]==="success"){
+                                this.setState({
+                                    isLoaded: true,
+                                    data: result
+                                });
+                            }
+                            else{
+                                swal(result[0]["status"], "", "warning");
+                                this.props.history.push('/login');
+                            }
+                        }
 
 
 
 
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: false,
-                        error
-                    });
-                }
-            )
-    }
+
+                    },
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
+                    (error) => {
+                        this.setState({
+                            isLoaded: false,
+                            error
+                        });
+                    }
+                )
+        }
+
 
     showUserProfile(data){
         console.log("in user profile click", data);

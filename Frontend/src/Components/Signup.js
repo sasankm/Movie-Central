@@ -80,8 +80,10 @@ class Signup extends Component{
                                 &nbsp;&nbsp;&nbsp;
                                 &nbsp;
                                 <button style={{backgroundColor : "red"}} onClick = {this.handleSignup}  class="btn btn-primary"><b>Sign Up</b></button> 
-                            </form> 
-                        </div>
+                            </form>
+                           &nbsp;&nbsp;
+                           <h3>Already have an account? <a href="/login"><span>Login.</span></a></h3>
+                       </div>
                     </div>
                 </div>
                 </div>
