@@ -88,10 +88,6 @@ class Payment extends Component{
 this.setState({payType:value.payType,movieid:value.movieid,price:value.price,availability:value.availability})
         console.log(" state from previous= ",this.state.datafromUserProfile)
 
-
-
-
-
         var payment;
         if(value.payType==="subscription")
         {
@@ -110,7 +106,6 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
 
             }
             this.setState({paymentData:payment})
-
 
 
         }else{
@@ -143,9 +138,6 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
 
 
                     },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
                     (error) => {
                         this.setState({
                             isLoaded: true,
@@ -156,11 +148,6 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
         }
 
        // console.log("checking payment data",payment)
-
-
-
-
-
 
 }
 
@@ -193,15 +180,6 @@ else{
                         swal(response.data.message, "", "warning");
                     }
                 })
-
-
-
-
-
-
-
-
-
 
     }
 
