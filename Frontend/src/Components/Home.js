@@ -120,7 +120,7 @@ class Home extends Component {
 
         //http://example.com/?key=""&key=""&key=""&genre=""&rating=""
 
-        axios.get("http://localhost:8080/search",request)
+        axios.get(url+"/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){
                     console.log("Successfully received movies from backend", response.data)

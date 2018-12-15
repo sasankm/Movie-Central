@@ -49,7 +49,7 @@ class Login extends Component{
 
         axios.post(url + "/login", user)
         .then((response) =>{
-            console.log("In handle login after response on login page...", response.data);
+            console.log("In handle login after response on login page...", <response className="data"></response>);
 
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
@@ -63,6 +63,7 @@ class Login extends Component{
 
     render(){
         return(
+
         <div style={{backgroundColor: "black"}}>
             <div id="img1">
                 <div class="container">

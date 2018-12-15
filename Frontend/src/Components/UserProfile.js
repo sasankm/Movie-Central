@@ -6,7 +6,9 @@ import '../css/login.css';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css';
 import queryString from 'query-string';
-
+import url from '../serverurl';
+import swal from "sweetalert";
+import axios from "axios/index";
 class UserProfile extends Component{
 
     constructor(props){
@@ -19,7 +21,7 @@ class UserProfile extends Component{
             email:"",
             enddate:"",
             suscription:"",
-            suscription:"",
+
             redirect:"",
             amount:10,
             options : [
@@ -40,7 +42,9 @@ class UserProfile extends Component{
             ],
             selectedMonth:"1 month",
             movieid:"",
-            type:"subscription"
+            type:"subscription",
+            typeOfuser:""
+
         }
         this.changeMonth=this.changeMonth.bind(this);
         this.handleOnClick=this.handleOnClick.bind(this);
@@ -51,11 +55,62 @@ class UserProfile extends Component{
     }
 
     componentDidMount() {
+
+        var self = this;
+        axios.get(url + "/checksession", {headers : { Authorization :  localStorage.getItem("sessionID")}})
+            .then((response) => {
+                console.log("In check session of showalluserdetails page: ", response.data);
+                this.setState({typeOfuser:response.data.type})
+                if(response.data.message != "valid session"){
+                    swal("Invalid session please login", "", "warning");
+                    self.props.history.push('/login');
+                }
+
+            })
+
+
+
+
+
+
         console.log("url parameter",this.props);
         var params=queryString.parse(this.props.location.search);
         var username=params.username;
+        var request = {
 
-        fetch("http://localhost:8080/user/" + localStorage.username)
+            headers : {
+                Authorization : localStorage.sessionID
+            }
+        };
+
+        fetch(url+"/getuser",request)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log("/getuser method result",result.message)
+                    this.setState({
+
+                        username:result.message,
+
+                    });
+
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+
+
+
+
+
+        fetch(url+"/user/" + this.state.username,request)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -66,7 +121,7 @@ class UserProfile extends Component{
                         userid:result[0].userid,
                         email:result[0].email,
                         subscription:result[0].subscription,
-                        enddate:result[0].username.enddate,
+                       // typeOfuser:result[0].type,
                         enddate:result[0].enddate
                     });
 
@@ -101,11 +156,36 @@ class UserProfile extends Component{
         if (this.state.redirect==true) {
             return <Redirect to={{pathname:"/payment",state:{referrer:this.state}}} />;
         }
+        let changes =null;
+        console.log("logged user type in user profile ",this.state.typeOfuser)
+        if(this.state.typeOfuser==="USER"){
+            console.log("hehre", url)
+            changes = (
+                <div>
+                <div className="form-group">
+                    <label>Select payment period</label>
+                    <Dropdown options={this.state.options} onChange={this.changeMonth} value={this.state.selectedMonth}
+                              placeholder="Select an option"/>
+                </div>
+                <div className="form-group">
+                <label>Amount to be paid</label>
+            <input value={this.state.amount} type="text" className="form-control"
+                   name="title" required autoFocus/>
+                </div>
+            & nbsp;&nbsp;&nbsp;&nbsp;
+            <button style={{backgroundColor: "red"}} onClick={this.handleOnClick} className="btn btn-primary"><b>Make
+                Payment</b></button>
+                </div>
+            );
+
+        }
         console.log(" selected month is",this.state.selectedMonth);
+
+
         return(
 
             <div style={{backgroundColor: "black"}}>
-            <Navbar />
+            <Navbar history={this.props.history}/>
                 <div id="img1">
                     <div class="container">
                         <div class="profile-form">
@@ -139,19 +219,8 @@ class UserProfile extends Component{
                                         <input value={this.state.enddate} type="text" class="form-control" name="title"  required autoFocus/>
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="form-group">
-                                        <label>Select payment period</label>
-                                    <Dropdown options={this.state.options}  onChange={this.changeMonth}  value={this.state.selectedMonth} placeholder="Select an option" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Amount to be paid</label>
-                                        <input value={this.state.amount} type="text" className="form-control"
-                                               name="title" required autoFocus/>
-                                    </div>
-                                    &nbsp;&nbsp;&nbsp;
-                                    &nbsp;
-                                    <button style={{backgroundColor : "red"}} onClick = {this.handleOnClick}  class="btn btn-primary"><b>Make Payment</b></button>
-                                </form>
+                                    {changes}
+                                    </form>
                             </div>
                         </div>
                     </div>
