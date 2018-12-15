@@ -56,7 +56,7 @@ class Signup extends Component{
     render(){
         return(
             <div style={{backgroundColor: "black"}}>
-            <Navbar/>
+
                 <div class="container" style={{backgroundColor: "white"}}>
 
                 <div id="img1">
