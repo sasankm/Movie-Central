@@ -62,7 +62,7 @@ class Home extends Component {
             rating      : '',
             availability: '',
             actors      : '',
-            directors    : '',
+            director    : '',
             movies      : [],
             found       : false,
             endOfResult : "",
@@ -125,9 +125,9 @@ class Home extends Component {
             params.append("actors",this.state.actors)
         }
 
-        if(this.state.directors!="" && this.state.directors!=null && this.state.directors!=undefined){
-            console.log(this.state.directors)
-            params.append("directors",this.state.directors)
+        if(this.state.director!="" && this.state.director!=null && this.state.director!=undefined){
+            console.log(this.state.director)
+            params.append("directors",this.state.director)
         }
         
         var request = {
@@ -181,7 +181,7 @@ class Home extends Component {
   
       directorsChangeHandler=(e)=>{
         this.setState({
-          directors : e.target.value
+          director : e.target.value
         })
       }
 
@@ -230,9 +230,9 @@ class Home extends Component {
             params.append("actors",this.state.actors)
         }
 
-        if(this.state.directors!="" && this.state.directors!=null && this.state.directors!=undefined){
-            console.log(this.state.directors)
-            params.append("directors",this.state.directors)
+        if(this.state.director!="" && this.state.director!=null && this.state.director!=undefined){
+            console.log(this.state.director)
+            params.append("directors",this.state.director)
         }
         
         params.append("page",data.selected)
@@ -325,7 +325,7 @@ class Home extends Component {
                             <br></br><br></br>
 
                             <div>
-                                <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.directors}  onChange = {this.directorsChangeHandler} type="text" class="form-control"  name="directors" placeholder="directors" required/>
+                                <input style={{width : "80%", paddingTop : "3%", paddingBottom : "3%"}} value={this.state.director}  onChange = {this.directorsChangeHandler} type="text" class="form-control"  name="directors" placeholder="directors" required/>
                             </div>
 
                             <br></br><br></br>
@@ -377,7 +377,7 @@ class Home extends Component {
                                 <CardBody>
                                     <CardText style={{color : "black"}}><b>Year:</b>{mov.year}</CardText>
                                     <CardText style={{color : "black"}}><b>Actor:</b>{mov.actors}</CardText>
-                                    <CardText style={{color : "black"}}><b>directors:</b>{mov.directors}</CardText>
+                                    <CardText style={{color : "black"}}><b>director:</b>{mov.director}</CardText>
                                     <CardText style={{color : "black"}}><b>Availability:</b>{mov.availability}</CardText>
                                     <CardText style={{color : "black"}}><b>Price:</b>{mov.price}</CardText>
                                     <CardText style={{color : "black"}}><b>Avg rating:</b>{mov.stars}</CardText>

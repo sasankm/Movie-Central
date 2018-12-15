@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Navbar from '../Navbar.js';
 import axios from 'axios'
 import * as qs from 'query-string';
-import url from '../serverurl';
+import url from '../../serverurl';
 
 //Define a Review Component
 class Rating extends Component{
