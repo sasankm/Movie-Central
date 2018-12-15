@@ -9,6 +9,8 @@ import 'react-dropdown/style.css';
 import Navbar from './Navbar.js';
 import axios from 'axios';
 import * as qs from 'query-string';
+import url from '../serverurl';
+import swal from 'sweetalert';
 
 const options = [
     { value: 'PG', label: 'PG' },
@@ -63,8 +65,8 @@ class AddMovie extends Component{
             rating      : '',
             availability: '',
             price       : null,
-            year        : null
-
+            year        : null,
+            type: ''
         };
 
     }
@@ -72,8 +74,17 @@ class AddMovie extends Component{
     componentDidMount=()=>{
 
         console.log(this.props.match.params.id);
-       // const parsed = qs.parse(this.props.match.params.id);
-        //console.log("Parsed",parsed)
+
+        axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
+        .then((response) => {
+            console.log("in check session of navbar", response.data);
+            if(response.data.message === "invalid session"){ //change to !== after session is done
+                console.log('invalid session');
+            } else {
+                this.setState({type : response.data.type});
+            }
+        })
+
         if(this.props.match.params.id>0){
             axios.get("http://localhost:8080/movie",{
                 params: {
@@ -288,11 +299,35 @@ class AddMovie extends Component{
         }
     }
 
+    deleteMovie = () =>{
+        console.log("in delete movie: ", this.props.match.params.id);
+        axios.get(url + "/deletemovie?movieid=" + this.props.match.params.id, {headers : { Authorization : localStorage.getItem("sessionID") }})
+        .then(response => {
+            console.log(response.data);
+            if(response.data.status === "SUCCESS"){
+                console.log("in delete movie request");
+                swal("Movie deleted sucessfully", "", "success");
+                this.props.history.push("/home");
+            }
+        }).catch(response => {
+            console.log(response);
+        })
+    }
+
 
     render(){
+        let changes = null;
         const { country, region } = this.state;
         const addEdit= (this.props.match.params.id>0) ? "Edit the" : "Add the"
         const add = (this.props.match.params.id>0) ? "Update" : "Add"
+        console.log(this.state.type);
+        if(this.state.type === 'ADMIN' && this.props.match.params.id > 0){
+            changes = (
+                <button style={{backgroundColor : "red"}} onClick = {this.deleteMovie}  class="btn btn-primary"><b>Delete</b></button>                 
+            );   
+        } else {
+            changes = null;
+        }
         return(
             <div style={{backgroundColor: "black"}}>
                 <Navbar history = {this.props.history}/>
@@ -353,8 +388,9 @@ class AddMovie extends Component{
                                     <input value={this.state.year} onChange={this.yearChangeHandler} type="text"
                                            className="form-control" name="price" placeholder="Year" required/>
                                 </div>
-
-                                <button style={{backgroundColor : "red"}} onClick = {this.submitMovie}  class="btn btn-primary"><b>{add}</b></button>                 
+                                <button style={{backgroundColor : "red"}} onClick = {this.submitMovie}  class="btn btn-primary"><b>{add}</b></button>
+                                &nbsp;&nbsp;   
+                                {changes}              
                         </div>
                     </div>
                 </div>

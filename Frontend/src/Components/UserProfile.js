@@ -9,6 +9,12 @@ import queryString from 'query-string';
 import url from '../serverurl';
 import swal from "sweetalert";
 import axios from "axios/index";
+
+
+const textStyle = {
+    color: "black"
+}
+
 class UserProfile extends Component{
 
     constructor(props){
@@ -100,9 +106,6 @@ class UserProfile extends Component{
                                 });
 
                             },
-                            // Note: it's important to handle errors here
-                            // instead of a catch() block so that we don't swallow
-                            // exceptions from actual bugs in components.
                             (error) => {
                                 this.setState({
                                     isLoaded: true,
@@ -111,16 +114,7 @@ class UserProfile extends Component{
                             }
                         )
 
-
-
-
-
-
-
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -128,11 +122,6 @@ class UserProfile extends Component{
                     });
                 }
             )
-
-
-
-
-
 
     }
     changeMonth=(e)=>{
@@ -167,11 +156,15 @@ class UserProfile extends Component{
                               placeholder="Select an option"/>
                 </div>
                 <div>
+               
                 <label>Amount to be paid</label>
-            <input value={this.state.amount} type="text"
+                &nbsp;
+                &nbsp;
+                &nbsp;&nbsp;
+            <input value={this.state.amount} type="text" style={textStyle}
                    name="title" required autoFocus/>
                 </div>
-            & nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <button style={{backgroundColor: "red"}} onClick={this.handleOnClick} className="btn btn-primary"><b>Make
                 Payment</b></button>
                 </div>

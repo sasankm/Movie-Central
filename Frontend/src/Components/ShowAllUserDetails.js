@@ -35,7 +35,6 @@ class ShowAllUserDetails extends React.Component {
         console.log("url parameter",this.props);
 
        // console.log("localstorage in showusers ",localStorage);
-
         fetch(url+"/user")
             .then(res => res.json())
             .then(
@@ -47,9 +46,6 @@ class ShowAllUserDetails extends React.Component {
                     });
 
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -64,7 +60,6 @@ class ShowAllUserDetails extends React.Component {
         console.log("user id is",this.state.user)
 
         var request = {
-
             headers : {
                 Authorization : localStorage.sessionID
             }
@@ -74,13 +69,10 @@ class ShowAllUserDetails extends React.Component {
                 .then(
                     (result) => {
                         console.log("result in show all users",result);
-                        if ((result==null) || (result==undefined)){
-
+                        if ((result===null) || (result===undefined)){
                             swal("User doesn't exist", "", "warning");
                         }
                         else{
-
-
                             console.log("show all user from db",result);
                             if(result[0]["status"]==="success"){
                                 this.setState({
@@ -93,15 +85,7 @@ class ShowAllUserDetails extends React.Component {
                                 this.props.history.push('/login');
                             }
                         }
-
-
-
-
-
                     },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
                     (error) => {
                         this.setState({
                             isLoaded: false,
@@ -143,7 +127,6 @@ class ShowAllUserDetails extends React.Component {
         else {
 
           if (this.state.type === "ADMIN") {
-
               console.log("type of user in showalluserdetails ",this.state.type)
               return (
                   <div>
