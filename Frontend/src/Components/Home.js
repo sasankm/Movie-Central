@@ -118,8 +118,6 @@ class Home extends Component {
 
         console.log("Data to be sent to backend",request);
 
-        //http://example.com/?key=""&key=""&key=""&genre=""&rating=""
-
         axios.get("http://localhost:8080/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){

@@ -51,6 +51,13 @@ public class SearchMovie {
 	private Long count;
 	private Long plays;
 	private Double avg;
+	private String genre;
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 	public SearchMovie(Integer movieid, String title, Integer year, String studio, String synopsis, String image,
 			String movie, String actors, String director, String country, String rating, String availability,
 			Integer price, Long count, Long plays, Double avg) {

@@ -70,16 +70,32 @@ public class LoginController {
 	@GetMapping(value = "/checksession")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public LoginResponse checksession(@RequestHeader("Authorization") Optional<String> sessionID){
-
+		Session s;
 		String res = "", type="";
 		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
 			res = "invalid session";
 		} else {
-			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			s = sessionMap.getSessionMap().get(sessionID.get());
 			System.out.println("This is session :" + s.getEmail());
 			type = s.getType();
 			res = "valid session";
 		}
 		return new LoginResponse("SUCCESS", type, res);
+	}
+	
+	@GetMapping(value = "/getuser")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public LoginResponse checkuser(@RequestHeader("Authorization") Optional<String> sessionID){
+		Session s = null;
+		String res = "", type="";
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			res = "invalid session";
+		} else {
+			s = sessionMap.getSessionMap().get(sessionID.get());
+			System.out.println("This is session :" + s.getEmail());
+			type = s.getType();
+			res = "valid session";
+		}
+		return new LoginResponse("SUCCESS", type, s.getUsername());
 	}
 }
