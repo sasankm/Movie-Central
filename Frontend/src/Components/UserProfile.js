@@ -27,7 +27,6 @@ class UserProfile extends Component{
             email:"",
             enddate:"",
             suscription:"",
-
             redirect:"",
             amount:10,
             options : [

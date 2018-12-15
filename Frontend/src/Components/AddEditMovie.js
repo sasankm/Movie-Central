@@ -66,7 +66,8 @@ class AddMovie extends Component{
             availability: '',
             price       : null,
             year        : null,
-            type: ''
+            type        : '',
+            filled      : ''
         };
 
     }
@@ -205,97 +206,121 @@ class AddMovie extends Component{
 
         console.log("...........",this.state.country,this.state.director)
 
+        let counter=0;
+
         if(this.state.title!="" && this.state.title!=null && this.state.title!=undefined){
             movieDetails.title=this.state.title;
+            counter++;
         }
 
         if(this.state.genre.value!="" && this.state.genre.value!=null && this.state.genre.value!=undefined){
             movieDetails.genre=this.state.genre.value;
+            counter++;
         }
 
         if(this.state.synopsis!="" && this.state.synopsis!=null && this.state.synopsis!=undefined){
             movieDetails.synopsis=this.state.synopsis;
+            counter++;
         }
 
         if(this.state.studioName!="" && this.state.studioName!=null && this.state.studioName!=undefined){
             movieDetails.studio=this.state.studioName;
+            counter++;
         }
 
         if(this.state.imageURL!="" && this.state.imageURL!=null && this.state.imageURL!=undefined){
             movieDetails.image=this.state.imageURL;
+            counter++;
         }
 
         if(this.state.movieURL!="" && this.state.movieURL!=null && this.state.movieURL!=undefined){
             movieDetails.movie=this.state.movieURL;
+            counter++;
         }
 
         if(this.state.actors!="" && this.state.actors!=null && this.state.actors!=undefined){
             movieDetails.actors=this.state.actors;
+            counter++;
         }
 
         if(this.state.director!="" && this.state.director!=null && this.state.director!=undefined){
             movieDetails.director=this.state.director;
+            counter++;
         }
 
         if(this.state.country!="" && this.state.country!=null && this.state.country!=undefined){
             movieDetails.country=this.state.country;
+            counter++;
         }
 
         if(this.state.rating.value!="" && this.state.rating.value!=null && this.state.rating.value!=undefined){
             movieDetails.rating=this.state.rating.value;
+            counter++;
         }
 
         if(this.state.availability.value!="" && this.state.availability.value!=null && this.state.availability.value!=undefined){
             console.log(this.state.availability,this.state.availability.value)
             movieDetails.availability=this.state.availability.value;
+            counter++;
         }
 
         if(this.state.price!="" && this.state.price!=null && this.state.price!=undefined){
             movieDetails.price=this.state.price;
+            counter++;
         }
 
         if(this.state.year!="" && this.state.year!=null && this.state.year!=undefined){
             movieDetails.year=this.state.year;
+            counter++;
         }
 
 
         console.log("Displaying State",movieDetails);
+        console.log("Counter Value=",counter)
 
         //const parsed = qs.parse(this.props.location.search);
-        if(this.props.match.params.id>0){
-            axios.post("http://localhost:8080/update-movie?movieid="+this.props.match.params.id,movieDetails)
-                .then(response => {
-                    if(response.data.status === "SUCCESS"){
-                        console.log("Received success from the backend after successfully inserting the booking record",response.data)
-                        this.setState({
-                            success : "You have successfully made the booking!!!!",
-                            count   : 1
-                        })
-                        console.log("Edited movie",this.props.match.params.id)
-                        this.props.history.push("/video/"+this.props.match.params.id)
-                    }else{
-                        console.log("entered into failure")
-                    }
-                }).catch(res=>{
-                    console.log("Inside catch block of bookingEventHandler",res);
-                })
-        } else {
-            axios.post("http://localhost:8080/add-movie",movieDetails)
-                .then(response => {
-                    if(response.data.status === "SUCCESS"){
-                        console.log("Received success from the backend after successfully inserting the booking record",response.data)
-                        this.setState({
-                            success : "You have successfully made the booking!!!!",
-                            count   : 1
-                        })
-                        console.log("Added movie",response.data.type)
-                        this.props.history.push("/video/"+response.data.type)
-                    }else{
-                        console.log("entered into failure")
-                    }
-                }).catch(res=>{
-                    console.log("Inside catch block of bookingEventHandler",res);
-                })
+        if(counter===13){
+            if(this.props.match.params.id>0){
+                axios.post("http://localhost:8080/update-movie?movieid="+this.props.match.params.id,movieDetails)
+                    .then(response => {
+                        if(response.data.status === "SUCCESS"){
+                            console.log("Received success from the backend after successfully inserting the booking record",response.data)
+                            this.setState({
+                                success : "You have successfully made the booking!!!!",
+                                count   : 1,
+                                filled:''
+                            })
+                            console.log("Edited movie",this.props.match.params.id)
+                            this.props.history.push("/video/"+this.props.match.params.id)
+                        }else{
+                            console.log("entered into failure")
+                        }
+                    }).catch(res=>{
+                        console.log("Inside catch block of bookingEventHandler",res);
+                    })
+            } else {
+                axios.post("http://localhost:8080/add-movie",movieDetails)
+                    .then(response => {
+                        if(response.data.status === "SUCCESS"){
+                            console.log("Received success from the backend after successfully inserting the booking record",response.data)
+                            this.setState({
+                                success : "You have successfully made the booking!!!!",
+                                count   : 1,
+                                filled:''
+                            })
+                            console.log("Added movie",response.data.type)
+                            this.props.history.push("/video/"+response.data.type)
+                        }else{
+                            console.log("entered into failure")
+                        }
+                    }).catch(res=>{
+                        console.log("Inside catch block of bookingEventHandler",res);
+                    })
+            }
+        }else{
+            this.setState({
+                filled : "Please fill in all the details, before adding/editing a movie"
+            })
         }
     }
 
@@ -333,6 +358,7 @@ class AddMovie extends Component{
                 <Navbar history = {this.props.history}/>
                 <div id="img">
                 <div class="container">
+                    <div style={{color : "red"}}><h3>{this.state.filled}</h3></div>
                     <h1 style={{color : "red"}}>{addEdit} Movie</h1>
                     <div class="login-form">
                         <div id="signupAdd">
