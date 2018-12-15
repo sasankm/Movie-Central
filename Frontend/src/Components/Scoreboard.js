@@ -35,10 +35,10 @@ class Scoreboard extends Component{
         })
         axios.get(url + '/scoreboard?cls=rating')
         .then((response) => {
+            console.log(response.data.movies)
             this.setState({
                 movies1: response.data.movies
             })
-            console.log(this.state.movies1);
         }).catch((error) => {
             console.log(error);
         })
@@ -93,7 +93,7 @@ class Scoreboard extends Component{
                 },
                 data: this.state.movies1.map((movie) => ({
                     label: movie.title,
-                    value: Math.round(+movie.count*100)/100
+                    value: Math.round(+movie.avg*100)/100
                 }))
             };
             let chartConfigs = {

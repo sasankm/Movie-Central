@@ -33,6 +33,7 @@ import com.moviecentral.mc.entity.Movie;
 import com.moviecentral.mc.entity.MovieAttributes;
 import com.moviecentral.mc.entity.Payment;
 import com.moviecentral.mc.entity.PlayHistory;
+import com.moviecentral.mc.entity.Review;
 import com.moviecentral.mc.entity.User;
 import com.moviecentral.mc.entity.Attributes;
 import com.moviecentral.mc.models.SearchQuery;
@@ -44,6 +45,7 @@ import com.moviecentral.mc.repository.MovieAttributesRepository;
 import com.moviecentral.mc.repository.MovieRepository;
 import com.moviecentral.mc.repository.PaymentRepository;
 import com.moviecentral.mc.repository.PlayHistoryRepository;
+import com.moviecentral.mc.repository.ReviewRepository;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.MovieSpecifications;
 import com.moviecentral.mc.utils.Session;
@@ -77,13 +79,17 @@ public class MovieController {
 	@Autowired
 	private StopWords stopWord;
 	
+
+	@Autowired
+	private ReviewRepository reviewRepository;
+	
 	
 	private Collection<? extends String> filterStopWords(String str) {
 		String[] split = str.split(" ");
 		Collection<String> ret = new ArrayList<String>();
 		for(String s : split){
 			s = s.replaceAll("[^a-zA-Z0-9]", "");
-			if(stopWord.getWords().contains(s) == false){
+			if(stopWord.getWords().contains(s) == false && s.length() > 0){
 				ret.add(s);
 			}
 		}
@@ -187,8 +193,9 @@ public class MovieController {
 	
 	@GetMapping("/search")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public SearchResponse search(HttpSession session, SearchQuery query){
+	public SearchResponse search(SearchQuery query){
 		Integer page = query.getPage();
+		System.out.println("Page number received"+page);
 		if(page == null){
 			page = 0;
 		}
@@ -263,6 +270,57 @@ public class MovieController {
 		return s;
 	}
 	
+
+	@GetMapping("/deletemovie")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse deleteMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			if(!s.getType().equals("ADMIN")){
+				return new LoginResponse("FAILURE", "", "no authorization");
+			} else {
+				movieAttributesRepository.deleteByMovieid(movieid);
+				movieRepository.deleteById(movieid);
+				return new LoginResponse("SUCCESS", "", "deleted successfully");
+			}
+		}
+	}
+	
+
+	@PostMapping("/add-review")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse reviewMovie(@RequestHeader("Authorization") Optional<String> sessionID, @RequestBody Review review){
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			
+			List<PlayHistory> playHistory = playHistoryRepository.findByUseridAndMovieid(s.getUserid(), review.getMovieid());
+			if(playHistory.size() == 0){
+				return new LoginResponse("SUCCESS", "", "You need to atleast watch once to review");
+			}
+			
+			review.setUserid(s.getUserid());
+			review.setDate(new Timestamp(System.currentTimeMillis()));
+			reviewRepository.save(review);
+			
+			Double avg = reviewRepository.averageRating(review.getMovieid());
+			Movie m = movieRepository.findByMovieid(review.getMovieid());
+			m.setStars(avg);
+			movieRepository.save(m);
+			
+			return new LoginResponse("SUCCESS", "", "added review");
+		}
+	}
+	
+	@GetMapping("/reviews")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public List<Review> reviews(@RequestParam("movieid")Integer movieid){
+		return reviewRepository.findByMovieid(movieid);
+	}
+	
 	@GetMapping("/play")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public LoginResponse playMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
@@ -277,14 +335,6 @@ public class MovieController {
 			List<PlayHistory> p = playHistoryRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
 			
 			if(u.getType().equals("ADMIN")){
-				if(p.size() == 0){
-					PlayHistory pp = new PlayHistory();
-					pp.setDate(new Timestamp(System.currentTimeMillis()));
-					pp.setMovieid(m.getMovieid());
-					pp.setUserid(u.getUserid());
-					pp.setType(m.getAvailability());
-					playHistoryRepository.save(pp);
-				}
 				return new LoginResponse("SUCCESS", u.getType(), "");
 			} else {
 				

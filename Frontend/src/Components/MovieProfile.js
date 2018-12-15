@@ -164,11 +164,7 @@ class MovieProfile extends React.Component {
     }
     handleRating(e){
         console.log("in handle rating");
-        this.props.history.push('/rating', {
-            params :{
-                movieID : this.state.data.movieid
-               }
-        })
+        this.props.history.push('/rating?movieid=' + this.props.match.params.id);
     }
 
     handlePay(e){

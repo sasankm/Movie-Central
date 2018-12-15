@@ -22,6 +22,8 @@ public interface PlayHistoryRepository extends JpaRepository<PlayHistory, Intege
 	List<PlayHistory> findUseridDateBetween(Timestamp s,Timestamp s1);
 
 	List<PlayHistory> findByUserid(Integer userid);
+	
+	List<PlayHistory> findByUseridAndMovieid(Integer userid, Integer movieid);
 
 	List<PlayHistory> findByMovieid(Integer id);
 	
