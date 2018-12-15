@@ -57,6 +57,22 @@ class Home extends Component {
         };
     }
 
+
+    componentDidMount(){
+        var self = this;
+        //check session and type of user and display navbar accordingly
+        axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
+        .then((response) => {
+            console.log("in check session of homepage", response.data);
+            if(response.data.message === "invalid session"){ //change to !== after session is done
+                self.props.history.push("/login");
+            } else {
+                self.setState({type : response.data.type});
+            }
+        })
+    }
+
+
     searchMovie=()=>{
         console.log("search movie clicked.....");
 
@@ -96,7 +112,10 @@ class Home extends Component {
         }
         
         var request = {
-             params: params
+             params: params,
+             headers : { 
+                Authorization : "40410102" 
+             }
         };
 
         console.log("Data to be sent to backend",request);
@@ -155,7 +174,7 @@ class Home extends Component {
         return(
             <div>
                 <div id="img1">
-                    <Navbar />
+                    <Navbar history={this.props.history}/>
                     <div class="container" id="home1" style={{paddingTop : "0%"}}>
                         <h1 style={{color : "red"}}>Search Movie</h1>
                         <form className="form-inline my-2 my-lg-0">
@@ -208,38 +227,6 @@ class Home extends Component {
                 <div>
                     <br/>
                     {movies.map(mov=>(
-                        // <div style={{width : "10%",paddingLeft : "10%", color : "black", backgroundImage: `url(${"./AddMovieBackground.jpg"})`, backgroundColor:"#696969"}}>
-                        //     <Card inverse>
-                        //         <CardImg width="100%"/>
-                        //         <CardImgOverlay>
-                        //             <CardTitle style={{color : "red"}}><b>{mov.title}</b></CardTitle>
-                        //             <CardText style={{color : "black"}}>{mov.description}</CardText>
-                        //             <CardText style={{color : "black"}}>{mov.year},Actor:{mov.actors}</CardText>
-                        //             <CardText style={{color : "black"}}>Director:{mov.director}</CardText>
-                        //             <CardText style={{color : "red"}}>
-                        //                 <small className="text-muted" style={{color : "red"}}>Availability: {mov.availability}
-                        //                     <br/>
-                        //                     Price: {mov.price}
-                        //                 </small>
-                        //             </CardText>
-                        //         </CardImgOverlay>
-                        //     </Card>
-                        //     <hr/> <hr/> 
-                        // </div>
-                        // pathname: '/template',
-                        // search: '?query=abc',
-                        // /home:${this.state.userID}
-
-                        /* 
-                            {
-                                pathname: '/video',
-                                search: `query=${mov.movieid}`
-                            }
-                        */
-
-
-
-
                         <button onClick={() => { this.props.history.push('/video/'+mov.movieid) }}>
                             <h1>{mov.movieid}</h1>
                             <div style={{color:"red"}}>
