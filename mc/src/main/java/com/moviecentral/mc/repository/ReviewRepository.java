@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 
 	@Query("select AVG(r.rating) from Review r where r.movieid = :movieid")
 	Double averageRating(@Param("movieid")Integer movieid);
+
+	List<Review> findByMovieid(Integer movieid);
 }

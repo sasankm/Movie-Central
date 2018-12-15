@@ -89,7 +89,7 @@ public class MovieController {
 		Collection<String> ret = new ArrayList<String>();
 		for(String s : split){
 			s = s.replaceAll("[^a-zA-Z0-9]", "");
-			if(stopWord.getWords().contains(s) == false){
+			if(stopWord.getWords().contains(s) == false && s.length() > 0){
 				ret.add(s);
 			}
 		}
@@ -313,6 +313,12 @@ public class MovieController {
 			
 			return new LoginResponse("SUCCESS", "", "added review");
 		}
+	}
+	
+	@GetMapping("/reviews")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public List<Review> reviews(@RequestParam("movieid")Integer movieid){
+		return reviewRepository.findByMovieid(movieid);
 	}
 	
 	@GetMapping("/play")
