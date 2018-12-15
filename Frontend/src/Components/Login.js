@@ -29,19 +29,14 @@ class Login extends Component{
 
     componentWillMount(){
         //check session
-        // axios.get(url + "/checksession")
-        // .then((response) => {
-        //     console.log("In check session of login page: ", response.data);
-        //     if(response.data.message !== "invalid session"){
-        //         this.setState({
-        //             isLoggedIn: true
-        //         }, () => {
-        //             if(this.state.isLoggedIn == true){
-        //                 this.props.history.push('/home');
-        //             }
-        //         })
-        //     }
-        // })
+        var self = this;
+        axios.get(url + "/checksession", {headers : { Authorization :  localStorage.getItem("sessionID")}})
+        .then((response) => {
+            console.log("In check session of login page: ", response.data);
+            if(response.data.message == "valid session"){
+                self.props.history.push('/home');
+            }
+        })
     }
 
     handleLogin(e){
@@ -51,63 +46,24 @@ class Login extends Component{
             username: this.state.username,
             password:this.state.password
         }
-        localStorage.setItem("username",this.state.username);
 
         axios.post(url + "/login", user)
         .then((response) =>{
             console.log("In handle login after response on login page...", response.data);
-            localStorage.setItem("status",response.data.status);
 
-            var ret=response.data.type.split(" ");
-
-            console.log("ret is  ",ret);
-            localStorage.setItem("userid",parseInt(ret[0]));
-            localStorage.setItem("type",ret[1]);
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
-                this.setState({
-                    isLoggedIn: true
-                }, () =>{
-                    this.props.history.push('/home');
-            })
-        } else {
-            swal(response.data.message, "", "warning");
-        }
-    })
-
-console.log("localstorage ",localStorage);
-
-        // fetch(url + "/login", {
-        //     method:'POST',
-        //     credentials:'include',
-        //     headers: new Headers({
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //       }),
-        //     body: user,
-        //     mode:'no-cors'
-        // })
-        
-        // .then((result) =>{
-        //             console.log("In handle login after response on login page...", result);
-
-        //         //     if(response.data.status === "SUCCESS"){
-        //         //         swal("Login Successfull", "", "success");
-        //         //         this.setState({
-        //         //             isLoggedIn: true
-        //         //         }, () =>{
-        //         //             this.props.history.push('/home');
-        //         //     })
-        //         // } else {
-        //         //     swal(response.data.message, "", "warning");
-        //         // }
-        //     })
+                localStorage.setItem("sessionID", response.data.message);
+                this.props.history.push('/home');
+            } else {
+                swal(response.data.message, "", "warning");
+            }
+        })
     }
 
     render(){
         return(
         <div style={{backgroundColor: "black"}}>
-            <Navbar/>
             <div id="img1">
                 <div class="container">
                     <div class="login-form">

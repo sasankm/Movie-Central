@@ -13,54 +13,39 @@ class NetNavbar extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isLoggedIn: false,
             type: ''
         }
         this.handleLogout = this.handleLogout.bind(this);
     }
 
     componentWillMount(){
+        var self = this;
         //check session and type of user and display navbar accordingly
-        axios.get(url + "/checksession")
+        axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
         .then((response) => {
             console.log("in check session of navbar", response.data);
             if(response.data.message === "invalid session"){ //change to !== after session is done
-                this.setState({
-                    isLoggedIn: true,
-                    type: response.data.type
-                }, () => {
-                    console.log(this.state.type);
-                })
+                self.props.history.push("/login");
+            } else {
+                self.setState({type : response.data.type});
             }
         })
     }
 
     handleLogout(){  //handle logout
-        localStorage.clear();
-        //this.props.history.push("/login");
-        axios.get(url + "/userlogout" )
+        axios.get(url + "/userlogout", {headers : { Authorization : localStorage.getItem("sessionID") }})
         .then((response) => {
             console.log("response after logging out...", response.data);
             if(response.data.status === "SUCCESS"){ //if session has been destroyed successfully
+                localStorage.clear();
                 this.props.history.push("/login");
             }
-            this.setState({
-                isLoggedIn: false,
-                type: ''
-            })
         })
     }
 
     render(){
         let changes = null;
-        if(this.state.isLoggedIn === false ){
-            changes = (
-                <Nav pullRight>
-                    <NavItem eventKey={1} href="/login"><h3>SignIn</h3></NavItem>
-                    <NavItem eventKey={2} href="/signup"><h3>Signup</h3></NavItem>
-                </Nav>
-            );
-        } else if(this.state.isLoggedIn === true && localStorage.type=="ADMIN"){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
+        if(this.state.type == "ADMIN"){  //admin navbar  // add this after doing session && this.state.type === 'ADMIN'
             changes = (
                 <Nav pullRight>
                     <NavItem eventKey={1} href="/stats"><h4><strong>Stats</strong></h4></NavItem>

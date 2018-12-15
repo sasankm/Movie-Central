@@ -57,6 +57,19 @@ class Home extends Component {
         };
     }
 
+    componentDidMount(){
+        var self = this;
+        //check session and type of user and display navbar accordingly
+        axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
+        .then((response) => {
+            console.log("in check session of navbar", response.data);
+            if(response.data.message === "invalid session"){ //change to !== after session is done
+                self.props.history.push("/login");
+            } else {
+                self.setState({type : response.data.type});
+            }
+        })
+    }
 
     searchMovie=()=>{
         console.log("search movie clicked.....");
@@ -97,7 +110,10 @@ class Home extends Component {
         }
         
         var request = {
-             params: params
+             params: params,
+             headers : { 
+                Authorization : "40410102" 
+             }
         };
 
         console.log("Data to be sent to backend",request);
@@ -157,7 +173,7 @@ class Home extends Component {
         return(
             <div>
                 <div id="img1">
-                    <Navbar />
+                    <Navbar history={this.props.history}/>
                     <div class="container" id="home1" style={{paddingTop : "0%"}}>
                         <h1 style={{color : "red"}}>Search Movie</h1>
                         <form className="form-inline my-2 my-lg-0">
@@ -236,7 +252,7 @@ class Home extends Component {
                             <CardTitle style={{color: "black"}}><h3>{mov.title}</h3></CardTitle>
                             <CardSubtitle>{mov.description}</CardSubtitle>
                             </CardBody>
-                            <img width="20%" height="25%" src={require('./SearchBackground.jpg')} alt="Card image cap" />
+                            <img width="20%" height="25%" src="" alt="Card image cap" />
                             <CardBody>
                                 <CardText style={{color : "black"}}><b>Year&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.year}</CardText>
                                 <CardText style={{color : "black"}}><b>Actor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.actors}</CardText>
