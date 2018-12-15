@@ -97,8 +97,13 @@ class MovieProfile extends React.Component {
         console.log("clicked the video")
         var params=queryString.parse(this.props.location.search);
         localStorage.setItem("movieid",queryString.parse(this.props.location.search).movieid);
+        var request = {
 
-         fetch(url+"/play?movieid=" + params.movieid +"&userid="+localStorage.userid) //change after search
+            headers : {
+                Authorization : localStorage.sessionID
+            }
+        };
+         fetch(url+"/play?movieid=" + params.movieid ,request) //change after search
          .then(response=>response.json())
             .then(
                 (result) => {
