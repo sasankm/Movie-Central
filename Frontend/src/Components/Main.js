@@ -24,7 +24,7 @@ class Main extends Component {
                 <div>
                     {/*Render Different Component based on Route*/}
 
-                    <Route exact path = "/" exact component={MainHome} />
+                    <Route exact path = "/" exact component={Home} />
                     <Route path="/login" exact component={Login}/>
                     <Route path="/signup" exact component={Signup} />
                     <Route path="/home" exact component={Home}/>
@@ -38,7 +38,7 @@ class Main extends Component {
                     <Route path="/payment" component={Payment}/>
                     <Route path="/financial" component={FinancialReport} />
                     <Route path="/verify" component={Verify}/>
-                    <Route path="/video" component={Video}/>
+                    <Route path="/video/:id" component={Video}/>
 
                 </div>
 
