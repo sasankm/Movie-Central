@@ -128,7 +128,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
         }
 	}
 	
-	expirydate=expiryyear + '-' + expirymonth +'-' + expiryday +" "+s[1];
+	expirydate=expiryyear + '-' + expirymonth +'-' + expiryday +" 00:00:00";
 	
 	
 	System.out.println("expiry date "+expirydate);
@@ -196,7 +196,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 	        }
 		}
 		
-		expirydate=expiryyear + '-' + expirymonth +'-' + expiryday +" "+n[1];
+		expirydate=expiryyear + '-' + expirymonth +'-' + expiryday +" "+"00:00:00";
 		
 		
 		System.out.println("expiry date below "+expirydate);
@@ -234,6 +234,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 	
 	//Date date1 = (Date) formatter.parse(expirydate);
    // java.sql.Timestamp timeStampDate1 = new Timestamp(date1.getTime());
+	System.out.println("expiry date before ts set "+expirydate);
     Timestamp ts = Timestamp.valueOf(expirydate);
     System.out.println("ts"+ts);
    // System.out.println("date1.getTime()"+date1.getTime());
@@ -245,6 +246,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 	else {
 		user.setSubscription(0);
 	}
+	System.out.println("ts converted "+ts);
 	user.setEnddate(ts);
 	if (sub!=1) {
 		

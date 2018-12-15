@@ -20,7 +20,8 @@ class MovieProfile extends React.Component {
             data:"",
             type:null,
             flag: false,
-            movieid :null
+            movieid :null,
+            reviews: []
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -43,7 +44,14 @@ class MovieProfile extends React.Component {
                     }
                 })
 
-        
+        axios.get(url + "/reviews?movieid=" + this.props.match.params.id)
+        .then((response) => {
+            console.log("in reviews response: ",response.data);
+                this.setState({
+                    reviews: response.data
+                })
+        })
+
 
         console.log("Movie ID received",this.props.match.params.id);
         this.setState({
@@ -66,11 +74,7 @@ class MovieProfile extends React.Component {
 
                     });
 
-
-
-
                     var request = {
-
                         headers : {
                             Authorization : localStorage.sessionID
                         }
@@ -96,11 +100,6 @@ class MovieProfile extends React.Component {
                             }
                         )
 
-
-
-
-
-
                 },
                 (error) => {
                     this.setState({
@@ -110,9 +109,7 @@ class MovieProfile extends React.Component {
                 }
             )
         })
-
-
-        
+   
     }
 
 
@@ -169,8 +166,6 @@ class MovieProfile extends React.Component {
 
     handlePay(e){
         console.log("inside handle pay",this.state.movieid);
-
-
         var request = {
 
             headers : {
@@ -198,13 +193,9 @@ class MovieProfile extends React.Component {
                                 else{
                                     this.props.history.push('/payment?movieid=' +  this.state.movieid+'&&payType=paid'+'&&price='+this.state.data.price +'&&availability='+this.state.data.availability)
 
-
                                 }
 
                             },
-                            // Note: it's important to handle errors here
-                            // instead of a catch() block so that we don't swallow
-                            // exceptions from actual bugs in components.
                             (error) => {
                                 this.setState({
                                     isLoaded: true,
@@ -212,17 +203,7 @@ class MovieProfile extends React.Component {
                                 });
                             }
                         )
-
-
-
-
-
-
-
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -230,16 +211,6 @@ class MovieProfile extends React.Component {
                     });
                 }
             )
-
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -253,12 +224,37 @@ class MovieProfile extends React.Component {
     render() {
 
         let changes =null;
-
-
-
+        let reviewchanges = null;
         let add_edit_movie=null;
         let rate_movie=null;
         let pay=null;
+        let reviews=[...this.state.reviews]
+        if(reviews.length !== 0){
+            reviewchanges = (
+                <div class="row">
+                <div class="col-lg-5">
+                    <table className="table table-hover" id="table2">
+                        <thead>
+                            <tr className='table-secondary'>
+                                <th>User ID</th>
+                                <th>Ratings</th>
+                                <th>Reviews</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {reviews.map(rev => (
+                                <tr>
+                                    <td>{rev.userid}</td>
+                                    <td>{rev.rating}</td>
+                                    <td>{rev.review}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            );
+        } 
 
         if(this.state.type==="ADMIN"){
             add_edit_movie=(
@@ -274,7 +270,6 @@ class MovieProfile extends React.Component {
                <button style={{backgroundColor : "red"}} onClick = {this.handleRating}  class="btn btn-primary"><b>Rate Movie</b></button> 
                </div>
            )
-
 
         }
 
@@ -309,7 +304,7 @@ class MovieProfile extends React.Component {
                 autoplay: 1
             }
         };
-        console.log("result ")
+        console.log("result ", this.state.data);
         if (this.state.data==""){
          return null;
         }
@@ -368,6 +363,7 @@ class MovieProfile extends React.Component {
                                         <td>Movie Price:</td>
                                         <td>{this.state.data.price}</td>
                                     </tr>
+                                    
                                 </tbody>
                             </table>
                             </div>
@@ -376,11 +372,14 @@ class MovieProfile extends React.Component {
                             </div>
                         </div>
                         <div class="row">
-                        
                         {add_edit_movie}
                         {rate_movie}
                         {pay}
                         </div>
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                       {reviewchanges}
                     </div>
                 </div>
         )};

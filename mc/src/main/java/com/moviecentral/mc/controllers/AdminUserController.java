@@ -59,8 +59,7 @@ public class AdminUserController {
 			String email=user.getEmail();
 			String[] end = email.split("@");
 			if (end[1].equals("sjsu.edu")) {
-				
-				
+					
 			}
 			else {
 				
@@ -75,11 +74,7 @@ public class AdminUserController {
 				inner.put("startdate",String.valueOf(user.getStartdate()));
 			    inner.put("enddate",String.valueOf(user.getEnddate()));
 				ar.add(inner);
-			}
-			
-					
-			
-			
+			}	
 			
 		}
 		
@@ -99,7 +94,7 @@ public class AdminUserController {
 		}else {
 			User user=userRepository.findByUsername(username);
 			//System.out.println("details based on username "+list1.getEmail());		
-			System.out.println("user in admin user controller"+user);
+			System.out.println("user in admin user controller: "+user);
 			if (user==null) {
 				return null;
 			}
@@ -117,7 +112,6 @@ public class AdminUserController {
 			ar.add(inner);
 			
 		}
-		
 		
 		return ar;
 	}
