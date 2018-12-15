@@ -206,6 +206,7 @@ public class MovieController {
 				.and(MovieSpecifications.withActors(query.getActors()))
 				.and(MovieSpecifications.withDirectors(query.getDirectors()))
 				.and(MovieSpecifications.withRating(query.getRating()))
+				.and(MovieSpecifications.withAvailability(query.getAvailability()))
 				.and(MovieSpecifications.withStars(query.getStars())), PageRequest.of(page, 10)).getContent();
 		
 		

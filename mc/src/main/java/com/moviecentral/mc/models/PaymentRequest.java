@@ -5,6 +5,10 @@ import java.sql.Date;
 public class PaymentRequest {
 
 	
+	public PaymentRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	private Integer userid;
 	private Integer movieid;
 	String type;

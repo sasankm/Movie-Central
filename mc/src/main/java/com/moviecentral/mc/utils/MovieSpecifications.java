@@ -130,5 +130,19 @@ public class MovieSpecifications {
             };
         }
 	}
+
+	public static Specification<Movie> withAvailability(String availability) {
+		if (availability == null) {
+            return null;
+        } else {
+            return new Specification<Movie>(){
+            	static final long serialVersionUID = 1;
+				@Override
+				public Predicate toPredicate(Root<Movie> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+					return cb.equal(root.get("availability"), availability);
+				}
+            };
+        }
+	}
 	
 }

@@ -10,6 +10,7 @@ public class SearchQuery {
 	String rating;
 	Integer stars;
 	Integer page;
+	String availability;
 	
 	public Integer getPage() {
 		return page;
@@ -90,6 +91,14 @@ public class SearchQuery {
 
 	public void setStars(Integer stars) {
 		this.stars = stars;
+	}
+
+	public String getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(String availability) {
+		this.availability = availability;
 	}
 	
 }
