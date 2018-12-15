@@ -4,6 +4,7 @@ import {Form,FormGroup,Col,ControlLabel,Checkbox,Button,FormControl} from 'react
 import TextareaAutosize from 'react-textarea-autosize';
 import Navbar from '../Navbar.js';
 import axios from 'axios'
+import * as qs from 'query-string';
 
 //Define a Review Component
 class Rating extends Component{
@@ -13,8 +14,6 @@ class Rating extends Component{
         super(props);
         //maintain the state required for this component
         this.state = { 
-            movieID     :   1,
-            userID      :   3,
             rating      :   null,
             movieComment:   ''
         };
@@ -40,23 +39,23 @@ class Rating extends Component{
     }
 
     submitRating=()=>{
-        const ratingDetails={
-            movieID     :   this.state.movieID,
-            userID      :   this.state.userID,
-            rating      :   this.state.rating,
-            movieComment:   this.state.movieComment
-        }
-        console.log("Displaying State",ratingDetails);
 
-        axios.post("http://localhost:8080/add-review",ratingDetails)
+       const parsed = qs.parse(this.props.location.search);
+        const ratingDetails={
+            movieid     :   parsed.movieid,
+            rating      :   this.state.rating,
+            review     :   this.state.movieComment
+        }
+        var self = this;
+        console.log("Displaying State",ratingDetails);
+        axios.post("http://localhost:8080/add-review",ratingDetails, {headers : {Authorization : localStorage.getItem("sessionID")}})
             .then(response => {
-                if(response.data.status === 200){
-                    console.log("Received success from the backend after successfully inserting the rating for the movie")
-                    this.setState({
-                        success : "You have successfully rated the movie!!!!"
-                    })
-                }else{
-                    console.log("entered into failure")
+                if(response.data.status == "SUCCESS"){
+                    if(response.data.message == "You need to atleast watch once to review"){
+                        //swal
+                    } else {
+                        self.props.history.push("/video/"+parsed.movieid);
+                    }
                 }
             }).catch(err=>{
                 console.log("Inside catch block of submitRating",err);

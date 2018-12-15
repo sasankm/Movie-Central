@@ -33,7 +33,14 @@ public class Movie {
 	private String availability;
 	private Integer price;
 	private String genre;
+	private Double stars;
 	
+	public Double getStars() {
+		return stars;
+	}
+	public void setStars(Double stars) {
+		this.stars = stars;
+	}
 	public String getGenre() {
 		return genre;
 	}

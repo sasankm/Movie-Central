@@ -33,6 +33,7 @@ import com.moviecentral.mc.entity.Movie;
 import com.moviecentral.mc.entity.MovieAttributes;
 import com.moviecentral.mc.entity.Payment;
 import com.moviecentral.mc.entity.PlayHistory;
+import com.moviecentral.mc.entity.Review;
 import com.moviecentral.mc.entity.User;
 import com.moviecentral.mc.entity.Attributes;
 import com.moviecentral.mc.models.SearchQuery;
@@ -44,6 +45,7 @@ import com.moviecentral.mc.repository.MovieAttributesRepository;
 import com.moviecentral.mc.repository.MovieRepository;
 import com.moviecentral.mc.repository.PaymentRepository;
 import com.moviecentral.mc.repository.PlayHistoryRepository;
+import com.moviecentral.mc.repository.ReviewRepository;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.MovieSpecifications;
 import com.moviecentral.mc.utils.Session;
@@ -76,6 +78,10 @@ public class MovieController {
 	
 	@Autowired
 	private StopWords stopWord;
+	
+
+	@Autowired
+	private ReviewRepository reviewRepository;
 	
 	
 	private Collection<? extends String> filterStopWords(String str) {
@@ -278,6 +284,33 @@ public class MovieController {
 				movieRepository.deleteById(movieid);
 				return new LoginResponse("SUCCESS", "", "deleted successfully");
 			}
+		}
+	}
+	
+
+	@PostMapping("/add-review")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse reviewMovie(@RequestHeader("Authorization") Optional<String> sessionID, @RequestBody Review review){
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			
+			List<PlayHistory> playHistory = playHistoryRepository.findByUseridAndMovieid(s.getUserid(), review.getMovieid());
+			if(playHistory.size() == 0){
+				return new LoginResponse("SUCCESS", "", "You need to atleast watch once to review");
+			}
+			
+			review.setUserid(s.getUserid());
+			review.setDate(new Timestamp(System.currentTimeMillis()));
+			reviewRepository.save(review);
+			
+			Double avg = reviewRepository.averageRating(review.getMovieid());
+			Movie m = movieRepository.findByMovieid(review.getMovieid());
+			m.setStars(avg);
+			movieRepository.save(m);
+			
+			return new LoginResponse("SUCCESS", "", "added review");
 		}
 	}
 	

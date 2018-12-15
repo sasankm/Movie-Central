@@ -16,4 +16,7 @@ import com.moviecentral.mc.models.ReviewScore;
 public interface ReviewRepository extends JpaRepository<Review, Integer>{
 	@Query( "select new com.moviecentral.mc.models.ReviewScore(r, avg(r.rating)) from Review r where r.date >= :date group by r.movieid order by 2 desc")
 	List<ReviewScore> findReviewScore(@Param("date")Timestamp date, @Param("pageable")Pageable pageable);
+
+	@Query("select AVG(r.rating) from Review r where r.movieid = :movieid")
+	Double averageRating(@Param("movieid")Integer movieid);
 }
