@@ -81,7 +81,7 @@ class Home extends Component {
 
         var params = new URLSearchParams();
 
-        if(this.state.movieName!=null && this.state.movieName!=undefined){
+        if(this.state.genre!="" && this.state.movieName!=null && this.state.movieName!=undefined){
             let splitArr=this.state.movieName.split(" ");
             splitArr.forEach((ele)=>{
                 console.log(ele);
@@ -89,27 +89,27 @@ class Home extends Component {
             })
         }
 
-        if(this.state.genre!=null && this.state.genre.value!=undefined){
+        if(this.state.genre!="" && this.state.genre!=null && this.state.genre.value!=undefined){
             console.log(this.state.genre.value)
             params.append("genre",this.state.genre.value)
         }
 
-        if(this.state.rating!=null && this.state.rating.value!=undefined){
+        if(this.state.rating!="" && this.state.rating!=null && this.state.rating.value!=undefined){
             console.log(this.state.genre.value)
             params.append("rating",this.state.rating.value)
         }
 
-        if(this.state.availability!=null && this.state.availability.value!=undefined){
+        if(this.state.availability!="" && this.state.availability!=null && this.state.availability.value!=undefined){
             console.log(this.state.availability.value)
             params.append("availability",this.state.availability.value)
         }
 
-        if(this.state.actors!=null && this.state.actors!=undefined){
+        if(this.state.actors!="" && this.state.actors!=null && this.state.actors!=undefined){
             console.log(this.state.actors)
             params.append("actors",this.state.actors)
         }
 
-        if(this.state.director!=null && this.state.director!=undefined){
+        if(this.state.director!="" && this.state.director!=null && this.state.director!=undefined){
             console.log(this.state.director)
             params.append("director",this.state.director)
         }
