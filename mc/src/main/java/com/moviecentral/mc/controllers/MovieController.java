@@ -295,14 +295,6 @@ public class MovieController {
 			List<PlayHistory> p = playHistoryRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
 			
 			if(u.getType().equals("ADMIN")){
-				if(p.size() == 0){
-					PlayHistory pp = new PlayHistory();
-					pp.setDate(new Timestamp(System.currentTimeMillis()));
-					pp.setMovieid(m.getMovieid());
-					pp.setUserid(u.getUserid());
-					pp.setType(m.getAvailability());
-					playHistoryRepository.save(pp);
-				}
 				return new LoginResponse("SUCCESS", u.getType(), "");
 			} else {
 				
