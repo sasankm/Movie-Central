@@ -120,7 +120,15 @@ class Home extends Component {
         };
 
         console.log("Data to be sent to backend",request);
+<<<<<<< HEAD
         axios.get("http://localhost:8080/search",request)
+=======
+
+        //axios.get("http://localhost:8080/search",request)
+        //http://example.com/?key=""&key=""&key=""&genre=""&rating=""
+
+        axios.get(url+"/search",request)
+>>>>>>> c311e9a59487fe17aeb5465297c44f00f1f18dcc
             .then(response => {
                 if(response.data.status === "SUCCESS"){
                     console.log("Successfully received movies from backend", response.data)
