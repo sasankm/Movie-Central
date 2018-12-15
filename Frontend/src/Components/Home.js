@@ -85,7 +85,7 @@ class Home extends Component {
             let splitArr=this.state.movieName.split(" ");
             splitArr.forEach((ele)=>{
                 console.log(ele);
-                params.append("key", ele);
+                params.append("keys", ele);
             })
         }
 
@@ -115,10 +115,7 @@ class Home extends Component {
         }
         
         var request = {
-             params: params,
-             headers : { 
-                Authorization : localStorage.getItem("sessionID")
-             }
+             params: params
         };
 
         console.log("Data to be sent to backend",request);
@@ -183,7 +180,7 @@ class Home extends Component {
             let splitArr=this.state.movieName.split(" ");
             splitArr.forEach((ele)=>{
                 console.log(ele);
-                params.append("key", ele);
+                params.append("keys", ele);
             })
         }
 
@@ -216,10 +213,7 @@ class Home extends Component {
 
 
         var request = {
-             params: params,
-             headers : { 
-                Authorization : localStorage.getItem("sessionID")
-             }
+             params: params
         };
 
         console.log("Data Selected",data.selected);

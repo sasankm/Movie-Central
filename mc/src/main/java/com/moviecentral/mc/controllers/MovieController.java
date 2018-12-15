@@ -193,7 +193,7 @@ public class MovieController {
 	
 	@GetMapping("/search")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public SearchResponse search(HttpSession session, SearchQuery query){
+	public SearchResponse search(SearchQuery query){
 		Integer page = query.getPage();
 		System.out.println("Page number received"+page);
 		if(page == null){
