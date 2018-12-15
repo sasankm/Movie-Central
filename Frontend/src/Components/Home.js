@@ -41,6 +41,15 @@ const options2 = [
     { value: 'Superhero', label: 'Superhero' }
 ]
 
+
+const options3 = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+];
+
 class Home extends Component {
    //call the constructor method
    constructor(props){
@@ -56,7 +65,8 @@ class Home extends Component {
             director    : '',
             movies      : [],
             found       : false,
-            endOfResult : ""
+            endOfResult : "",
+            stars       : ''
         };
     }
 
@@ -102,6 +112,12 @@ class Home extends Component {
         if(this.state.availability!="" && this.state.availability!=null && this.state.availability.value!=undefined){
             console.log(this.state.availability.value)
             params.append("availability",this.state.availability.value)
+        }
+
+
+        if(this.state.stars!="" && this.state.stars!=null && this.state.stars.value!=undefined){
+            console.log(this.state.stars.value)
+            params.append("stars",this.state.stars.value)
         }
 
         if(this.state.actors!="" && this.state.actors!=null && this.state.actors!=undefined){
@@ -153,6 +169,10 @@ class Home extends Component {
         this.setState({ availability : selectedOption});
     }
 
+    starsChangeHandler= (selectedOption) => {
+        this.setState({ stars : selectedOption});
+    }
+
     actorsChangeHandler=(e)=>{
         this.setState({
           actors : e.target.value
@@ -197,6 +217,12 @@ class Home extends Component {
         if(this.state.availability!="" && this.state.availability!=null && this.state.availability.value!=undefined){
             console.log(this.state.availability.value)
             params.append("availability",this.state.availability.value)
+        }
+
+        
+        if(this.state.stars!="" && this.state.stars!=null && this.state.stars.value!=undefined){
+            console.log(this.state.stars.value)
+            params.append("stars",this.state.stars.value)
         }
 
         if(this.state.actors!="" && this.state.actors!=null && this.state.actors!=undefined){
@@ -311,6 +337,12 @@ class Home extends Component {
 
                             <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
                                 <Select class="form-control"  value={this.state.availability} onChange={this.availabilityChangeHandler} options={options1} placeholder="Availability"/>
+                            </div>
+
+                            <br></br> <br></br>
+
+                            <div style={{width : "90%", paddingLeft : "10%", color : "black"}}>
+                                <Select class="form-control"  value={this.state.stars} onChange={this.starsChangeHandler} options={options3} placeholder="Stars"/>
                             </div>
 
                             <br></br> <br></br>
