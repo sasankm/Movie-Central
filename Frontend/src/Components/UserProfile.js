@@ -152,27 +152,28 @@ class UserProfile extends Component{
     handleOnClick = () => {
         // some action...
         // then redirect
-        this.setState({redirect: true});
+        this.props.history.push({pathname:'/payment?movieid=&payType=subscription&price='+this.state.amount +'&availability=',state:{referrer:this.state}})
+
+        //return <Redirect to={{pathname:'/payment?movieid=&payType=subscription&price='+this.state.amount +'&availability=',state:{referrer:this.state}}} />;
+
     }
 
     render(){
-        if (this.state.redirect==true) {
-            return <Redirect to={{pathname:"/payment",state:{referrer:this.state}}} />;
-        }
+
         let changes =null;
         console.log("logged user type in user profile ",this.state.typeOfuser)
         if(this.state.typeOfuser==="USER"){
             console.log("hehre", url)
             changes = (
                 <div>
-                <div className="form-group">
+                <div>
                     <label>Select payment period</label>
                     <Dropdown options={this.state.options} onChange={this.changeMonth} value={this.state.selectedMonth}
                               placeholder="Select an option"/>
                 </div>
-                <div className="form-group">
+                <div>
                 <label>Amount to be paid</label>
-            <input value={this.state.amount} type="text" className="form-control"
+            <input value={this.state.amount} type="text"
                    name="title" required autoFocus/>
                 </div>
             & nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,35 +196,35 @@ class UserProfile extends Component{
                             <div id="profile">
                                 <h1 id="h1">{this.state.username}'s Profile</h1>
                                 &nbsp;
-                                <form class="form" onSubmit={this.handleOnClick}>
-                                    <div class="form-group">
+                                {/*<form class="form" onSubmit={this.handleOnClick}>*/}
+                                    <div>
                                         <label>User ID</label> <input  value={this.state.userid} type="text" class="form-control" name="title"  autoFocus/>
                                     </div>
                                     &nbsp;
                                     &nbsp;
-                                    <div class="form-group">
+                                    <div>
                                         <label>User Name</label>
 
                                         <input value={this.state.username}  type="text" class="form-control" name="title"  autoFocus/>
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div class="form-group">
+                                    <div>
                                         <label>Email</label>
                                         <input value={this.state.email}  type="text" class="form-control" name="title"  required autoFocus/>
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div class="form-group">
+                                    <div>
                                         <label>Subscription</label>
                                         <input value={this.state.subscription} type="text" class="form-control" name="title"  required autoFocus/>
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div class="form-group">
+                                    <div>
                                         <label>End Date</label>
                                         <input value={this.state.enddate} type="text" class="form-control" name="title"  required autoFocus/>
                                     </div>
                                     &nbsp;&nbsp;
                                     {changes}
-                                    </form>
+                                    {/*</form>*/}
                             </div>
                         </div>
                     </div>

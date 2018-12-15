@@ -7,6 +7,7 @@ import 'react-dropdown/style.css'
 import swal from 'sweetalert';
 import axios from 'axios';
 import url from '../serverurl';
+import queryString from 'query-string'
 class Payment extends Component{
 
     constructor(props){
@@ -21,7 +22,11 @@ class Payment extends Component{
             datafromUserProfile:this.props.location.state && this.props.location.state.referrer,
             message: "",
             expirydate:"",
-
+            payType:"",
+            movieid:"",
+            price:0,
+            availability:"",
+            type1:""
         }
 
         var t=new Date();
@@ -57,6 +62,10 @@ class Payment extends Component{
 
     componentDidMount(){
 
+        //const value=queryString.parse(this.props.location.search);
+        console.log("in payment query ",value);
+
+
     var self = this;
     axios.get(url + "/checksession", {headers : { Authorization :  localStorage.getItem("sessionID")}})
 .then((response) => {
@@ -68,38 +77,118 @@ class Payment extends Component{
     }
 
 })
+
+        //const parsed = qs.parse(location.search);
+        var value=queryString.parse(this.props.location.search);
+
+        console.log("parsed in payment ",value);
+this.setState({payType:value.payType,movieid:value.movieid,price:value.price,availability:value.availability})
+        console.log(" state from previous= ",this.state.datafromUserProfile)
+
 }
 
     submitPayment = () => {
 
-        var payment = {
-            userid: this.state.datafromUserProfile.userid,
-            movieid: this.state.datafromUserProfile.movieid,
-            //type: this.state.datafromUserProfile.type,
-            //date:date,
-            amount:this.state.datafromUserProfile.amount,
-            username:this.state.datafromUserProfile.username,
-            selectedMonth:this.state.datafromUserProfile.selectedMonth,
-            //expirydate:expdate,
-           // startdate:sdate
+        var payment;
+        if(this.state.payType==="subscription")
+        {
+
+            payment = {
+                userid: this.state.datafromUserProfile.userid,
+                movieid: this.state.datafromUserProfile.movieid,
+                //type: this.state.datafromUserProfile.type,
+                //date:date,
+                amount:this.state.datafromUserProfile.amount,
+                username:this.state.datafromUserProfile.username,
+                selectedMonth:this.state.datafromUserProfile.selectedMonth,
+                //expirydate:expdate,
+                // startdate:sdate
+
+
+            }
+
+
+
+
+        }else{
+
+
+            var request = {
+
+                headers : {
+                    Authorization : localStorage.sessionID
+                }
+            };
+            fetch(url+"/getuser",request)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                         payment = {
+                            userid: result.userid,
+                            movieid:this.state.movieid,
+                            //type: this.state.datafromUserProfile.type,
+                            //date:date,
+                            amount:this.state.price,
+                            // priceusername:this.state.datafromUserProfile.username,
+                            // selectedMonth:this.state.datafromUserProfile.selectedMonth,
+                            //expirydate:expdate,
+                            // startdate:sdate
+
+
+                        }
+
+
+
+                    },
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
+                    (error) => {
+                        this.setState({
+                            isLoaded: true,
+                            error
+                        });
+                    }
+                )
+
 
 
         }
-       console.log("payment in from end is",payment);
-        axios.post(url + '/payment/?type=subscription', payment)
-            .then((response) => {
-                console.log("response from payment",response.data);
-                if(response.data.status == "SUCCESS"){
-                    swal("Payment Successfull","", "success");
-                    this.setState({
-                        message: response.data.message,
-                    }, () =>{
-                        this.props.history.push("/profile");
-                    })
-                } else {
-                    swal(response.data.message, "", "warning");
-                }
-            })
+var typeOfPayment;
+if(this.state.payType==="subscription"){
+            typeOfPayment="subscription"
+
+}
+else{
+
+    typeOfPayment="paid"
+}
+
+
+            console.log("payment in from end is",payment);
+            axios.post(url + '/payment/?type='+typeOfPayment, payment)
+                .then((response) => {
+                    console.log("response from payment",response.data);
+                    if(response.data.status == "SUCCESS"){
+                        swal("Payment Successfull","", "success");
+                        this.setState({
+                            message: response.data.message,
+                        }, () =>{
+                            this.props.history.push("/profile");
+                        })
+                    } else {
+                        swal(response.data.message, "", "warning");
+                    }
+                })
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -116,6 +205,11 @@ class Payment extends Component{
                         <h1 style={{color : "red"}}>Payment</h1>
                         <div class="login-form">
                             <div id="signup">
+                                <div className="form-group">
+                                    <label> Amount </label>
+                                    <input onChange={this.nameChangeHandler} type="text" className="form-control"
+                                           value={this.state.price}  required/>
+                                </div>
                                 <div class="form-group">
                                     <input onChange = {this.nameChangeHandler} type="text" class="form-control" name="title" placeholder="Name on card" required/>
                                 </div>

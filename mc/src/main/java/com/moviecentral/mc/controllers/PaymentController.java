@@ -44,7 +44,9 @@ Payment payment=new Payment();
 @CrossOrigin(origins ="http://localhost:3000")
 @ResponseBody
 public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam("type") String type) throws ParseException{
-	
+	System.out.println("req id in may payment is "+req.getUserid());
+	System.out.println("req in may payment is "+req);
+	System.out.println("type in may payment is "+type);
 	if(type.equals("subscription")) {	
 	
 	 String username=req.getUsername();
@@ -261,7 +263,7 @@ public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam
 	    payment.setDate(presentdate);
 	    payment.setMovieid(req.getMovieid());
 	    payment.setUserid(req.getUserid());
-	    payment.setType(type);
+	    payment.setType("paid");
 	    
 	    paymentRepository.save(payment);
 		

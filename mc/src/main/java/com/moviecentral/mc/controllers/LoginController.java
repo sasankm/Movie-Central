@@ -96,6 +96,6 @@ public class LoginController {
 			type = s.getType();
 			res = "valid session";
 		}
-		return new LoginResponse("SUCCESS", type, s.getUsername());
+		return new LoginResponse("SUCCESS", Integer.toString(s.getUserid()), s.getUsername());
 	}
 }
