@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +47,7 @@ import com.moviecentral.mc.repository.PlayHistoryRepository;
 import com.moviecentral.mc.repository.UserRepository;
 import com.moviecentral.mc.utils.MovieSpecifications;
 import com.moviecentral.mc.utils.Session;
+import com.moviecentral.mc.utils.SessionMap;
 import com.moviecentral.mc.utils.StopWords;
 
 @RestController
@@ -56,6 +58,9 @@ public class MovieController {
 	
 	@Autowired
 	private AttributesRepository attributesRepository;
+
+	@Autowired
+	private SessionMap sessionMap;
 
 	@Autowired
 	private PaymentRepository paymentRepository;
@@ -260,15 +265,14 @@ public class MovieController {
 	
 	@GetMapping("/play")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public LoginResponse playMovie(HttpSession session, @RequestParam("movieid")Integer movieid,  @RequestParam("userid")Integer userid){
-		Session s = (Session) session.getAttribute("session");
+	public LoginResponse playMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
 		System.out.println("movieid inside play is "+movieid);
-//		if(s == null || s.getUserid() == -1){
-//			return new LoginResponse("FAILURE", "", "invalid session");
-//		} else {
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
 			Movie m = movieRepository.findByMovieid(movieid);
-//			User u = userRepository.findByEmail(s.getEmail());
-			User u = userRepository.findById(userid).get();
+			User u = userRepository.findByEmail(s.getEmail());
 			Timestamp ts = new Timestamp(System.currentTimeMillis() - (long)24*60*60*1000);
 			List<PlayHistory> p = playHistoryRepository.findIfPaid(ts, u.getUserid(), m.getMovieid());
 			
@@ -367,7 +371,7 @@ public class MovieController {
 					return new LoginResponse("FAILURE", u.getType(), "Activate your account to watch this movie");
 				}
 			}
-//		}
+		}
 	}
 	
 }
