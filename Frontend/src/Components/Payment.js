@@ -109,7 +109,7 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
 
 
             }
-
+            this.setState({paymentData:payment})
 
 
 
