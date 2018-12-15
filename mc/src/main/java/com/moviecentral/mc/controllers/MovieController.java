@@ -263,6 +263,24 @@ public class MovieController {
 		return s;
 	}
 	
+
+	@GetMapping("/deletemovie")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse deleteMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
+		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
+			return new LoginResponse("FAILURE", "", "invalid session");
+		} else {
+			Session s = sessionMap.getSessionMap().get(sessionID.get());
+			if(!s.getType().equals("ADMIN")){
+				return new LoginResponse("FAILURE", "", "no authorization");
+			} else {
+				movieAttributesRepository.deleteByMovieid(movieid);
+				movieRepository.deleteById(movieid);
+				return new LoginResponse("SUCCESS", "", "deleted successfully");
+			}
+		}
+	}
+	
 	@GetMapping("/play")
 	@CrossOrigin(origins ="http://localhost:3000")
 	public LoginResponse playMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
