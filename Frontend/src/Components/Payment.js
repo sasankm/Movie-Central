@@ -6,6 +6,7 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import swal from 'sweetalert';
 import axios from 'axios';
+import url from '../serverurl';
 class Payment extends Component{
 
     constructor(props){
@@ -21,16 +22,12 @@ class Payment extends Component{
             message: "",
             expirydate:"",
 
-
-
         }
 
         var t=new Date();
         console.log("todays date",t.getDate())
         console.log("todays month",t.getMonth())
         console.log("todays year",t.getFullYear())
-
-
     }
 
     componentWillMount(){
@@ -58,125 +55,22 @@ class Payment extends Component{
     }
 
 
+    componentDidMount(){
+
+    var self = this;
+    axios.get(url + "/checksession", {headers : { Authorization :  localStorage.getItem("sessionID")}})
+.then((response) => {
+    console.log("In check session of showalluserdetails page: ", response.data);
+    this.setState({type:response.data.type})
+    if(response.data.message != "valid session"){
+        swal("Invalid session please login", "", "warning");
+        self.props.history.push('/login');
+    }
+
+})
+}
+
     submitPayment = () => {
-        // some action...
-        // then redirect
-       // this.setState({redirect: true});
-        /*
-        var expdate;
-        var date;
-        var today = new Date();
-        var d;
-        if(today.getDate()>9){
-
-            d=today.getDate();
-        }
-        else{
-            d='0'+today.getDate();
-        }*/
-        //var sdate="";
-        //var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + d;
-        //var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + d;
-        /*
-        if (this.state.datafromUserProfile.subscription==0){
-
-         sdate=date;
-
-
-        console.log("In Side Payment handle Submit",date);
-        var expirymonth;
-        var expiryyear=today.getFullYear();
-        console.log("expiry date initialised to present",expiryyear);
-        var expiryday;
-       console.log("(today.getMonth()+1 + this.state.datafromUserProfile.selectedMonth)",(today.getMonth()+1 + this.state.datafromUserProfile.selectedMonth));
-        console.log("type of this.state.datafromUserProfile.selectedMonth ",typeof this.state.datafromUserProfile.selectedMonth)
-
-       if ((today.getMonth()+1 + parseInt(this.state.datafromUserProfile.selectedMonth))>12){
-           expirymonth=(today.getMonth()+1 + parseInt(this.state.datafromUserProfile.selectedMonth))-12;
-           if (expirymonth<10){
-               expirymonth='0'+expirymonth;
-           }
-           expiryyear+=1;
-          // expirydate=expiryyear+'-'+expirymonth+'-'+d;
-       }
-       else{
-           expirymonth=today.getMonth()+1;
-
-           //expirydate=today.getFullYear() + '-' + (today.getMonth() + 1)+ this.state.datafromUserProfile.selectedMonth+ '-' + d;
-       }
-        var day = new Date(expiryyear, expirymonth + 1, 0);
-       console.log("day is ",day);
-        if (d>day){
-
-            expiryday=day;
-
-
-        }
-        else{
-            expiryday=d;
-
-
-        }
-        expdate=expiryyear+'-'+expirymonth+'-'+expiryday;
-
-        console.log("expiry date is ",expdate)
-
-
-        }
-
-        else{
-           var userenddate=this.state.datafromUserProfile.enddate;
-           var datesplit=userenddate.split("-")
-            var month=parseInt(datesplit[1])
-            var year=parseInt(datesplit[0])
-            var day1=parseInt(datesplit[2])+1
-            var expday;
-           var expmonth;
-           var expyear=year;
-
-           console.log("user subscription end date split ",year,month,day1)
-
-            if ((month + parseInt(this.state.datafromUserProfile.selectedMonth))>12){
-                expmonth=(month + parseInt(this.state.datafromUserProfile.selectedMonth))-12;
-                if (expmonth<10){
-                    expmonth='0'+expmonth;
-                }
-                expyear=year+1;
-                // expirydate=expiryyear+'-'+expirymonth+'-'+d;
-            }
-            else{
-                expmonth=month+parseInt(this.state.datafromUserProfile.selectedMonth);
-                if (expmonth<10){
-                    expmonth='0'+expmonth;
-                }
-                //expirydate=today.getFullYear() + '-' + (today.getMonth() + 1)+ this.state.datafromUserProfile.selectedMonth+ '-' + d;
-            }
-            var day2 = new Date(expyear, parseInt(expmonth) + 1, 0);
-           //console.log("day2 is ",day2)
-           console.log("expiry month +1 ",expmonth + 1);
-            console.log("day is ",day2);
-            if (day1>day2){
-
-                expday=day2;
-                if (expday<10){
-                    expday='0'+expday;
-                }
-
-            }
-            else{
-                expday=day1;
-                if (expday<10){
-                    expday='0'+expday;
-                }
-
-
-            }
-            expdate=expyear+'-'+expmonth+'-'+expday;
-           // this.state.setState({expirydate:expdate});
-            console.log("expiry date if subcription =1  is  ",expdate)
-
-        }
-*/
 
         var payment = {
             userid: this.state.datafromUserProfile.userid,
@@ -192,7 +86,7 @@ class Payment extends Component{
 
         }
        console.log("payment in from end is",payment);
-        axios.post("http://localhost:8080" + '/payment/?type=subscription', payment)
+        axios.post(url + '/payment/?type=subscription', payment)
             .then((response) => {
                 console.log("response from payment",response.data);
                 if(response.data.status == "SUCCESS"){
@@ -213,10 +107,10 @@ class Payment extends Component{
         if (this.state.redirect==true) {
             return <Redirect push to="/showusers" />;
         }
-        console.log("details from prev page",this.state.datafromUserProfile.userid);
+        //console.log("details from prev page",this.state.datafromUserProfile.userid);
         return(
             <div style={{backgroundColor: "black"}}>
-                <Navbar/>
+                <Navbar history={this.props.history}/>
                 <div id="img">
                     <div class="container">
                         <h1 style={{color : "red"}}>Payment</h1>

@@ -55,7 +55,7 @@ class Verify extends Component{
     render(){
         return(
             <div style={{backgroundColor: "black"}}>
-             <Navbar/>
+             <Navbar history={this.props.history}/>
 
             </div>
         );

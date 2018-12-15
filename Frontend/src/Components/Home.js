@@ -53,7 +53,8 @@ class Home extends Component {
             availability: '',
             actors      : '',
             director    : '',
-            movies      : []
+            movies      : [],
+            found       : false
         };
     }
 
@@ -120,12 +121,16 @@ class Home extends Component {
 
         console.log("Data to be sent to backend",request);
 
-        axios.get("http://localhost:8080/search",request)
+        //axios.get("http://localhost:8080/search",request)
+        //http://example.com/?key=""&key=""&key=""&genre=""&rating=""
+
+        axios.get(url+"/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){
                     console.log("Successfully received movies from backend", response.data)
                     this.setState({
-                        movies : response.data.movies
+                        movies : response.data.movies,
+                        found  : true
                     })
                 }else{
                     console.log("entered into failure")
@@ -169,8 +174,17 @@ class Home extends Component {
 
     render(){
         let movies=[...this.state.movies]
+        let heading=null;
+        if(this.movieChangeHandler.length>0 && this.state.found){
+            heading=(
+                <div>
+                    <h2 style={{color : "red", paddingLeft : "32%"}}>Below are you search results</h2>
+                    <hr/>
+                </div>
+            )
+        }
         return(
-            <div>
+            <div style={{backgroundColor: "black"}}>
                 <div id="img1">
                     <Navbar history={this.props.history}/>
                     <div class="container" id="home1" style={{paddingTop : "0%"}}>
@@ -222,11 +236,11 @@ class Home extends Component {
                 </div>
 
 
-                <div>
+                <div style={{paddingLeft : "10%", backgroundColor : "black"}}>
                     <br/>
+                    {heading}
                     {movies.map(mov=>(
                         <button onClick={() => { this.props.history.push('/video/'+mov.movieid) }}>
-                            <h1>{mov.movieid}</h1>
                             <div style={{color:"red"}}>
                             <Card>
                                 <CardBody>

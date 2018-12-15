@@ -49,11 +49,12 @@ class Login extends Component{
 
         axios.post(url + "/login", user)
         .then((response) =>{
-            console.log("In handle login after response on login page...", response.data);
+            console.log("In handle login after response on login page...", <response className="data"></response>);
 
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 localStorage.setItem("sessionID", response.data.message);
+                console.log("Push home")
                 this.props.history.push('/home');
             } else {
                 swal(response.data.message, "", "warning");
@@ -63,6 +64,7 @@ class Login extends Component{
 
     render(){
         return(
+
         <div style={{backgroundColor: "black"}}>
             <div id="img1">
                 <div class="container">

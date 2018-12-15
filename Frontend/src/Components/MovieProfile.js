@@ -19,7 +19,8 @@ class MovieProfile extends React.Component {
             result:"",
             data:"",
             type:null,
-            flag: false
+            flag: false,
+            movieid :null
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -45,10 +46,11 @@ class MovieProfile extends React.Component {
         
 
         console.log("Movie ID received",this.props.match.params.id);
-
-
-        console.log("url parameter",this.props);
-        fetch(url+"/movie?movieid=1")
+        this.setState({
+            movieid : this.props.match.params.id
+        },()=>{
+            console.log("url parameter",this.props);
+        fetch(url+"/movie?movieid="+this.state.movieid)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -64,9 +66,6 @@ class MovieProfile extends React.Component {
                     });
 
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -74,20 +73,10 @@ class MovieProfile extends React.Component {
                     });
                 }
             )
-/*
-            axios.get(url + "/checksession")
-            .then((response) => {
-                if(response.data.status === "SUCCESS"){
-                    console.log("inside session", response.data);
-                this.setState({
-                    type: response.data.type
-                })
-                }
-            }).catch((error) => {
-                console.log(error);
-            })
-*/
+        })
 
+
+        
     }
 
 
@@ -225,7 +214,7 @@ class MovieProfile extends React.Component {
         else{
             return (
                 <div>
-                    <Navbar />
+                    <Navbar history={this.props.history}/>
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-5">
