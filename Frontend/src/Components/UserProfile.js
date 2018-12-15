@@ -152,8 +152,8 @@ class UserProfile extends Component{
     handleOnClick = () => {
         // some action...
         // then redirect
-        this.props.history.push({pathname:'/payment?movieid=&payType=subscription&price='+this.state.amount +'&availability=',state:{referrer:this.state}})
-
+        this.props.history.push({pathname:'/payment',search:'?movieid=-1&&payType=subscription&price='+this.state.amount +'&availability=-1',state:{referrer:this.state}})
+//?movieid=-1&&payType=subscription&price='+this.state.amount +'&availability=-1
         //return <Redirect to={{pathname:'/payment?movieid=&payType=subscription&price='+this.state.amount +'&availability=',state:{referrer:this.state}}} />;
 
     }

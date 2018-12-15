@@ -26,7 +26,8 @@ class Payment extends Component{
             movieid:"",
             price:0,
             availability:"",
-            type1:""
+            type1:"",
+            paymentData:""
         }
 
         var t=new Date();
@@ -62,8 +63,10 @@ class Payment extends Component{
 
     componentDidMount(){
 
+
+
         //const value=queryString.parse(this.props.location.search);
-        console.log("in payment query ",value);
+        console.log("in payment component");
 
 
     var self = this;
@@ -85,12 +88,12 @@ class Payment extends Component{
 this.setState({payType:value.payType,movieid:value.movieid,price:value.price,availability:value.availability})
         console.log(" state from previous= ",this.state.datafromUserProfile)
 
-}
 
-    submitPayment = () => {
+
+
 
         var payment;
-        if(this.state.payType==="subscription")
+        if(value.payType==="subscription")
         {
 
             payment = {
@@ -123,12 +126,12 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
                 .then(res => res.json())
                 .then(
                     (result) => {
-                         payment = {
-                            userid: result.userid,
-                            movieid:this.state.movieid,
+                        payment = {
+                            userid: result.type,
+                            movieid:value.movieid,
                             //type: this.state.datafromUserProfile.type,
                             //date:date,
-                            amount:this.state.price,
+                            amount:value.price,
                             // priceusername:this.state.datafromUserProfile.username,
                             // selectedMonth:this.state.datafromUserProfile.selectedMonth,
                             //expirydate:expdate,
@@ -136,7 +139,7 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
 
 
                         }
-
+                        this.setState({paymentData:payment})
 
 
                     },
@@ -150,10 +153,20 @@ this.setState({payType:value.payType,movieid:value.movieid,price:value.price,ava
                         });
                     }
                 )
-
-
-
         }
+
+       // console.log("checking payment data",payment)
+
+
+
+
+
+
+}
+
+    submitPayment = () => {
+
+
 var typeOfPayment;
 if(this.state.payType==="subscription"){
             typeOfPayment="subscription"
@@ -165,8 +178,8 @@ else{
 }
 
 
-            console.log("payment in from end is",payment);
-            axios.post(url + '/payment/?type='+typeOfPayment, payment)
+            console.log("payment in from end is",this.state.paymentData);
+            axios.post(url + '/payment/?type='+typeOfPayment, this.state.paymentData)
                 .then((response) => {
                     console.log("response from payment",response.data);
                     if(response.data.status == "SUCCESS"){
