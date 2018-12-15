@@ -5,6 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Navbar from '../Navbar.js';
 import axios from 'axios'
 import * as qs from 'query-string';
+import url from '../serverurl';
 
 //Define a Review Component
 class Rating extends Component{
@@ -48,7 +49,7 @@ class Rating extends Component{
         }
         var self = this;
         console.log("Displaying State",ratingDetails);
-        axios.post("http://localhost:8080/add-review",ratingDetails, {headers : {Authorization : localStorage.getItem("sessionID")}})
+        axios.post(url + "/add-review",ratingDetails, {headers : {Authorization : localStorage.getItem("sessionID")}})
             .then(response => {
                 if(response.data.status == "SUCCESS"){
                     if(response.data.message == "You need to atleast watch once to review"){

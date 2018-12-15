@@ -87,7 +87,7 @@ class AddMovie extends Component{
         })
 
         if(this.props.match.params.id>0){
-            axios.get("http://localhost:8080/movie",{
+            axios.get(url + "/movie",{
                 params: {
                     movieid : this.props.match.params.id
                 }
@@ -281,7 +281,7 @@ class AddMovie extends Component{
         //const parsed = qs.parse(this.props.location.search);
         if(counter===13){
             if(this.props.match.params.id>0){
-                axios.post("http://localhost:8080/update-movie?movieid="+this.props.match.params.id,movieDetails)
+                axios.post(url + "/update-movie?movieid="+this.props.match.params.id,movieDetails)
                     .then(response => {
                         if(response.data.status === "SUCCESS"){
                             console.log("Received success from the backend after successfully inserting the booking record",response.data)
@@ -299,7 +299,7 @@ class AddMovie extends Component{
                         console.log("Inside catch block of bookingEventHandler",res);
                     })
             } else {
-                axios.post("http://localhost:8080/add-movie",movieDetails)
+                axios.post(url + "/add-movie",movieDetails)
                     .then(response => {
                         if(response.data.status === "SUCCESS"){
                             console.log("Received success from the backend after successfully inserting the booking record",response.data)
