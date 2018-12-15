@@ -32,7 +32,14 @@ public class Movie {
 	private String rating;
 	private String availability;
 	private Integer price;
+	private String genre;
 	
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 	@ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                 CascadeType.PERSIST,
