@@ -10,7 +10,8 @@ class ShowAllUserDetails extends React.Component {
         super();
         this.state = {
             data: [],
-            user:""
+            user:"",
+            searchIncomplete:""
         };
         this.handleChange=this.handleChange.bind(this);
         this.SearchUserClick=this.SearchUserClick.bind(this);
@@ -49,11 +50,17 @@ class ShowAllUserDetails extends React.Component {
             .then(
                 (result) => {
                     console.log("user from db",result);
-                    this.setState({
-                        isLoaded: true,
-                        data: result
-                    });
-
+                    if(result.length>0){
+                        this.setState({
+                            isLoaded: true,
+                            data: result,
+                            searchIncomplete: ""
+                        });
+                    }else{
+                        this.setState({
+                            searchIncomplete : "Kindly enter the exact entire User Name!!!"
+                        })
+                    }
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -95,6 +102,7 @@ class ShowAllUserDetails extends React.Component {
             <div class="user-form" >
                 <div id="user-details">
                 <h3 id="search">Search for User.</h3>
+                <h4 style={{color : "red"}}>{this.state.searchIncomplete}</h4>
                     <div class="form-group">
                         <input  type="text"  onChange={this.handleChange} class="form-control" name="SearchUser"
                            placeholder="Search User" required autoFocus/>

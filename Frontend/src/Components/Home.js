@@ -57,12 +57,13 @@ class Home extends Component {
         };
     }
 
+
     componentDidMount(){
         var self = this;
         //check session and type of user and display navbar accordingly
         axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
         .then((response) => {
-            console.log("in check session of navbar", response.data);
+            console.log("in check session of homepage", response.data);
             if(response.data.message === "invalid session"){ //change to !== after session is done
                 self.props.history.push("/login");
             } else {
@@ -70,6 +71,7 @@ class Home extends Component {
             }
         })
     }
+
 
     searchMovie=()=>{
         console.log("search movie clicked.....");
@@ -128,8 +130,8 @@ class Home extends Component {
                 }else{
                     console.log("entered into failure")
                 }
-            }).catch(res=>{
-                console.log("Inside catch block of bookingEventHandler",res);
+            }).catch(err=>{
+                console.log("Inside catch block of bookingEventHandler",err);
             })
 
     }
@@ -164,7 +166,6 @@ class Home extends Component {
               movieName : e.target.value
           })
       }
-
 
     render(){
         let movies=[...this.state.movies]
@@ -224,44 +225,27 @@ class Home extends Component {
                 <div>
                     <br/>
                     {movies.map(mov=>(
-                        // <div style={{width : "10%",paddingLeft : "10%", color : "black", backgroundImage: `url(${"./AddMovieBackground.jpg"})`, backgroundColor:"#696969"}}>
-                        //     <Card inverse>
-                        //         <CardImg width="100%"/>
-                        //         <CardImgOverlay>
-                        //             <CardTitle style={{color : "red"}}><b>{mov.title}</b></CardTitle>
-                        //             <CardText style={{color : "black"}}>{mov.description}</CardText>
-                        //             <CardText style={{color : "black"}}>{mov.year},Actor:{mov.actors}</CardText>
-                        //             <CardText style={{color : "black"}}>Director:{mov.director}</CardText>
-                        //             <CardText style={{color : "red"}}>
-                        //                 <small className="text-muted" style={{color : "red"}}>Availability: {mov.availability}
-                        //                     <br/>
-                        //                     Price: {mov.price}
-                        //                 </small>
-                        //             </CardText>
-                        //         </CardImgOverlay>
-                        //     </Card>
-                        //     <hr/> <hr/> 
-                        // </div>
-
-
-                        <div style={{color:"red"}}>
-                        <Card>
-                            <CardBody>
-                            <CardTitle style={{color: "black"}}><h3>{mov.title}</h3></CardTitle>
-                            <CardSubtitle>{mov.description}</CardSubtitle>
-                            </CardBody>
-                            <img width="20%" height="25%" src="" alt="Card image cap" />
-                            <CardBody>
-                                <CardText style={{color : "black"}}><b>Year&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.year}</CardText>
-                                <CardText style={{color : "black"}}><b>Actor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.actors}</CardText>
-                                <CardText style={{color : "black"}}><b>Director&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&thinsp;:</b>{mov.director}</CardText>
-                                <CardText style={{color : "black"}}><b>Availability&nbsp;:</b>{mov.availability}</CardText>
-                                <CardText style={{color : "black"}}><b>Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{mov.price}</CardText>
-                            </CardBody>
-                        </Card>
-                        <b><hr style={{borderColor : "red"}}/></b>
-                        </div>
-
+                        <button onClick={() => { this.props.history.push('/video/'+mov.movieid) }}>
+                            <h1>{mov.movieid}</h1>
+                            <div style={{color:"red"}}>
+                            <Card>
+                                <CardBody>
+                                <CardTitle style={{color: "black"}}><h3>{mov.title}</h3></CardTitle>
+                                <CardSubtitle>{mov.description}</CardSubtitle>
+                                </CardBody>
+                                <img width="20%" height="25%" src={require('./SearchBackground.jpg')} alt="Card image cap" />
+                                <CardBody>
+                                    <CardText style={{color : "black"}}><b>Year:</b>{mov.year}</CardText>
+                                    <CardText style={{color : "black"}}><b>Actor:</b>{mov.actors}</CardText>
+                                    <CardText style={{color : "black"}}><b>Director:</b>{mov.director}</CardText>
+                                    <CardText style={{color : "black"}}><b>Availability:</b>{mov.availability}</CardText>
+                                    <CardText style={{color : "black"}}><b>Price:</b>{mov.price}</CardText>
+                                    <CardText style={{color : "black"}}><b>Avg rating:</b>{mov.stars}</CardText>
+                                </CardBody>
+                            </Card>
+                            <b><hr style={{borderColor : "red"}}/></b>
+                            </div>
+                        </button>
                     ))}
                 </div>
             </div>

@@ -18,7 +18,7 @@ class MovieProfile extends React.Component {
             youtubeId:"",
             result:"",
             data:"",
-            type:"",
+            type:null,
             flag: false
         };
 
@@ -30,6 +30,23 @@ class MovieProfile extends React.Component {
 
 
     componentDidMount() {
+
+        axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})
+                .then((response) => {
+                    console.log("in check session of navbar", response.data);
+                    if(response.data.message === "invalid session"){ 
+                        this.props.history.push("/login");
+                    } else {
+                        console.log("Type of Person",response.data.type);
+                        this.setState({type : response.data.type});
+                    }
+                })
+
+        
+
+        console.log("Movie ID received",this.props.match.params.id);
+
+
         console.log("url parameter",this.props);
         fetch(url+"/movie?movieid=1")
             .then(res => res.json())
@@ -57,7 +74,7 @@ class MovieProfile extends React.Component {
                     });
                 }
             )
-
+/*
             axios.get(url + "/checksession")
             .then((response) => {
                 if(response.data.status === "SUCCESS"){
@@ -69,6 +86,8 @@ class MovieProfile extends React.Component {
             }).catch((error) => {
                 console.log(error);
             })
+*/
+
     }
 
 
@@ -146,6 +165,38 @@ class MovieProfile extends React.Component {
     render() {
 
         let changes =null;
+
+
+
+        let add_edit_movie=null;
+        let rate_movie=null;
+        let pay=null;
+
+        if(this.state.type==="ADMIN"){
+            add_edit_movie=(
+               <div class="col-lg-4">
+               <button style={{backgroundColor : "red"}} onClick = {this.handleAdd}  class="btn btn-primary"><b>Add/Edit Movie</b></button> 
+               </div>
+            );
+        }
+
+        if(this.state.type==="USER"){
+           rate_movie=(
+               <div class="col-lg-4">
+               <button style={{backgroundColor : "red"}} onClick = {this.handleRating}  class="btn btn-primary"><b>Rate Movie</b></button> 
+               </div>
+           )
+
+           pay=(
+               <div class="col-lg-4">
+               <button style={{backgroundColor : "red"}} onClick = {this.handlePay}  class="btn btn-primary"><b>Pay</b></button> 
+               </div>
+           )
+        }
+
+
+
+
         const url='https://youtube.com/embed/'+this.state.youtubeId;
         console.log("flag is ",this.state.flag)
         if(this.state.flag){
@@ -169,92 +220,79 @@ class MovieProfile extends React.Component {
         };
         console.log("result ")
         if (this.state.data==""){
-         return null
-    }
-    
- else{
-    return (
-        <div>
-            <Navbar />
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5">
-                    <table className="table table-hover" id="table2">
-                        <thead>
-                            <tr className='table-secondary'>
-                                <th>About Movie</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Movie ID:</td>
-                                <td>{this.state.data.movieid}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Name:</td>
-                                <td>{this.state.data.title}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Actors:</td>
-                                <td>{this.state.data.actors}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Director:</td>
-                                <td>{this.state.data.director}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Year:</td>
-                                <td>{this.state.data.year}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie rating:</td>
-                                <td>{this.state.data.rating}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Studio:</td>
-                                <td>{this.state.data.studio}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Synopsis:</td>
-                                <td>{this.state.data.synopsis}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Country:</td>
-                                <td>{this.state.data.country}</td>
-                            </tr>
-                            <tr>
-                                <td>Movie Price:</td>
-                                <td>{this.state.data.price}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                    <div class="col-lg-6">
-                    {changes}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                    <button style={{backgroundColor : "red"}} onClick = {this.handleAdd}  class="btn btn-primary"><b>Add/Edit Movie</b></button> 
-                    </div>
-                    <div class="col-lg-4">
-                    <button style={{backgroundColor : "red"}} onClick = {this.handleRating}  class="btn btn-primary"><b>Rate Movie</b></button> 
-                    </div>
-                    <div class="col-lg-4">
-                    <button style={{backgroundColor : "red"}} onClick = {this.handlePay}  class="btn btn-primary"><b>Pay</b></button> 
+         return null;
+        }
+        else{
+            return (
+                <div>
+                    <Navbar />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5">
+                            <table className="table table-hover" id="table2">
+                                <thead>
+                                    <tr className='table-secondary'>
+                                        <th>About Movie</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Movie ID:</td>
+                                        <td>{this.state.data.movieid}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Name:</td>
+                                        <td>{this.state.data.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Actors:</td>
+                                        <td>{this.state.data.actors}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Director:</td>
+                                        <td>{this.state.data.director}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Year:</td>
+                                        <td>{this.state.data.year}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie rating:</td>
+                                        <td>{this.state.data.rating}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Studio:</td>
+                                        <td>{this.state.data.studio}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Synopsis:</td>
+                                        <td>{this.state.data.synopsis}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Country:</td>
+                                        <td>{this.state.data.country}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movie Price:</td>
+                                        <td>{this.state.data.price}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <div class="col-lg-6">
+                            {changes}
+                            </div>
+                        </div>
+                        <div class="row">
+                        
+                        {add_edit_movie}
+                        {rate_movie}
+                        {pay}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    );
-
-}
-
-    }
-
-
-
-}
+        )};
+}}
 
 export default MovieProfile;
