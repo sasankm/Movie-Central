@@ -7,9 +7,8 @@ import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-countr
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import Navbar from './Navbar.js';
-import axios from 'axios'
-
-
+import axios from 'axios';
+import * as qs from 'query-string';
 
 const options = [
     { value: 'PG', label: 'PG' },
@@ -71,30 +70,31 @@ class AddMovie extends Component{
     }
 
     componentDidMount=()=>{
-        console.log("Inside componentDidMount Add/Edit movie")
-        //Give movie id as param   //this.props.location.state.movieID
-        if(true){
-            axios.get("http:localhost:8080/getMovieDetails",{
+
+        console.log(this.props);
+        const parsed = qs.parse(this.props.location.search);
+        if(parsed.movieid != undefined){
+            axios.get("http://localhost:8080/movie",{
                 params: {
-                    movieID : 1
-                  //movieID : this.props.location.state.movieID
+                    movieid : parsed.movieid
                 }
-            })
-            .then(response => {
-                if(response.data.status === 200){
+            }).then(response => {
+                console.log(response)
+                if(response.status == 200){
                     console.log("Successfully fetched movie details",response.data)
                     this.setState({
+                        //{value : this.state.genre, label: this.state.genre}
                         title       : response.data.title,
-                        genre       : response.data.genre,
-                        studioName  : response.data.studioName,
+                        genre       : {value : response.data.genre, label: response.data.genre},
+                        studioName  : response.data.studio,
                         synopsis    : response.data.synopsis,
-                        imageURL    : response.data.imageURL,
-                        movieURL    : response.data.movieURL,
+                        imageURL    : response.data.image,
+                        movieURL    : response.data.movie,
                         actors      : response.data.actors,
                         director    : response.data.director,
                         country     : response.data.country,
-                        rating      : response.data.rating,
-                        availability: response.data.availability,
+                        rating      : {value : response.data.rating, label: response.data.rating},
+                        availability: {value : response.data.availability, label: response.data.availability},
                         price       : response.data.price,
                         year        : response.data.year
                     })
@@ -193,97 +193,119 @@ class AddMovie extends Component{
 
         console.log("...........",this.state.country,this.state.director)
 
-        if(this.state.title!=null && this.state.title!=undefined){
+        if(this.state.title!="" && this.state.title!=null && this.state.title!=undefined){
             movieDetails.title=this.state.title;
         }
 
-        if(this.state.genre.value!=null && this.state.genre.value!=undefined){
+        if(this.state.genre.value!="" && this.state.genre.value!=null && this.state.genre.value!=undefined){
             movieDetails.genre=this.state.genre.value;
         }
 
-        if(this.state.synopsis!=null && this.state.synopsis!=undefined){
+        if(this.state.synopsis!="" && this.state.synopsis!=null && this.state.synopsis!=undefined){
             movieDetails.synopsis=this.state.synopsis;
         }
 
-        if(this.state.studioName!=null && this.state.studioName!=undefined){
+        if(this.state.studioName!="" && this.state.studioName!=null && this.state.studioName!=undefined){
             movieDetails.studio=this.state.studioName;
         }
 
-        if(this.state.imageURL!=null && this.state.imageURL!=undefined){
+        if(this.state.imageURL!="" && this.state.imageURL!=null && this.state.imageURL!=undefined){
             movieDetails.image=this.state.imageURL;
         }
 
-        if(this.state.movieURL!=null && this.state.movieURL!=undefined){
+        if(this.state.movieURL!="" && this.state.movieURL!=null && this.state.movieURL!=undefined){
             movieDetails.movie=this.state.movieURL;
         }
 
-        if(this.state.actors!=null && this.state.actors!=undefined){
+        if(this.state.actors!="" && this.state.actors!=null && this.state.actors!=undefined){
             movieDetails.actors=this.state.actors;
         }
 
-        if(this.state.director!=null && this.state.director!=undefined){
+        if(this.state.director!="" && this.state.director!=null && this.state.director!=undefined){
             movieDetails.director=this.state.director;
         }
 
-        if(this.state.country!=null && this.state.country!=undefined){
+        if(this.state.country!="" && this.state.country!=null && this.state.country!=undefined){
             movieDetails.country=this.state.country;
         }
 
-        if(this.state.rating.value!=null && this.state.rating.value!=undefined){
+        if(this.state.rating.value!="" && this.state.rating.value!=null && this.state.rating.value!=undefined){
             movieDetails.rating=this.state.rating.value;
         }
 
-        if(this.state.availability.value!=null && this.state.availability.value!=undefined){
+        if(this.state.availability.value!="" && this.state.availability.value!=null && this.state.availability.value!=undefined){
             console.log(this.state.availability,this.state.availability.value)
             movieDetails.availability=this.state.availability.value;
         }
 
-        if(this.state.price!=null && this.state.price!=undefined){
+        if(this.state.price!="" && this.state.price!=null && this.state.price!=undefined){
             movieDetails.price=this.state.price;
         }
 
-        if(this.state.year!=null && this.state.year!=undefined){
+        if(this.state.year!="" && this.state.year!=null && this.state.year!=undefined){
             movieDetails.year=this.state.year;
         }
 
 
-
         console.log("Displaying State",movieDetails);
 
-        axios.post("http://localhost:8080/add-movie",movieDetails)
-            .then(response => {
-                if(response.data.status === "SUCCESS"){
-                    console.log("Received success from the backend after successfully inserting the booking record",response.data)
-                    this.setState({
-                        success : "You have successfully made the booking!!!!",
-                        count   : 1
-                    })
+        const parsed = qs.parse(this.props.location.search);
+        if(parsed.movieid != undefined){
+            axios.post("http://localhost:8080/update-movie?movieid="+parsed.movieid,movieDetails)
+                .then(response => {
+                    if(response.data.status === "SUCCESS"){
+                        console.log("Received success from the backend after successfully inserting the booking record",response.data)
+                        this.setState({
+                            success : "You have successfully made the booking!!!!",
+                            count   : 1
+                        })
 
-                    this.props.history.push("/video",{
-                        movieID : response.data.type
-                    })
-                }else{
-                    console.log("entered into failure")
-                }
-            }).catch(res=>{
-                console.log("Inside catch block of bookingEventHandler",res);
-            })
+                        this.props.history.push("/video",{
+                            movieID : response.data.type
+                        })
+                    }else{
+                        console.log("entered into failure")
+                    }
+                }).catch(res=>{
+                    console.log("Inside catch block of bookingEventHandler",res);
+                })
+        } else {
+            axios.post("http://localhost:8080/add-movie",movieDetails)
+                .then(response => {
+                    if(response.data.status === "SUCCESS"){
+                        console.log("Received success from the backend after successfully inserting the booking record",response.data)
+                        this.setState({
+                            success : "You have successfully made the booking!!!!",
+                            count   : 1
+                        })
+
+                        this.props.history.push("/video",{
+                            movieID : response.data.type
+                        })
+                    }else{
+                        console.log("entered into failure")
+                    }
+                }).catch(res=>{
+                    console.log("Inside catch block of bookingEventHandler",res);
+                })
+        }
     }
 
 
     render(){
         const { country, region } = this.state;
         const addEdit= (this.state.title==undefined || this.state.title==null) ? "Add a" : "Edit the"
+        const add = (this.state.title==undefined || this.state.title==null) ? "Add" : "Update"
         return(
             <div style={{backgroundColor: "black"}}>
-                <Navbar/>
+                <Navbar history = {this.props.history}/>
                 <div id="img">
                 <div class="container">
                     <h1 style={{color : "red"}}>{addEdit} Movie</h1>
                     <div class="login-form">
                         <div id="signupAdd">
                                 <div class="form-group">
-                                    <input value={this.state.tilte} onChange = {this.titleChangeHandler} type="text" class="form-control" name="title" placeholder="Title" required/>
+                                    <input value={this.state.title} onChange = {this.titleChangeHandler} type="text" class="form-control" name="title" placeholder="Title" required/>
                                 </div>
 
                                 <div class="form-group" style={{color : "black"}}>
@@ -335,7 +357,7 @@ class AddMovie extends Component{
                                            className="form-control" name="price" placeholder="Year" required/>
                                 </div>
 
-                                <button style={{backgroundColor : "red"}} onClick = {this.submitMovie}  class="btn btn-primary"><b>Add</b></button>                 
+                                <button style={{backgroundColor : "red"}} onClick = {this.submitMovie}  class="btn btn-primary"><b>{add}</b></button>                 
                         </div>
                     </div>
                 </div>

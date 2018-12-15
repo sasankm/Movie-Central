@@ -54,6 +54,7 @@ class Login extends Component{
             if(response.data.status === "SUCCESS"){
                 swal("Login Successfull", "", "success");
                 localStorage.setItem("sessionID", response.data.message);
+                console.log("Push home")
                 this.props.history.push('/home');
             } else {
                 swal(response.data.message, "", "warning");

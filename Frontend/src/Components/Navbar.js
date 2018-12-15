@@ -18,7 +18,7 @@ class NetNavbar extends Component {
         this.handleLogout = this.handleLogout.bind(this);
     }
 
-    componentWillMount(){
+    componentDidMount(){
         var self = this;
         //check session and type of user and display navbar accordingly
         axios.get(url + "/checksession", {headers : { Authorization : localStorage.getItem("sessionID") }})

@@ -97,20 +97,18 @@ public class MovieController {
 
 	@PostMapping("/add-movie")
 	@CrossOrigin(origins ="http://localhost:3000")
-	public LoginResponse addMovie(HttpSession session, @RequestBody Movie movie){
-		System.out.println("this is movie" +movie.getTitle());
-		Session s = (Session) session.getAttribute("session");
+	public LoginResponse addMovie(@RequestBody Movie movie){
 		
 		if(!movie.getYear().getClass().getSimpleName().equals("Integer")){
-			return new LoginResponse("SUCCESS", s.getType(), "movie year has to be integer");
+			return new LoginResponse("SUCCESS", "", "movie year has to be integer");
 		}
 		if(!movie.getRating().getClass().getSimpleName().equals("String") || (movie.getRating().equals("G") == false && 
 				movie.getRating().equals("PG") == false &&movie.getRating().equals("PG-13") == false && movie.getRating().equals("R") == false && 
 				movie.getRating().equals("NC-17") == false)){
-			return new LoginResponse("SUCCESS", s.getType(), "invalid rating");
+			return new LoginResponse("SUCCESS", "", "invalid rating");
 		}
 		if(!movie.getPrice().getClass().getSimpleName().equals("Integer")){
-			return new LoginResponse("SUCCESS", s.getType(), "movie price has to be integer");
+			return new LoginResponse("SUCCESS", "", "movie price has to be integer");
 		}
 		
 		//get the set of keywords
@@ -142,6 +140,44 @@ public class MovieController {
 		movieAttributesRepository.saveAll(movieAttributes);
 		
 		return new LoginResponse("SUCCESS", String.valueOf(movie.getMovieid()), "movie created");
+	}
+	
+	@PostMapping("/update-movie")
+	@CrossOrigin(origins ="http://localhost:3000")
+	public LoginResponse updateMovie(@RequestParam("movieid")Integer movieid , @RequestBody Movie movie){
+		Movie m = movieRepository.findByMovieid(movieid);
+		
+		movieAttributesRepository.deleteByMovieid(movieid);
+		
+		//get the set of keywords
+		Set<String> keywords = this.generateKeyWords(movie.getTitle(), movie.getSynopsis(), movie.getActors(), movie.getDirector());
+		
+		//find and update in attributes table and get list of attributes
+		List<Attributes> attributes = new ArrayList<Attributes>();
+		for(String str : keywords){
+			Attributes atr = attributesRepository.findByValue(str);
+			if(atr == null){
+				atr = new Attributes();
+				atr.setValue(str);
+			}
+			attributes.add(atr);
+		}
+		attributesRepository.saveAll(attributes);
+		movie.setMovieid(movieid);
+		//update movie
+		movie = movieRepository.save(movie);
+		
+		//for each attribute insert in movie_attributes table a row.
+		List<MovieAttributes> movieAttributes = new ArrayList<MovieAttributes>();
+		for(Attributes atr : attributes){
+			MovieAttributes ma = new MovieAttributes();
+			ma.setAttributesid(atr.getAttributesid());
+			ma.setMovieid(movie.getMovieid());
+			movieAttributes.add(ma);
+		}
+		movieAttributesRepository.saveAll(movieAttributes);
+		
+		return new LoginResponse("SUCCESS", String.valueOf(m.getMovieid()), "movie created");
 	}
 	
 	@GetMapping("/search")
@@ -183,6 +219,7 @@ public class MovieController {
 			s.setRating(m.getRating());
 			s.setAvailability(m.getAvailability());
 			s.setPrice(m.getPrice());
+			s.setGenre(m.getGenre());
 			list.add(s);
 		}
 		searchResponse.setMovies(list);
@@ -214,6 +251,7 @@ public class MovieController {
 				s.setRating(m.getRating());
 				s.setAvailability(m.getAvailability());
 				s.setPrice(m.getPrice());
+				s.setGenre(m.getGenre());
 			}
 		}
 		

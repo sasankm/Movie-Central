@@ -12,7 +12,9 @@ class ShowAllUserDetails extends React.Component {
         this.state = {
             data: [],
             user:"",
-            type:""
+            type:"",
+
+            searchIncomplete:""
         };
         this.handleChange=this.handleChange.bind(this);
         this.SearchUserClick=this.SearchUserClick.bind(this);

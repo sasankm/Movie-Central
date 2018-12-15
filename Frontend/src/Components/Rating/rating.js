@@ -68,7 +68,7 @@ class Rating extends Component{
         const addEdit= (this.state.title==undefined || this.state.title==null) ? "Add a" : "Edit the"
         return(
             <div style={{backgroundColor : "black"}}>
-                <Navbar/>
+                <Navbar history={this.props.history}/>
                 <div id="ratingImage">
                             <div style={{paddingLeft : "30%",paddingBottom : "3%"}}>
                                 <img style={{width: "30%" , display: "block"}} src={require('../netflix_logo.png')} alt="Kaye naye display karle!"/>
