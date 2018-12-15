@@ -6,6 +6,7 @@ import Select from 'react-select';
 //import { Card, CardTitle, CardText, CardImg, CardImgOverlay } from 'reactstrap';
 import { Card, CardImg, CardText, CardBody, CardLink,
     CardTitle, CardSubtitle } from 'reactstrap';
+import ReactPaginate from 'react-paginate';
 
 const options = [
     { value: 'PG', label: 'PG' },
@@ -54,7 +55,8 @@ class Home extends Component {
             actors      : '',
             director    : '',
             movies      : [],
-            found       : false
+            found       : false,
+            endOfResult : ""
         };
     }
 
@@ -121,9 +123,10 @@ class Home extends Component {
 
         console.log("Data to be sent to backend",request);
 
-
-        axios.get(url+"/search",request)
-
+        this.setState({
+            headerInfo : request
+        },()=>{
+            axios.get(url+"/search",request)
             .then(response => {
                 if(response.data.status === "SUCCESS"){
                     console.log("Successfully received movies from backend", response.data)
@@ -137,7 +140,7 @@ class Home extends Component {
             }).catch(err=>{
                 console.log("Inside catch block of bookingEventHandler",err);
             })
-
+        })
     }
 
     genreChangeHandler=(selectedOption)=>{
@@ -171,14 +174,106 @@ class Home extends Component {
           })
       }
 
+
+      handlePageClick = (data) => {
+
+        var params = new URLSearchParams();
+
+        if(this.state.movieName!=null && this.state.movieName!=undefined){
+            let splitArr=this.state.movieName.split(" ");
+            splitArr.forEach((ele)=>{
+                console.log(ele);
+                params.append("key", ele);
+            })
+        }
+
+        if(this.state.genre!=null && this.state.genre.value!=undefined){
+            console.log(this.state.genre.value)
+            params.append("genre",this.state.genre.value)
+        }
+
+        if(this.state.rating!=null && this.state.rating.value!=undefined){
+            console.log(this.state.genre.value)
+            params.append("rating",this.state.rating.value)
+        }
+
+        if(this.state.availability!=null && this.state.availability.value!=undefined){
+            console.log(this.state.availability.value)
+            params.append("availability",this.state.availability.value)
+        }
+
+        if(this.state.actors!=null && this.state.actors!=undefined){
+            console.log(this.state.actors)
+            params.append("actors",this.state.actors)
+        }
+
+        if(this.state.director!=null && this.state.director!=undefined){
+            console.log(this.state.director)
+            params.append("director",this.state.director)
+        }
+        
+        params.append("page",data.selected)
+
+
+        var request = {
+             params: params,
+             headers : { 
+                Authorization : localStorage.getItem("sessionID")
+             }
+        };
+
+        console.log("Data Selected",data.selected);
+
+        axios.get(url+"/search",request)
+        .then(response => {
+            if(response.data.status === "SUCCESS"){
+                console.log("Successfully received movies from backend", response.data)
+                if(response.data.movies.length>0){
+                    this.setState({
+                        endOfResult : "",
+                        movies      : response.data.movies,
+                        found       : true
+                    })
+                }else{
+                    this.setState({
+                        endOfResult : "You have reached end of search result!!!"
+                    })
+                }
+            }else{
+                console.log("entered into failure")
+            }
+        }).catch(err=>{
+            console.log("Inside catch block of bookingEventHandler",err);
+        })
+      };
+
+
     render(){
         let movies=[...this.state.movies]
         let heading=null;
+        let pagination=null;
         if(this.movieChangeHandler.length>0 && this.state.found){
             heading=(
                 <div>
-                    <h2 style={{color : "red", paddingLeft : "32%"}}>Below are you search results</h2>
+                    <h2 style={{color : "green"}}>Kindly scroll down to see the search result</h2>
                     <hr/>
+                </div>
+            )
+        }
+        if(this.state.movies.length>0){
+            pagination=(
+                <div style={{paddingLeft : "35%"}}>
+                    <ReactPaginate previousLabel={"previous"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"} />
                 </div>
             )
         }
@@ -227,7 +322,7 @@ class Home extends Component {
                             <br></br> <br></br>
                             <hr></hr>
                             <br></br> <br></br>
-
+                            {heading}
                             <button style={{width : "60%",height : "50%", paddingTop : "1%", paddingBottom : "2%", backgroundColor : "red"}}
                             className="btn btn-primary" onClick={this.searchMovie} type="button"><h3>Search</h3></button>
                         </form>
@@ -237,7 +332,6 @@ class Home extends Component {
 
                 <div style={{paddingLeft : "10%", backgroundColor : "black"}}>
                     <br/>
-                    {heading}
                     {movies.map(mov=>(
                         <button onClick={() => { this.props.history.push('/video/'+mov.movieid) }}>
                             <div style={{color:"red"}}>
@@ -261,8 +355,9 @@ class Home extends Component {
                         </button>
                     ))}
                 </div>
+                <div style={{color : "green", paddingLeft: "33%"}}><h2>{this.state.endOfResult}</h2></div>
+                {pagination}
             </div>
-
         );
     }
 }
