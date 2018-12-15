@@ -46,7 +46,7 @@ class UserProfile extends Component{
                 { value: '12', label: '12 months' }
 
             ],
-            selectedMonth:"1 month",
+            selectedMonth:"1",
             movieid:"",
             type:"subscription",
             typeOfuser:""

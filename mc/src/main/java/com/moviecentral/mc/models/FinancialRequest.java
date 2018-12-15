@@ -2,6 +2,10 @@ package com.moviecentral.mc.models;
 
 public class FinancialRequest {
 
+	public FinancialRequest() {
+		super();
+	}
+
 	private Integer month;
 	private Integer year;
 	
