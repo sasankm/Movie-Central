@@ -39,7 +39,6 @@ public class AdminUserController {
 	java.sql.Date startdate;
 	java.sql.Date enddate;*/
 	
-	
 	@Autowired
 	
 	private UserRepository userRepository;
@@ -50,7 +49,7 @@ public class AdminUserController {
 	
 	
 	@GetMapping(value="/user")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public ArrayList getAllUserDetails(){
 		ArrayList<HashMap<String,String>> ar=new ArrayList<HashMap<String,String>>();
 		//HashMap<String,String> inner = new HashMap<String,String>();
@@ -82,7 +81,7 @@ public class AdminUserController {
 	}
 	//to fetch individual user details
 	@GetMapping(value="/user/{username}")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public ArrayList getOneUserDetails(@PathVariable String username,@RequestHeader("Authorization") Optional<String> sessionID){
 		ArrayList<HashMap<String,String>> ar=new ArrayList<HashMap<String,String>>();
 		HashMap<String,String> inner = new HashMap<String,String>();

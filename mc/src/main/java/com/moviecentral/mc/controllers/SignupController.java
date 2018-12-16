@@ -38,7 +38,7 @@ public class SignupController {
 	private UserRepository userRepository;
 	
 	@PostMapping(value="/signup")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse signup(@RequestBody SignupRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
@@ -88,7 +88,7 @@ public class SignupController {
 	}
 	
 	@GetMapping(value="/verify")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse verify(@RequestParam("email") String email, @RequestParam("code") String code){
 		System.out.println("code "+code);
 		System.out.println("email "+email);

@@ -47,7 +47,7 @@ public class FinancialReportController {
 	
 	
 	@PostMapping(value="/financial")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public ArrayList getFinancialMetrics(@RequestBody FinancialRequest req){
 		ArrayList<HashMap> ar=new ArrayList<HashMap>();
 		HashMap<String,Integer> hm = new HashMap<String,Integer>();

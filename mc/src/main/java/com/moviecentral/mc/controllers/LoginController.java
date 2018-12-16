@@ -35,7 +35,7 @@ public class LoginController {
 	
 	
 	@PostMapping("/login")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse login(@RequestBody LoginRequest req){
 		String username = req.getUsername();
 		String password = req.getPassword();
@@ -56,7 +56,7 @@ public class LoginController {
 	}
 	
 	@GetMapping(value = "/userlogout")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse logout(@RequestHeader("Authorization") Optional<String> sessionID){
 		
 		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
@@ -68,7 +68,7 @@ public class LoginController {
 	}
 	
 	@GetMapping(value = "/checksession")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse checksession(@RequestHeader("Authorization") Optional<String> sessionID){
 		Session s;
 		String res = "", type="";
@@ -84,7 +84,7 @@ public class LoginController {
 	}
 	
 	@GetMapping(value = "/getuser")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse checkuser(@RequestHeader("Authorization") Optional<String> sessionID){
 		Session s = null;
 		String res = "", type="";

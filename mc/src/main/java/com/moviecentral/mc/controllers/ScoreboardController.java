@@ -48,7 +48,7 @@ public class ScoreboardController {
 	private MovieRepository movieRepository;
 	
 	@GetMapping(value="/stats")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public HistoryResponse stats(HttpSession session, @RequestParam("cls") Optional<String> cls, @RequestParam("period") Optional<Integer> period){
 		HistoryResponse historyResponse = new HistoryResponse();
 		if(cls.isPresent()){
@@ -139,7 +139,7 @@ public class ScoreboardController {
 	}
 	
 	@GetMapping(value="/scoreboard")
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public SearchResponse stats(HttpSession session, @RequestParam("cls") Optional<String> cls){
 		SearchResponse searchResponse = new SearchResponse();
 		

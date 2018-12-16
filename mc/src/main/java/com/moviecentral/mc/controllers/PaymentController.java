@@ -41,7 +41,7 @@ public PaymentRepository paymentRepository;
 public UserRepository userRepository;
 Payment payment=new Payment();
 @PostMapping(value="/payment")
-@CrossOrigin(origins ="http://localhost:3000")
+@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 @ResponseBody
 public PaymentResponse makePayment(@RequestBody PaymentRequest req,@RequestParam("type") String type) throws ParseException{
 	System.out.println("req id in may payment is "+req.getUserid());

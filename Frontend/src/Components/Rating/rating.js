@@ -6,6 +6,7 @@ import Navbar from '../Navbar.js';
 import axios from 'axios'
 import * as qs from 'query-string';
 import url from '../../serverurl';
+import swal from 'sweetalert';
 
 //Define a Review Component
 class Rating extends Component{
@@ -53,8 +54,9 @@ class Rating extends Component{
             .then(response => {
                 if(response.data.status == "SUCCESS"){
                     if(response.data.message == "You need to atleast watch once to review"){
-                        //swal
+                        swal("You need to atleast watch once to review", "", "warning");
                     } else {
+                        swal("review added", "", "success");
                         self.props.history.push("/video/"+parsed.movieid);
                     }
                 }

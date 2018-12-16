@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,7 @@ public class HistoryController {
 	private MovieRepository movieRepository;
 	
 	@GetMapping(value = "/history")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public HistoryResponse history(HttpSession session, @RequestParam("userid") Optional<Integer> userid, @RequestParam("movieid") Optional<Integer> movieid){
 		HistoryResponse historyResponse = new HistoryResponse();
 		if(userid.isPresent()){

@@ -19,7 +19,7 @@ public class EmailService {
 	    Email to = new Email(email);
 	    
 	    //update it with front end email
-	    Content content = new Content("text/plain", "Please click on this link : " + "http://localhost:3000/verify?code="+code+"&email="+email);
+	    Content content = new Content("text/plain", "Please click on this link : " + "http://54.193.119.24:3000/verify?code="+code+"&email="+email);
 	    Mail mail = new Mail(from, subject, to, content);
 
 	    SendGrid sg = new SendGrid("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");

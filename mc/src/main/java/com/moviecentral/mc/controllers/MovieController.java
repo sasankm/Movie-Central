@@ -107,7 +107,7 @@ public class MovieController {
 	}
 
 	@PostMapping("/add-movie")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse addMovie(@RequestBody Movie movie){
 		
 		if(!movie.getYear().getClass().getSimpleName().equals("Integer")){
@@ -154,7 +154,7 @@ public class MovieController {
 	}
 	
 	@PostMapping("/update-movie")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse updateMovie(@RequestParam("movieid")Integer movieid , @RequestBody Movie movie){
 		Movie m = movieRepository.findByMovieid(movieid);
 		
@@ -192,7 +192,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/search")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public SearchResponse search(SearchQuery query){
 		Integer page = query.getPage();
 		System.out.println("Page number received"+page);
@@ -241,7 +241,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movie")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public SearchMovie movie(HttpSession session, @RequestParam("movieid")Integer movieid){
 		SearchMovie s = new SearchMovie();
 		System.out.println("movieid "+movieid);
@@ -273,7 +273,7 @@ public class MovieController {
 	
 
 	@GetMapping("/deletemovie")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse deleteMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
 		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
 			return new LoginResponse("FAILURE", "", "invalid session");
@@ -291,7 +291,7 @@ public class MovieController {
 	
 
 	@PostMapping("/add-review")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse reviewMovie(@RequestHeader("Authorization") Optional<String> sessionID, @RequestBody Review review){
 		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
 			return new LoginResponse("FAILURE", "", "invalid session");
@@ -317,13 +317,13 @@ public class MovieController {
 	}
 	
 	@GetMapping("/reviews")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public List<Review> reviews(@RequestParam("movieid")Integer movieid){
 		return reviewRepository.findByMovieid(movieid);
 	}
 	
 	@GetMapping("/play")
-	@CrossOrigin(origins ="http://localhost:3000")
+	@CrossOrigin(origins = {"http://54.193.119.24:3000", "http://localhost:3000"})
 	public LoginResponse playMovie(@RequestParam("movieid")Integer movieid,  @RequestHeader("Authorization") Optional<String> sessionID){
 		System.out.println("movieid inside play is "+movieid);
 		if(!sessionID.isPresent() || sessionMap.getSessionMap().containsKey(sessionID.get()) == false){
