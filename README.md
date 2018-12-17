@@ -4,7 +4,8 @@
 	▪	Sasank Matavalam <sasank.matavalam@sjsu.edu> - 012538903
 	▪	Venkat Pushpak Gollamudi <venkatpushpak.gollamudi@sjsu.edu> 012530180
 	▪	Suhas Nayak <suhas.nayak@sjsu.edu> 012535458
-2. The URL to access the app : http://54.67.66.84:3000
+2. The URL to access the app : 
+http://54.193.119.24:3000/
 
 3. We took the following assumption while building our application as it was a bit ambiguous. 
 
